@@ -123,11 +123,13 @@ class BaseRequest {
       response = await dio.download(
         urlPath,
         savePath,
+        options: Options(receiveTimeout: 0),
         onReceiveProgress: (int count, int total) {
           //进度
           debugPrint((count / total).toStringAsFixed(2));
           progress = (count / total).toStringAsFixed(2);
         },
+
         // cancelToken: CancelToken(),//取消操作
       );
       return progress;

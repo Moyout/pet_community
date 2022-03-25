@@ -18,43 +18,42 @@ class _StartUpViewState extends State<StartUpView> {
   @override
   Widget build(BuildContext context) {
     StartUpViewModel state = context.read<StartUpViewModel>();
+
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: AppUtils.getWidth(),
         child: Stack(
           children: <Widget>[
             Positioned(
               top: 0,
               bottom: 0,
+              left: 0,
+              right: 0,
               child: Image.network(
-                "https://bing.ioliu.cn/v1/rand",
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) {
-                  if (loadingProgress?.cumulativeBytesLoaded != loadingProgress?.expectedTotalBytes) {
-                    return Image.memory(
-                      context.watch<StartUpViewModel>().bytes,
-                      fit: BoxFit.fitWidth,
-                    );
-                  }
-                  return child;
+                // "https://bing.ioliu.cn/v1/rand",
+                "http://106.52.246.134:5000/getLaunchImages",
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                  return Image.asset(
+                    "assets/images/launch_images/pet (${context.watch<StartUpViewModel>().random}).jpg",
+                  );
                 },
               ),
             ),
             Container(
-              padding: EdgeInsets.only(bottom: 10.w, right: 25.w),
+              padding: EdgeInsets.only(bottom: 10.w, right: 15.w),
               alignment: Alignment.bottomRight,
               child: context.watch<StartUpViewModel>().seconds == 0
                   ? const SizedBox()
                   : RawChip(
+                      // padding: EdgeInsets.symmetric(horizontal: 10),
+                      // labelPadding: EdgeInsets.all(0),
                       backgroundColor: Colors.transparent,
                       label: Consumer<StartUpViewModel>(
                         builder: (_, StartUpViewModel stModel, __) {
                           return Text(
-                            "跳过${stModel.seconds.toString()}",
-                            style: TextStyle(fontSize: 14.sp),
+                            "跳过${stModel.seconds}",
+                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                           );
                         },
                       ),

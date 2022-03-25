@@ -44,6 +44,8 @@ dependencies:
 
 
   permission_handler: ^8.1.4+2 # 权限管理
+
+  path_provider: ^2.0.9 # 存储目录
   #flutter_http:
     #git: https://github.com/Moyout/flutter_http.git
 
@@ -93,6 +95,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/images/launch_images/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

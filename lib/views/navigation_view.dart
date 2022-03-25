@@ -42,7 +42,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             child: Container(
               padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).padding.bottom + 5.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20.w)),
                 color: Colors.white,
               ),
               child: Row(
