@@ -1,8 +1,12 @@
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/widget/toast/ftoast_widget.dart';
 
 class AppConfig {
   /// 初始化持久化数据
   static Future<void> initSp() async => await SpUtil.getInstance();
+
+  /// 初始化Toast
+  // static Future<void> initToast(BuildContext context) async => await FToastUtil.getInstance(context);
 
   ///错误widget
   static void errorWidget() {

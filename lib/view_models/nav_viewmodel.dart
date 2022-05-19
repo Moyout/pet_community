@@ -7,7 +7,7 @@ import 'package:vibration/vibration.dart';
 
 class NavViewModel extends ChangeNotifier {
   PageController pageController = PageController();
-  late ConnectivityResult netMode; //网络
+  late ConnectivityResult netMode = ConnectivityResult.wifi; //网络
   StreamSubscription<ConnectivityResult>? subscription;
 
   ///页面控制器

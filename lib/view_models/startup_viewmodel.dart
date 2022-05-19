@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:pet_community/common/http/base_request.dart';
+import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/views/navigation_view.dart';
 
 class StartUpViewModel extends ChangeNotifier {
   late Timer _timer;
   int seconds = 4; //秒数
-  int random = Random().nextInt(10) + 1; //随机
+  late int jpgFileCount;
+  late int random = 0; //随机
 
   // late Uint8List bytes; //启动图
   ///初始化ViewModel
   void initViewModel(BuildContext context) {
     SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-    // getLaunchImage();
+    getLaunchImageInfo();
     timerDown(context);
   }
 
@@ -26,6 +29,7 @@ class StartUpViewModel extends ChangeNotifier {
       } else {
         seconds--;
       }
+
       notifyListeners();
     });
   }
@@ -36,8 +40,15 @@ class StartUpViewModel extends ChangeNotifier {
     RouteUtil.pushReplacement(context, const NavigationView());
   }
 
-  // ///启动图
-  // Future<void> getLaunchImage() async {
-  //   // bytes = BaseToUint8List().base64ToImage("");
-  // }
+  ///启动图
+  Future<void> getLaunchImageInfo() async {
+    var result = await BaseRequest().toGet("${ApiConfig.baseUrl}/open/petPicturesCount/");
+    if (result != null) {
+      jpgFileCount = result["data"]["jpgFileCount"] ?? 10;
+      random = Random().nextInt(jpgFileCount);
+      notifyListeners();
+    }
+    debugPrint("jpgFileCount      $jpgFileCount");
+    // bytes = BaseToUint8List().base64ToImage("");
+  }
 }

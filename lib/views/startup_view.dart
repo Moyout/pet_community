@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 
 class StartUpView extends StatefulWidget {
@@ -11,6 +15,7 @@ class StartUpView extends StatefulWidget {
 class _StartUpViewState extends State<StartUpView> {
   @override
   void initState() {
+    context.read<NavViewModel>().checkNet();
     context.read<StartUpViewModel>().initViewModel(context);
     super.initState();
   }
@@ -31,11 +36,12 @@ class _StartUpViewState extends State<StartUpView> {
               right: 0,
               child: Image.network(
                 // "https://bing.ioliu.cn/v1/rand",
-                "http://106.52.246.134:5000/getLaunchImages",
+                ApiConfig.baseUrl + "/images/pet${state.random}.jpg",
                 fit: BoxFit.cover,
                 errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                   return Image.asset(
-                    "assets/images/launch_images/pet (${context.watch<StartUpViewModel>().random}).jpg",
+                    "assets/images/launch_images/pet${state.random}.jpg",
+                    fit: BoxFit.cover,
                   );
                 },
               ),
@@ -49,14 +55,19 @@ class _StartUpViewState extends State<StartUpView> {
                       // padding: EdgeInsets.symmetric(horizontal: 10),
                       // labelPadding: EdgeInsets.all(0),
                       backgroundColor: Colors.transparent,
-                      label: Consumer<StartUpViewModel>(
-                        builder: (_, StartUpViewModel stModel, __) {
-                          return Text(
-                            "跳过${stModel.seconds}",
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                          );
-                        },
+                      label: Text(
+                        "跳过${state.seconds}",
+                        style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                       ),
+
+                      // Consumer<StartUpViewModel>(
+                      //   builder: (_, StartUpViewModel stModel, __) {
+                      //     return Text(
+                      //       "跳过${stModel.seconds}",
+                      //       style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      //     );
+                      //   },
+                      // ),
                       onPressed: () => state.pushNewPage(context),
                     ),
             ),

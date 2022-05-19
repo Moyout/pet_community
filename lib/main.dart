@@ -1,6 +1,8 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
+import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/startup_view.dart';
 
 void main() {
@@ -10,15 +12,21 @@ void main() {
   AppConfig.initSp(); //初始化SP
   AppConfig.errorWidget(); //错误widget
   AppConfig.setScreenOrientations(); //竖屏
-  runApp(MultiProvider(providers: providers, child: MyApp()));
+  runApp(MultiProvider(providers: providers, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.initialize(); //初始化屏幕适配
+    // AppConfig.initToast(context); //初始化SP
+
     return MaterialApp(
-      title: 'Flutter mall template',
+      title: 'Flutter',
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -35,6 +35,12 @@ class SpUtil {
     return _prefs!.setString(key, value);
   }
 
+  ///存储Int
+  static Future<bool>? setInt(String key, int value) {
+    if (_prefs == null) return null;
+    return _prefs!.setInt(key, value);
+  }
+
   ///存储StringList
   static Future<bool>? setStringList(String key, List<String> value) {
     if (_prefs == null) return null;
@@ -46,6 +52,14 @@ class SpUtil {
     if (_prefs == null) return null;
     String? status = _prefs?.getString(key);
     if (status == null) return "";
+    return status;
+  }
+
+  ///获取Int
+  static int? getInt(String key) {
+    if (_prefs == null) return null;
+    int? status = _prefs?.getInt(key);
+    if (status == null) return null;
     return status;
   }
 

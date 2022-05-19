@@ -30,30 +30,37 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_localizations: # 语言国际化
+  flutter_localizations: # ????????
     sdk: flutter
   intl: ^0.17.0
 
-  provider: ^5.0.0 # 状态管理
+  provider: ^5.0.0 #
 
-  flutter_launcher_icons: 0.9.2 # app图标
+  flutter_launcher_icons: 0.9.2 # app???
 
-  dio: ^4.0.0  # 网络请求
+  dio: ^4.0.0  # ????????
 
-  shared_preferences: ^2.0.6 # 本地持久化存储
+  shared_preferences: ^2.0.6 #
 
 
-  permission_handler: ^8.1.4+2 # 权限管理
+  permission_handler: ^8.1.4+2 # ??????
 
-  path_provider: ^2.0.9 # 存储目录
+  path_provider: ^2.0.9 # ?????
   #flutter_http:
     #git: https://github.com/Moyout/flutter_http.git
 
-  synchronized: ^3.0.0 # 异步锁
+  synchronized: ^3.0.0 #
 
-  vibration: ^1.7.4-nullsafety.0 # 震动反馈
+  vibration: ^1.7.4-nullsafety.0 # ?????
 
-  connectivity_plus: ^2.2.1 # 网络连接
+  connectivity_plus: ^2.2.1 # ????????
+
+  fluttertoast: ^8.0.9
+
+  screenshot: ^1.2.3
+  bot_toast: ^4.0.2
+  #bot_toast: ^4.0.1
+#  lottie: ^1.2.2 #????
 
 #  shake_animation_widget:
 
@@ -79,7 +86,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 
-###  设置app图标
+###  ????app???
 flutter_icons:
   # use "flutter pub run flutter_launcher_icons:main"
   android: "launcher_icon"
@@ -95,7 +102,10 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lotties/
     - assets/images/launch_images/
+    - assets/images/backgrounds/
+    - pubspec.yaml
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

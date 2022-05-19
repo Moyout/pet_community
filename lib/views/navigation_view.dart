@@ -22,6 +22,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           PageView(
@@ -43,7 +44,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).padding.bottom + 5.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20.w)),
-                color: Colors.white,
+                color: ThemeUtil.primaryColor(context),
               ),
               child: Row(
                 children: List.generate(context.watch<NavViewModel>().bottomList.length, (int index) {
@@ -60,7 +61,8 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                                 ? context.watch<NavViewModel>().animation.value
                                 : 0,
                             child: AnimatedScale(
-                              duration: const Duration(milliseconds: 100),
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.bounceOut,
                               scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.2 : 1,
                               child: Image.asset(
                                 context.watch<NavViewModel>().bottomList[index].icon,
@@ -68,7 +70,9 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                                 height: 34.w,
                                 color: context.watch<NavViewModel>().bottomList[index].isActive
                                     ? Colors.deepPurpleAccent
-                                    : Colors.grey,
+                                    : ThemeUtil.brightness(context) == Brightness.dark
+                                        ? ThemeUtil.lightTheme().primaryColor
+                                        : ThemeUtil.darkTheme().primaryColor,
                               ),
                             ),
                           ),
@@ -78,7 +82,9 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                               fontSize: 10.sp,
                               color: context.watch<NavViewModel>().bottomList[index].isActive
                                   ? Colors.deepPurpleAccent
-                                  : Colors.grey,
+                                  : ThemeUtil.brightness(context) == Brightness.dark
+                                      ? ThemeUtil.lightTheme().primaryColor
+                                      : ThemeUtil.darkTheme().primaryColor,
                               height: 0.8.w,
                             ),
                           ),
@@ -100,6 +106,7 @@ class NavBottomModel {
   String name;
   String icon;
   bool isActive;
+
   NavBottomModel({
     required this.name,
     required this.icon,

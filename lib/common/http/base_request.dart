@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class BaseRequest {
   static final BaseRequest _instance = BaseRequest._internal();
   late Dio dio;
+  bool isShowLoading = false;
 
   // CancelToken cancelToken = CancelToken();
   Response? response;
@@ -29,6 +31,9 @@ class BaseRequest {
         debugPrint("headers = ${options.headers}");
         debugPrint("params = ${options.data}");
         handler.next(options);
+        if (isShowLoading) {
+          ToastUtil.showLoadingToast(seconds: 10, clickClose: false);
+        }
         // Toast.showLoadingToast(seconds: 10, clickClose: false);
         // cancelToken.cancel();
       },
@@ -38,7 +43,7 @@ class BaseRequest {
         debugPrint("data = ${response.data}");
         debugPrint("\n");
         handler.next(response);
-        // Toast.closeLoading();
+        ToastUtil.closeLoading();
       },
       onError: (DioError e, ErrorInterceptorHandler handler) async {
         debugPrint("\n================== 错误响应数据 ======================");
@@ -47,7 +52,7 @@ class BaseRequest {
         debugPrint("\n");
         handler.next(e);
 
-        // Toast.showBotToast(e.message);
+        ToastUtil.showBottomToast(e.message);
 
         /*error统一处理*/
         if (e.type == DioErrorType.connectTimeout) {
@@ -76,7 +81,10 @@ class BaseRequest {
     url, {
     Map<String, dynamic>? parameters,
     Options? options,
+    bool isShowLoading = false,
   }) async {
+    this.isShowLoading = isShowLoading;
+
     dynamic result;
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
       // Toast.showBotToast("请检查网络");
@@ -102,7 +110,9 @@ class BaseRequest {
     data,
     Map<String, dynamic>? parameters,
     Options? options,
+    bool isShowLoading = false,
   }) async {
+    this.isShowLoading = isShowLoading;
     // if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
     //   Toast.showBotToast("请检查网络");
     // } else {
