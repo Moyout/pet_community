@@ -28,6 +28,6 @@ class ToastUtil {
   }
 
   static closeLoading() {
-    return BotToast.cleanAll();
+    return BotToast.closeAllLoading();
   }
 }

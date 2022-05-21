@@ -1,5 +1,6 @@
 import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_viewmodel.dart';
 import 'package:pet_community/view_models/verification_model/slide_verification_viewmodel.dart';
 import 'package:pet_community/widget/textFiled/textfiled_widget.dart';
@@ -158,7 +159,9 @@ class _SignViewState extends State<SignView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.read<SignLoginViewModel>().pageC.jumpToPage(1);
+                      },
                       child: const Text("已有账号"),
                     ),
                     GestureDetector(

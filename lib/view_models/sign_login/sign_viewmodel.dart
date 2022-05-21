@@ -11,7 +11,6 @@ class SignViewModel extends ChangeNotifier {
   TextEditingController accountC = TextEditingController();
   TextEditingController verificationC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
-  bool clickable = false;
   bool isSendVerification = false;
   bool isAgree = false;
   bool isShowPassword = false;
@@ -20,8 +19,7 @@ class SignViewModel extends ChangeNotifier {
   void initViewModel() {
     accountC.clear();
     verificationC.clear();
-    verificationC.clear();
-    clickable = false;
+    passwordC.clear();
     isSendVerification = false;
     isAgree = false;
     isShowPassword = false;
@@ -30,6 +28,7 @@ class SignViewModel extends ChangeNotifier {
   void showSendVerificationWidget(BuildContext context, GlobalKey widgetKey) {
     if (EmailUtil.isEmail(accountC.text)) {
       if (passwordC.text.isNotEmpty) {
+        verificationC.clear();
         showDialog(context: context, builder: (context) => const SlideVerificationWidget());
       } else {
         FToastUtil.showToast(context, widgetKey: widgetKey, text: "请先输入密码");

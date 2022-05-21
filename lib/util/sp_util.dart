@@ -2,7 +2,9 @@
 ///author: DJT
 ///created on: 2021/8/2 5:05
 ///
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'dart:convert';
 
 class SpUtil {
   static SpUtil? _singleton;
@@ -30,15 +32,15 @@ class SpUtil {
   }
 
   ///存储String
-  static Future<bool>? setString(String key, String value) {
+  static Future<bool>? setString(String key, String? value) {
     if (_prefs == null) return null;
-    return _prefs!.setString(key, value);
+    return _prefs!.setString(key, value ?? "");
   }
 
   ///存储Int
-  static Future<bool>? setInt(String key, int value) {
+  static Future<bool>? setInt(String key, int? value) {
     if (_prefs == null) return null;
-    return _prefs!.setInt(key, value);
+    return _prefs!.setInt(key, value!);
   }
 
   ///存储StringList
@@ -47,11 +49,24 @@ class SpUtil {
     return _prefs?.setStringList(key, value);
   }
 
+  /// 根据key存储Object类型
+  static Future<bool>? putObject(String key, Object value) {
+    if (_prefs == null) return null;
+    return _prefs?.setString(key, json.encode(value));
+  }
+
+  /// 根据key获取T泛型类型
+  static Map getObj(String key) {
+    String? data = _prefs?.getString(key);
+
+    return json.decode(data!);
+  }
+
   ///获取String
   static String? getString(String key) {
     if (_prefs == null) return null;
     String? status = _prefs?.getString(key);
-    if (status == null) return "";
+    if (status == null) return null;
     return status;
   }
 
