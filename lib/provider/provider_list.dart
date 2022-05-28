@@ -1,5 +1,7 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
+import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
+import 'package:pet_community/view_models/mine/edit_data/edit_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
@@ -23,6 +25,8 @@ List<SingleChildWidget> independentServices = [
   ChangeNotifierProvider(create: (_) => SignLoginViewModel()),
   ChangeNotifierProvider(create: (_) => SignViewModel()),
   ChangeNotifierProvider(create: (_) => LoginViewModel()),
+  ChangeNotifierProvider(create: (_) => EditDataViewModel()),
+  ChangeNotifierProvider(create: (_) => EditViewModel()),
 ];
 
 //这里使用ProxyProvider来定义需要依赖其他Provider的服务

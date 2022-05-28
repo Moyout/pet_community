@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:pet_community/common/http/base_request.dart';
-import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/views/navigation_view.dart';
 

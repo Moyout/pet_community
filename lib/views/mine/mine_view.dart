@@ -1,8 +1,10 @@
+import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/enums/drag_state_enum.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
-import 'package:pet_community/views/sign_login/sign_view.dart';
 import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
@@ -26,16 +28,8 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
 
   EdgeInsetsGeometry horizontalPadding = EdgeInsets.symmetric(horizontal: 16.w);
 
-  TextStyle textStyle = TextStyle(
-    fontSize: 10.sp,
-    color: Colors.grey,
-    overflow: TextOverflow.ellipsis,
-  );
-  TextStyle textStyle2 = TextStyle(
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w500,
-    overflow: TextOverflow.ellipsis,
-  );
+  TextStyle textStyle = TextStyle(fontSize: 12.sp, color: Colors.grey, overflow: TextOverflow.ellipsis);
+  TextStyle textStyle2 = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +61,18 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                       right: 0,
                       child: Transform.scale(
                         scale: 1 + mvModelW.scale,
-                        child: Image.asset("assets/images/launch_images/pet5.jpg", fit: BoxFit.cover),
+                        child: Image.network(
+                          context.watch<NavViewModel>().isLogin
+                              ? context.watch<NavViewModel>().userInfoModel?.data?.background ??
+                                  ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"
+                              : ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                          fit: BoxFit.cover,
+                          height: 400.w,
+                        ),
                       ),
                     ),
                     Positioned(
-                      bottom: 0,
+                      bottom: -1.w,
                       left: 0,
                       right: 0,
                       child: Container(
@@ -93,12 +94,16 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Column(),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("获赞", style: textStyle),
-                                Text("0", style: textStyle2),
-                              ],
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => context.read<MineViewModel>().likesOnTap(context),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("获赞", style: textStyle),
+                                  Text("0", style: textStyle2),
+                                ],
+                              ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -122,9 +127,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                       bottom: 6.w,
                       left: 15.w,
                       child: GestureDetector(
-                        onTap: () {
-                          RouteUtil.push(context, SignLoginView());
-                        },
+                        onTap: () => context.read<MineViewModel>().avatarOnTap(context),
                         child: Container(
                           width: 70.w,
                           height: 70.w,
@@ -132,17 +135,43 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                             borderRadius: BorderRadius.all(Radius.circular(50.w)),
                             border: Border.all(color: Colors.white, width: 3.w),
                           ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              "assets/images/launch_images/pet5.jpg",
-                              width: 70.w,
-                              height: 70.w,
-                              fit: BoxFit.cover,
+                          child: Hero(
+                            tag: "avatar",
+                            child: ClipOval(
+                              child: Image.network(
+                                !context.watch<NavViewModel>().isLogin
+                                    ? ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"
+                                    : context.watch<NavViewModel>().userInfoModel?.data?.avatar == "" ||
+                                            context.watch<NavViewModel>().userInfoModel?.data?.avatar == null
+                                        ? ApiConfig.baseUrl +
+                                            "/images/pet${context.read<StartUpViewModel>().random}.jpg"
+                                        : context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
+                                width: 70.w,
+                                height: 70.w,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    if (!context.watch<NavViewModel>().isLogin)
+                      Positioned(
+                        bottom: 6.w,
+                        left: 15.w,
+                        child: GestureDetector(
+                          onTap: () => context.read<MineViewModel>().avatarOnTap(context),
+                          child: ClipOval(
+                            child: Container(
+                              width: 70.w,
+                              height: 70.w,
+                              color: Colors.black.withOpacity(0.5),
+                              alignment: Alignment.center,
+                              child: const Text("登录", style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      )
                   ],
                 ),
               ),
@@ -152,7 +181,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
               pinned: true,
               delegate: SliverHeaderDelegate(
                 minHeight: kToolbarHeight,
-                maxHeight: kToolbarHeight,
+                maxHeight: kToolbarHeight + 10.w,
                 child: Container(
                   alignment: Alignment.centerLeft,
                   color: ThemeUtil.primaryColor(context),
@@ -167,32 +196,106 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: SizedBox(
-                                      width: 150.w,
-                                      child: Text("userName ", style: textStyle2),
-                                    ),
-                                  ),
-                                  Expanded(
                                     child: Container(
-                                      width: 250.w,
+                                      // color: Colors.red,
+                                      width: 220.w,
+                                      alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "signature signaturesignature signaturesignature signaturesignature se signaturesignature se signaturesignature signaturesignature signature  ",
-                                        style: textStyle,
+                                        !context.watch<NavViewModel>().isLogin
+                                            ? "--"
+                                            : context.watch<NavViewModel>().userInfoModel?.data?.userName ?? "--",
+                                        style: textStyle2,
                                       ),
                                     ),
                                   ),
+                                  if (context.watch<NavViewModel>().isLogin)
+                                    Expanded(
+                                      child: Container(
+                                        color: ThemeUtil.primaryColor(context),
+                                        alignment: Alignment.centerLeft,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (context.watch<NavViewModel>().userInfoModel?.data!.sex != "保密")
+                                              Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                                                margin: EdgeInsets.only(right: 5.w),
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  borderRadius: BorderRadius.circular(2.w),
+                                                  // color: ThemeUtil.primaryColor(context),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    context.watch<NavViewModel>().userInfoModel?.data!.sex == "男"
+                                                        ? const Icon(Icons.male_outlined, color: Colors.blue, size: 14)
+                                                        : const Icon(Icons.female, color: Colors.red, size: 14),
+                                                    Text(
+                                                      " ${context.watch<NavViewModel>().userInfoModel?.data!.sex} ",
+                                                      style: textStyle.copyWith(
+                                                        fontSize: 10.sp,
+                                                        color: ThemeUtil.reversePrimaryColor(context),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if (context.watch<NavViewModel>().userInfoModel?.data!.area != "未设置")
+                                              Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  borderRadius: BorderRadius.circular(2.w),
+                                                  // color: ThemeUtil.primaryColor(context),
+                                                ),
+                                                child: Text(
+                                                  context.watch<NavViewModel>().userInfoModel?.data?.area ?? "--",
+                                                  style: textStyle.copyWith(
+                                                    fontSize: 10.sp,
+                                                    color: ThemeUtil.reversePrimaryColor(context),
+                                                  ),
+                                                ),
+                                              ),
+                                            GestureDetector(
+                                              onTap: () => context.read<NavViewModel>().isLogin
+                                                  ? context.read<NavViewModel>().editData(context)
+                                                  : RouteUtil.push(context, const SignLoginView()),
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  borderRadius: BorderRadius.circular(2.w),
+                                                  // color: ThemeUtil.primaryColor(context),
+                                                ),
+                                                child: Text(
+                                                  "+标签",
+                                                  style: textStyle.copyWith(
+                                                    fontSize: 10.sp,
+                                                    color: ThemeUtil.reversePrimaryColor(context),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
-                              Spacer(),
-                              Container(
+                              const Spacer(),
+                              SizedBox(
                                 width: 80.w,
-                                height: 30.w,
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.grey.withOpacity(0.5),
                                     primary: ThemeUtil.reversePrimaryColor(context),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () => context.read<NavViewModel>().isLogin
+                                      ? context.read<NavViewModel>().editData(context)
+                                      : RouteUtil.push(context, const SignLoginView()),
                                   child: Text(
                                     "编辑资料",
                                     style: TextStyle(fontSize: 12.sp),
@@ -205,34 +308,75 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                 ),
               ),
             ),
-
             SliverToBoxAdapter(
               child: Container(
+                padding: horizontalPadding.add(EdgeInsets.symmetric(vertical: 5.w)),
                 color: ThemeUtil.primaryColor(context),
-                alignment: Alignment.centerLeft,
-                padding: horizontalPadding,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(2.w),
-                    // color: ThemeUtil.primaryColor(context),
-                  ),
-                  child: Text(
-                    " 地区 ",
-                    style: textStyle.copyWith(
-                      fontSize: 10.sp,
-                      color: ThemeUtil.reversePrimaryColor(context),
-                    ),
-                  ),
+                width: 250.w,
+                child: Text(
+                  context.watch<NavViewModel>().userInfoModel?.data?.signature ?? "--",
+                  maxLines: 6,
+                  style: textStyle,
                 ),
               ),
             ),
+            // if (context.watch<NavViewModel>().isLogin)
+            //   SliverToBoxAdapter(
+            //     child: Container(
+            //       color: ThemeUtil.primaryColor(context),
+            //       alignment: Alignment.centerLeft,
+            //       padding: horizontalPadding,
+            //       child: Row(
+            //         children: [
+            //           if (context.watch<NavViewModel>().userInfoModel?.data!.sex != "保密")
+            //             Container(
+            //               padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+            //               margin: EdgeInsets.only(right: 5.w),
+            //               clipBehavior: Clip.antiAlias,
+            //               decoration: BoxDecoration(
+            //                 color: Colors.grey.withOpacity(0.5),
+            //                 borderRadius: BorderRadius.circular(2.w),
+            //                 // color: ThemeUtil.primaryColor(context),
+            //               ),
+            //               child: Row(
+            //                 children: [
+            //                   context.watch<NavViewModel>().userInfoModel?.data!.sex == "男"
+            //                       ? const Icon(Icons.male_outlined, color: Colors.blue, size: 14)
+            //                       : const Icon(Icons.female, color: Colors.red, size: 14),
+            //                   Text(
+            //                     " ${context.watch<NavViewModel>().userInfoModel?.data!.sex} ",
+            //                     style: textStyle.copyWith(
+            //                       fontSize: 10.sp,
+            //                       color: ThemeUtil.reversePrimaryColor(context),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           if (context.watch<NavViewModel>().userInfoModel?.data!.area != "未设置")
+            //             Container(
+            //               padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+            //               clipBehavior: Clip.antiAlias,
+            //               decoration: BoxDecoration(
+            //                 color: Colors.grey.withOpacity(0.5),
+            //                 borderRadius: BorderRadius.circular(2.w),
+            //                 // color: ThemeUtil.primaryColor(context),
+            //               ),
+            //               child: Text(
+            //                 context.watch<NavViewModel>().userInfoModel?.data?.area ?? "--",
+            //                 style: textStyle.copyWith(
+            //                   fontSize: 10.sp,
+            //                   color: ThemeUtil.reversePrimaryColor(context),
+            //                 ),
+            //               ),
+            //             ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
             SliverToBoxAdapter(
               child: Container(color: ThemeUtil.primaryColor(context), height: 10),
             ),
-            // if ((MineViewModel.offsetY / MineViewModel.maxHeight) >= 1)
             SliverPersistentHeader(
               pinned: true,
               delegate: SliverHeaderDelegate(
@@ -246,14 +390,9 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                   child: TabBar(
                     controller: tC,
                     onTap: (index) {
-                      if (tC.index == 1) {
-                        tabViewHeight = 500;
-                      } else {
-                        tabViewHeight = 300;
-                      }
                       setState(() {});
                     },
-                    tabs: [
+                    tabs: const [
                       Text("作品"),
                       Text("收藏"),
                     ],

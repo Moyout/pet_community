@@ -111,7 +111,7 @@ class _LoginViewState extends State<LoginView> {
                   width: MediaQuery.of(context).size.width,
                   // margin: EdgeInsets.symmetric(vertical: 10.w),
                   child: TextButton(
-                    onPressed: () => context.read<LoginViewModel>().loginAccount(),
+                    onPressed: () => context.read<LoginViewModel>().loginAccount(context),
                     style: TextButton.styleFrom(backgroundColor: Colors.greenAccent),
                     child: Text(
                       "登录",

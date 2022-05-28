@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:vibration/vibration.dart';
 
@@ -9,6 +11,8 @@ class NavViewModel extends ChangeNotifier {
   PageController pageController = PageController();
   late ConnectivityResult netMode = ConnectivityResult.wifi; //网络
   StreamSubscription<ConnectivityResult>? subscription;
+  UserInfoModel? userInfoModel = UserInfoModel();
+  bool isLogin = false;
 
   ///页面控制器
   late AnimationController animationController;
@@ -26,6 +30,27 @@ class NavViewModel extends ChangeNotifier {
   ///初始化viewModel
   void initViewModel(TickerProvider tickerProvider) {
     initAnimation(tickerProvider);
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      getSpUserInfoModel();
+    });
+  }
+
+  void getSpUserInfoModel() {
+    // isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+    isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+    print("isLogin-------$isLogin");
+    if (isLogin) {
+      try {
+        Map userInfoMap = SpUtil.getObj("UserInfoModel");
+        userInfoModel = UserInfoModel.fromJson(userInfoMap);
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      userInfoModel = null;
+    }
+
+    notifyListeners();
   }
 
   ///初始化动画
@@ -93,5 +118,14 @@ class NavViewModel extends ChangeNotifier {
       netMode = result;
       notifyListeners();
     });
+  }
+
+  Future<void> editData(BuildContext context) async {
+    if (isLogin) {
+      String? token = SpUtil.getString(PublicKeys.token);
+      int? userId = SpUtil.getInt(PublicKeys.userId);
+      userInfoModel = await UserInfoRequest.getUserInfo(userId!, token!);
+      RouteUtil.push(context, EditDataView());
+    } else {}
   }
 }

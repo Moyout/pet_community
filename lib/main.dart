@@ -2,7 +2,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/startup_view.dart';
 
 void main() {
