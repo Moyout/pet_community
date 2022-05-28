@@ -1,4 +1,5 @@
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/community/community_viewmodel.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_viewmodel.dart';
@@ -20,6 +21,7 @@ List<SingleChildWidget> independentServices = [
   ChangeNotifierProvider(create: (_) => InitAppViewModel()),
   ChangeNotifierProvider(create: (_) => StartUpViewModel()),
   ChangeNotifierProvider(create: (_) => NavViewModel()),
+  ChangeNotifierProvider(create: (_) => CommunityViewModel()),
   ChangeNotifierProvider(create: (_) => MineViewModel()),
   ChangeNotifierProvider(create: (_) => SlideVerificationViewModel()),
   ChangeNotifierProvider(create: (_) => SignLoginViewModel()),

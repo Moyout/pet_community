@@ -3,6 +3,7 @@ import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/views/startup_view.dart';
+import 'package:pet_community/widget/refresh/refresh_widget.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null; //Provider 状态管理，同步数据
@@ -22,22 +23,24 @@ class MyApp extends StatelessWidget {
     ScreenUtil.initialize(); //初始化屏幕适配
     // AppConfig.initToast(context); //初始化SP
 
-    return MaterialApp(
-      title: 'Flutter',
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        S.delegate
-      ],
-      debugShowCheckedModeBanner: false,
-      navigatorKey: AppUtils.navigatorKey,
-      themeMode: context.watch<InitAppViewModel>().isDark ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeUtil.lightTheme(),
-      darkTheme: ThemeUtil.darkTheme(),
-      home: const StartUpView(),
+    return RefreshWidget(
+      child: MaterialApp(
+        title: 'Flutter',
+        builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          S.delegate
+        ],
+        debugShowCheckedModeBanner: false,
+        navigatorKey: AppUtils.navigatorKey,
+        themeMode: context.watch<InitAppViewModel>().isDark ? ThemeMode.dark : ThemeMode.light,
+        theme: ThemeUtil.lightTheme(),
+        darkTheme: ThemeUtil.darkTheme(),
+        home: const StartUpView(),
+      ),
     );
   }
 }

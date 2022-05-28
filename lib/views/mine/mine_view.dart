@@ -4,6 +4,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
+import 'package:pet_community/views/mine/works_tab.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
@@ -17,7 +18,7 @@ class MineView extends StatefulWidget {
 
 class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin {
   late TabController tC;
-  double tabViewHeight = 300;
+  double tabViewHeight = 300.w;
 
   @override
   void initState() {
@@ -176,7 +177,6 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                 ),
               ),
             ),
-
             SliverPersistentHeader(
               pinned: true,
               delegate: SliverHeaderDelegate(
@@ -244,6 +244,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                             if (context.watch<NavViewModel>().userInfoModel?.data!.area != "未设置")
                                               Container(
                                                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                                                margin: EdgeInsets.only(right: 5.w),
                                                 clipBehavior: Clip.antiAlias,
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.withOpacity(0.5),
@@ -296,10 +297,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                   onPressed: () => context.read<NavViewModel>().isLogin
                                       ? context.read<NavViewModel>().editData(context)
                                       : RouteUtil.push(context, const SignLoginView()),
-                                  child: Text(
-                                    "编辑资料",
-                                    style: TextStyle(fontSize: 12.sp),
-                                  ),
+                                  child: Text("编辑资料", style: TextStyle(fontSize: 12.sp)),
                                 ),
                               )
                             ],
@@ -320,63 +318,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                 ),
               ),
             ),
-            // if (context.watch<NavViewModel>().isLogin)
-            //   SliverToBoxAdapter(
-            //     child: Container(
-            //       color: ThemeUtil.primaryColor(context),
-            //       alignment: Alignment.centerLeft,
-            //       padding: horizontalPadding,
-            //       child: Row(
-            //         children: [
-            //           if (context.watch<NavViewModel>().userInfoModel?.data!.sex != "保密")
-            //             Container(
-            //               padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
-            //               margin: EdgeInsets.only(right: 5.w),
-            //               clipBehavior: Clip.antiAlias,
-            //               decoration: BoxDecoration(
-            //                 color: Colors.grey.withOpacity(0.5),
-            //                 borderRadius: BorderRadius.circular(2.w),
-            //                 // color: ThemeUtil.primaryColor(context),
-            //               ),
-            //               child: Row(
-            //                 children: [
-            //                   context.watch<NavViewModel>().userInfoModel?.data!.sex == "男"
-            //                       ? const Icon(Icons.male_outlined, color: Colors.blue, size: 14)
-            //                       : const Icon(Icons.female, color: Colors.red, size: 14),
-            //                   Text(
-            //                     " ${context.watch<NavViewModel>().userInfoModel?.data!.sex} ",
-            //                     style: textStyle.copyWith(
-            //                       fontSize: 10.sp,
-            //                       color: ThemeUtil.reversePrimaryColor(context),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           if (context.watch<NavViewModel>().userInfoModel?.data!.area != "未设置")
-            //             Container(
-            //               padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
-            //               clipBehavior: Clip.antiAlias,
-            //               decoration: BoxDecoration(
-            //                 color: Colors.grey.withOpacity(0.5),
-            //                 borderRadius: BorderRadius.circular(2.w),
-            //                 // color: ThemeUtil.primaryColor(context),
-            //               ),
-            //               child: Text(
-            //                 context.watch<NavViewModel>().userInfoModel?.data?.area ?? "--",
-            //                 style: textStyle.copyWith(
-            //                   fontSize: 10.sp,
-            //                   color: ThemeUtil.reversePrimaryColor(context),
-            //                 ),
-            //               ),
-            //             ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            SliverToBoxAdapter(
-              child: Container(color: ThemeUtil.primaryColor(context), height: 10),
-            ),
+            SliverToBoxAdapter(child: Container(color: ThemeUtil.primaryColor(context), height: 10)),
             SliverPersistentHeader(
               pinned: true,
               delegate: SliverHeaderDelegate(
@@ -389,45 +331,28 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                   ),
                   child: TabBar(
                     controller: tC,
-                    onTap: (index) {
-                      setState(() {});
-                    },
-                    tabs: const [
-                      Text("作品"),
-                      Text("收藏"),
-                    ],
+                    onTap: (index) {},
+                    tabs: const [Text("作品"), Text("收藏")],
                   ),
                 ),
               ),
             ),
-
-            SliverFillRemaining(
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return Container(
-                    color: ThemeUtil.primaryColor(context),
-                    height: tabViewHeight,
-                    child: TabBarView(
-                      controller: tC,
-                      children: [
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset("assets/images/backgrounds/noContent.png"),
-                              const Text("无内容"),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Text("tabBarView2"),
-                        ),
-                      ],
+            SliverToBoxAdapter(
+              child: Container(
+                color: ThemeUtil.primaryColor(context),
+                height: tabViewHeight,
+                child: TabBarView(
+                  controller: tC,
+                  children: [
+                    const WorksTab(),
+                    Container(
+                      child: Text("tabBarView2"),
                     ),
-                  );
-                },
+                  ],
+                ),
               ),
             ),
+            SliverToBoxAdapter(child: Container(height: 55.w, color: ThemeUtil.primaryColor(context))),
           ],
         ),
       ),

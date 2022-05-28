@@ -2,8 +2,8 @@
 ///author: DJT
 ///created on: 2021/8/2 5:18
 ///
-
 import 'dart:ui';
+
 import 'package:pet_community/util/tools.dart';
 
 class ThemeUtil {
@@ -18,12 +18,10 @@ class ThemeUtil {
       primaryColor: Colors.white,
       scaffoldBackgroundColor: Colors.grey[200],
       appBarTheme: AppBarTheme(
+        elevation: 0,
+        centerTitle: true,
         color: Colors.grey[200],
-        titleTextStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
-        ),
+        titleTextStyle: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
       textTheme: TextTheme(
         bodyText2: TextStyle(fontSize: 14.sp, color: Colors.black),
@@ -65,12 +63,10 @@ class ThemeUtil {
       brightness: Brightness.dark,
       dialogTheme: const DialogTheme(),
       appBarTheme: AppBarTheme(
+        elevation: 0,
+        centerTitle: true,
         color: Colors.black54,
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
-        ),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
       tabBarTheme: TabBarTheme(
         labelColor: Colors.white,

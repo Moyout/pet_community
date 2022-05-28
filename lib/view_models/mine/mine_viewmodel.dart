@@ -87,7 +87,7 @@ class MineViewModel extends ChangeNotifier {
                           style: TextStyle(fontSize: 14.sp),
                         ),
                       ),
-                      const Divider(height: 1),
+                      Divider(height: 0.1, thickness: 0.1, color: Colors.grey.withOpacity(0.5)),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: Container(

@@ -64,6 +64,7 @@ dependencies:
   image_cropper: ^2.0.3
   flutter_pickers: ^2.1.9
   photo_view: ^0.13.0
+  pull_to_refresh: ^2.0.0
   #bot_toast: ^4.0.1
 #  lottie: ^1.2.2 #????
 
