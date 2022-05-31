@@ -32,7 +32,8 @@ class LoginViewModel extends ChangeNotifier {
         int? userId = SpUtil.getInt(PublicKeys.userId);
         context.read<NavViewModel>().isLogin = true;
 
-        UserInfoModel userInfoModel = await UserInfoRequest.getUserInfo(userId!, token!);
+        // UserInfoModel userInfoModel =
+        await UserInfoRequest.getUserInfo(userId!, token!);
         // if (userInfoModel.code == 0) {
         //   context.read<NavViewModel>().userInfoModel = userInfoModel;
         // }

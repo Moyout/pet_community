@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/views/sign_login/sign_login_view.dart';
 
 class UserInfoRequest {
   static Future<UserInfoModel> getUserInfo(int userId, String token) async {
@@ -16,6 +18,12 @@ class UserInfoRequest {
       SpUtil.putObject("UserInfoModel", scModel);
       AppUtils.getContext().read<NavViewModel>().userInfoModel = scModel;
       AppUtils.getContext().read<NavViewModel>().notifyListeners();
+    } else if (scModel.code == 1007) {
+      SpUtil.remove("UserInfoModel");
+      ToastUtil.showBottomToast(scModel.msg!);
+      AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
+      AppUtils.getContext().read<NavViewModel>().notifyListeners();
+      RouteUtil.push(AppUtils.getContext(), const SignLoginView());
     }
 
     // print(userInfoModel.data);
@@ -43,9 +51,11 @@ class UserInfoModel {
     _msg = json['msg'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+
   int? _code;
   String? _msg;
   Data? _data;
+
   UserInfoModel copyWith({
     int? code,
     String? msg,
@@ -56,8 +66,11 @@ class UserInfoModel {
         msg: msg ?? _msg,
         data: data ?? _data,
       );
+
   int? get code => _code;
+
   String? get msg => _msg;
+
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -115,6 +128,7 @@ class Data {
     _signature = json['signature'];
     _area = json['area'];
   }
+
   int? _userId;
   String? _userName;
   String? _avatar;
@@ -124,6 +138,7 @@ class Data {
   String? _sex;
   String? _signature;
   String? _area;
+
   Data copyWith({
     int? userId,
     String? userName,
@@ -146,14 +161,23 @@ class Data {
         signature: signature ?? _signature,
         area: area ?? _area,
       );
+
   int? get userId => _userId;
+
   String? get userName => _userName;
+
   String? get avatar => _avatar;
+
   dynamic get phone => _phone;
+
   dynamic get background => _background;
+
   String? get email => _email;
+
   String? get sex => _sex;
+
   String? get signature => _signature;
+
   String? get area => _area;
 
   Map<String, dynamic> toJson() {
