@@ -22,7 +22,7 @@ class CommunityViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///加载更多
+  ///加载更多//
   Future<void> loadMore() async {
     page++;
     ArticleModel article = await ArticleRequest.getArticle(page: page).whenComplete(() => refreshC.loadComplete());
