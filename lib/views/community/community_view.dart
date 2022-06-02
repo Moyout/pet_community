@@ -28,8 +28,10 @@ class _CommunityViewState extends State<CommunityView> {
           children: [
             Expanded(
               child: SmartRefresher(
+                enablePullUp: true,
                 controller: context.watch<CommunityViewModel>().refreshC,
                 onRefresh: () => context.read<CommunityViewModel>().onRefresh(),
+                onLoading: () => context.read<CommunityViewModel>().loadMore(),
                 child: context.watch<CommunityViewModel>().articleModel.data == null
                     ? const SizedBox()
                     : ListView.builder(
