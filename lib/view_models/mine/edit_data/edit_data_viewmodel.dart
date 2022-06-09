@@ -30,8 +30,11 @@ class EditDataViewModel extends ChangeNotifier {
   ///选择图片
   Future<void> getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
       image = File(pickedFile.path);
+      debugPrint("image--------->${image?.path}");
+
       cropFile();
       Uint8List? data = await image?.readAsBytes();
       debugPrint("data----------${data!.length}");
@@ -80,6 +83,7 @@ class EditDataViewModel extends ChangeNotifier {
     Navigator.pop(context);
   }
 
+  ///设置地区
   Future<void> setUserArea(String area) async {
     int userId = SpUtil.getInt(PublicKeys.userId)!;
     String token = SpUtil.getString(PublicKeys.token)!;

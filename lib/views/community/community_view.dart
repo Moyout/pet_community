@@ -37,6 +37,9 @@ class _CommunityViewState extends State<CommunityView> {
                     : ListView.builder(
                         itemCount: context.watch<CommunityViewModel>().articleModel.data?.length,
                         itemBuilder: (BuildContext context, int index) {
+                          int d = (index % 10) + 1;
+                          // debugPrint("d--------->${d}");
+
                           return Container(
                             decoration: BoxDecoration(
                               color: Theme.of(context).appBarTheme.backgroundColor,
@@ -54,7 +57,7 @@ class _CommunityViewState extends State<CommunityView> {
                                       ClipOval(
                                         child: Image.network(
                                           context.watch<CommunityViewModel>().articleModel.data![index].avatar ??
-                                              "http://106.52.246.134:8081/images/avatar/avatar1.png",
+                                              ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
                                           width: 45.w,
                                           height: 45.w,
                                           fit: BoxFit.cover,
@@ -96,16 +99,6 @@ class _CommunityViewState extends State<CommunityView> {
                                   spacing: 5.w,
                                   runSpacing: 5.w,
                                   children: [
-                                    // Container(
-                                    //   alignment: Alignment.centerLeft,
-                                    //   width: (MediaQuery.of(context).size.width - 50.w) /
-                                    //       context.watch<CommunityViewModel>().articleModel.data![index].pictures!.length,
-                                    //   child: Image.network(
-                                    //     "http://106.52.246.134:8081/images/pet1.jpg",
-                                    //     height: 180.w,
-                                    //     fit: BoxFit.cover,
-                                    //   ),
-                                    // ),
                                     ...List.generate(
                                         context.watch<CommunityViewModel>().articleModel.data![index].pictures!.length,
                                         (index2) {
