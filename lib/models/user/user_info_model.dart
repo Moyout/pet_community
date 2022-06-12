@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 
 class UserInfoRequest {
@@ -21,9 +22,14 @@ class UserInfoRequest {
     } else if (scModel.code == 1007) {
       SpUtil.remove("UserInfoModel");
       ToastUtil.showBottomToast(scModel.msg!);
+      AppUtils.getContext().read<NavViewModel>().isLogin = false;
+      SpUtil.setBool(PublicKeys.isLogin, false);
       AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
       AppUtils.getContext().read<NavViewModel>().notifyListeners();
-      RouteUtil.push(AppUtils.getContext(), const SignLoginView());
+      Future.delayed(const Duration(milliseconds: 500), () {
+        AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
+        RouteUtil.pushReplacement(AppUtils.getContext(), const SignLoginView());
+      });
     }
 
     // print(userInfoModel.data);

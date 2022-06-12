@@ -38,7 +38,7 @@ class ThemeUtil {
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),
-          backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+          // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
           // foregroundColor: MaterialStateProperty.all(Colors.black87),
         ),
       ),
@@ -77,7 +77,7 @@ class ThemeUtil {
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),
-          backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+          // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
           // foregroundColor: MaterialStateProperty.all(Colors.black87),
         ),
       ),

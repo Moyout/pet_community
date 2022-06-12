@@ -32,8 +32,10 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
-          S.delegate
+          S.delegate,
         ],
+        locale: const Locale("zh"),
+        supportedLocales: S.delegate.supportedLocales,
         debugShowCheckedModeBanner: false,
         navigatorKey: AppUtils.navigatorKey,
         themeMode: context.watch<InitAppViewModel>().isDark ? ThemeMode.dark : ThemeMode.light,

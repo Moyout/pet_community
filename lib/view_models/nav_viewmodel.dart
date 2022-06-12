@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:vibration/vibration.dart';
@@ -13,6 +14,8 @@ class NavViewModel extends ChangeNotifier {
   StreamSubscription<ConnectivityResult>? subscription;
   UserInfoModel? userInfoModel = UserInfoModel();
   bool isLogin = false;
+  var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
+  // bool isDark = false; //夜间模式
 
   ///页面控制器
   late AnimationController animationController;
@@ -35,16 +38,17 @@ class NavViewModel extends ChangeNotifier {
     });
   }
 
+  ///初始化登录信息
   void getSpUserInfoModel() {
     // isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
     isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
-    print("isLogin-------$isLogin");
+    debugPrint("isLogin-------$isLogin");
     if (isLogin) {
       try {
         Map userInfoMap = SpUtil.getObj("UserInfoModel");
         userInfoModel = UserInfoModel.fromJson(userInfoMap);
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     } else {
       userInfoModel = null;
@@ -125,7 +129,30 @@ class NavViewModel extends ChangeNotifier {
       String? token = SpUtil.getString(PublicKeys.token);
       int? userId = SpUtil.getInt(PublicKeys.userId);
       userInfoModel = await UserInfoRequest.getUserInfo(userId!, token!);
-      RouteUtil.push(context, EditDataView());
+      RouteUtil.push(context, const EditDataView());
     } else {}
+  }
+
+  // void appInitSetting() {
+  //   isDark = SpUtil.getBool(PublicKeys.darkTheme) ?? false;
+  // }
+
+  ///退出登录
+  void loginOut(BuildContext context) {
+    SpUtil.remove("UserInfoModel");
+    SpUtil.remove(PublicKeys.token);
+    AppUtils.getContext().read<NavViewModel>().isLogin = false;
+    SpUtil.setBool(PublicKeys.isLogin, false);
+    AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
+    RouteUtil.pop(context);
+    notifyListeners();
+  }
+
+  ///设置日/夜间模式
+  Future<void> setThemeMode(bool isDark, BuildContext context) async {
+    context.read<InitAppViewModel>().isDark = isDark;
+    context.read<InitAppViewModel>().notifyListeners();
+    await SpUtil.setBool(PublicKeys.darkTheme, isDark);
+    notifyListeners();
   }
 }

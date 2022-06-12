@@ -45,10 +45,10 @@ class MineViewModel extends ChangeNotifier {
     bool isLogin = context.read<NavViewModel>().isLogin;
     if (isLogin) {
       debugPrint("isLogin--------->${isLogin}");
-      RouteUtil.push(context, const SetAvatarView());
+      RouteUtil.push(context, const SetAvatarView(), animation: RouteAnimation.popDown);
     } else {
       context.read<SignLoginViewModel>().initialPage = 1;
-      RouteUtil.push(context, const SignLoginView());
+      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
     }
   }
 
@@ -108,7 +108,7 @@ class MineViewModel extends ChangeNotifier {
       );
     } else {
       context.read<SignLoginViewModel>().initialPage = 1;
-      RouteUtil.push(context, const SignLoginView());
+      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
     }
   }
 }

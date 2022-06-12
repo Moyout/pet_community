@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 
@@ -23,6 +22,7 @@ class _StartUpViewState extends State<StartUpView> {
   @override
   Widget build(BuildContext context) {
     StartUpViewModel state = context.read<StartUpViewModel>();
+    context.read<InitAppViewModel>().appInitSetting();
 
     return Scaffold(
       body: SizedBox(

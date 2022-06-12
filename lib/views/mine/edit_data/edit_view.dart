@@ -1,6 +1,5 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_viewmodel.dart';
-import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class EditView extends StatefulWidget {
   final String title;
@@ -52,7 +51,7 @@ class _EditViewState extends State<EditView> {
                 controller: context.watch<EditViewModel>().textC,
                 style: const TextStyle(letterSpacing: 1.2),
                 maxLength: widget.title == "修改名字" ? 20 : null,
-                maxLines: widget.title == "修改名字" ? null : 10,
+                maxLines: widget.title == "修改名字" ? null : 20,
                 decoration: InputDecoration(
                   hintText: widget.title,
                   border: widget.title == "修改名字" ? null : InputBorder.none,

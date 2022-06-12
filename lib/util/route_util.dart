@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 
 ///路由
@@ -6,8 +7,12 @@ class RouteUtil {
     Navigator.push(context, CustomRoute(widget, routeAnimation: animation!));
   }
 
-  static void push2(BuildContext context, Widget widget) {
+  static void pushByMaterial(BuildContext context, Widget widget) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => widget));
+  }
+
+  static void pushByCupertino(BuildContext context, Widget widget) {
+    Navigator.push(context, CupertinoPageRoute(builder: (_) => widget));
   }
 
   static void pop<T extends Object>(BuildContext context, [T? result]) {
@@ -17,5 +22,10 @@ class RouteUtil {
   static void pushReplacement(BuildContext context, Widget widget,
       {RouteAnimation? animation = RouteAnimation.gradient}) {
     Navigator.pushReplacement(context, CustomRoute(widget, routeAnimation: animation!));
+  }
+
+  static void pushAndRemoveUntil(BuildContext context, Widget widget,
+      {RouteAnimation? animation = RouteAnimation.gradient}) {
+    Navigator.pushAndRemoveUntil(context, CustomRoute(widget, routeAnimation: animation!), (route) => false);
   }
 }

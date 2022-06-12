@@ -1,4 +1,5 @@
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/chat/chat_view.dart';
 import 'package:pet_community/views/community/community_view.dart';
@@ -22,7 +23,27 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: context.watch<NavViewModel>().scaffoldKey,
       resizeToAvoidBottomInset: false,
+      endDrawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              SwitchListTile(
+                title: const Text("日/夜间模式"),
+                value: context.watch<InitAppViewModel>().isDark,
+                onChanged: (bool value) => context.read<NavViewModel>().setThemeMode(value, context),
+              ),
+              const Spacer(),
+              if (context.read<NavViewModel>().isLogin)
+                TextButton(
+                  onPressed: () => context.read<NavViewModel>().loginOut(context),
+                  child: const Text("退出登录"),
+                ),
+            ],
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           PageView(

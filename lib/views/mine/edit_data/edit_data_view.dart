@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
-import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
