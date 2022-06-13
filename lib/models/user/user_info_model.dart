@@ -26,9 +26,9 @@ class UserInfoRequest {
       SpUtil.setBool(PublicKeys.isLogin, false);
       AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
       AppUtils.getContext().read<NavViewModel>().notifyListeners();
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
-        RouteUtil.pushReplacement(AppUtils.getContext(), const SignLoginView());
+        RouteUtil.push(AppUtils.getContext(), const SignLoginView(), animation: RouteAnimation.popDown);
       });
     }
 

@@ -6,6 +6,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
+import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:vibration/vibration.dart';
 
 class NavViewModel extends ChangeNotifier {
@@ -129,8 +130,10 @@ class NavViewModel extends ChangeNotifier {
       String? token = SpUtil.getString(PublicKeys.token);
       int? userId = SpUtil.getInt(PublicKeys.userId);
       userInfoModel = await UserInfoRequest.getUserInfo(userId!, token!);
-      RouteUtil.push(context, const EditDataView());
-    } else {}
+      if (userInfoModel?.code == 0) RouteUtil.push(context, const EditDataView());
+    } else {
+      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+    }
   }
 
   // void appInitSetting() {

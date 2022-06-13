@@ -44,7 +44,6 @@ class MineViewModel extends ChangeNotifier {
   void avatarOnTap(BuildContext context) {
     bool isLogin = context.read<NavViewModel>().isLogin;
     if (isLogin) {
-      debugPrint("isLogin--------->${isLogin}");
       RouteUtil.push(context, const SetAvatarView(), animation: RouteAnimation.popDown);
     } else {
       context.read<SignLoginViewModel>().initialPage = 1;

@@ -81,7 +81,7 @@ class _EditDataViewState extends State<EditDataView> {
                       left: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () => context.read<EditDataViewModel>().setAvatar(),
+                        onTap: () => context.read<EditDataViewModel>().setAvatar(context),
                         child: ClipOval(
                           child: Container(
                             color: Colors.black.withOpacity(0.4),

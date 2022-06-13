@@ -5,7 +5,6 @@ import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/works_tab.dart';
-import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
@@ -264,9 +263,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                                     ),
                                                   ),
                                                 GestureDetector(
-                                                  onTap: () => context.read<NavViewModel>().isLogin
-                                                      ? context.read<NavViewModel>().editData(context)
-                                                      : RouteUtil.push(context, const SignLoginView()),
+                                                  onTap: () => context.read<NavViewModel>().editData(context),
                                                   child: Container(
                                                     padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
                                                     clipBehavior: Clip.antiAlias,
@@ -298,10 +295,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                         backgroundColor: Colors.grey.withOpacity(0.5),
                                         primary: ThemeUtil.reversePrimaryColor(context),
                                       ),
-                                      onPressed: () => context.read<NavViewModel>().isLogin
-                                          ? context.read<NavViewModel>().editData(context)
-                                          : RouteUtil.push(context, const SignLoginView(),
-                                              animation: RouteAnimation.popDown),
+                                      onPressed: () => context.read<NavViewModel>().editData(context),
                                       child: Text("编辑资料", style: TextStyle(fontSize: 12.sp)),
                                     ),
                                   )

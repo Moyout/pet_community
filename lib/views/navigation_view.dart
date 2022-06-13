@@ -30,7 +30,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
           child: Column(
             children: [
               SwitchListTile(
-                title: const Text("日/夜间模式"),
+                title: const Text("夜间模式"),
                 value: context.watch<InitAppViewModel>().isDark,
                 onChanged: (bool value) => context.read<NavViewModel>().setThemeMode(value, context),
               ),
@@ -38,7 +38,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               if (context.read<NavViewModel>().isLogin)
                 TextButton(
                   onPressed: () => context.read<NavViewModel>().loginOut(context),
-                  child: const Text("退出登录"),
+                  child: const Text("退出登录", style: TextStyle(color: Colors.red)),
                 ),
             ],
           ),

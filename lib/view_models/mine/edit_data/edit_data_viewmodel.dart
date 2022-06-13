@@ -10,6 +10,7 @@ import 'package:pet_community/models/user/set_sex_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/views/sign_login/sign_login_view.dart';
 
 class EditDataViewModel extends ChangeNotifier {
   ImagePicker picker = ImagePicker();
@@ -23,19 +24,19 @@ class EditDataViewModel extends ChangeNotifier {
     uint8list = null;
   }
 
-  void setAvatar() {
-    getImage();
+  void setAvatar(BuildContext context) {
+    getImage(context);
   }
 
   ///选择图片
-  Future<void> getImage() async {
+  Future<void> getImage(BuildContext context) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       image = File(pickedFile.path);
       debugPrint("image--------->${image?.path}");
 
-      cropFile();
+      cropFile(context);
       Uint8List? data = await image?.readAsBytes();
       debugPrint("data----------${data!.length}");
       debugPrint("data----------${(data.length / 1024)}");
@@ -46,7 +47,7 @@ class EditDataViewModel extends ChangeNotifier {
   }
 
   ///图片裁剪
-  void cropFile() async {
+  void cropFile(BuildContext context) async {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: image!.path,
       aspectRatioPresets: [CropAspectRatioPreset.square],
@@ -64,12 +65,17 @@ class EditDataViewModel extends ChangeNotifier {
     String? token = SpUtil.getString(PublicKeys.token);
     int? userId = SpUtil.getInt(PublicKeys.userId);
     AvatarModel avatarModel = await UploadAvatarRequest.uploadAvatar(userId!, token!, croppedFile!.path);
-    String? filePath = avatarModel.data;
-
-    SetAvatarModel setAvatarModel = await SetAvatarRequest.setUserAvatar(userId, token, filePath!);
-    ToastUtil.showBottomToast(setAvatarModel.msg!);
-    UserInfoRequest.getUserInfo(userId, token);
-    notifyListeners();
+    debugPrint("avatarModel.code--------->${avatarModel.code}");
+    if (avatarModel.code == 0) {
+      String? filePath = avatarModel.data;
+      SetAvatarModel setAvatarModel = await SetAvatarRequest.setUserAvatar(userId, token, filePath!);
+      ToastUtil.showBottomToast(setAvatarModel.msg!);
+      UserInfoRequest.getUserInfo(userId, token);
+      notifyListeners();
+    } else {
+      ToastUtil.showBottomToast(avatarModel.msg!);
+      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+    }
   }
 
   ///设置性别

@@ -11,7 +11,9 @@ class SetAvatarView extends StatefulWidget {
   State<SetAvatarView> createState() => _SetAvatarViewState();
 }
 
-class _SetAvatarViewState extends State<SetAvatarView> {
+class _SetAvatarViewState extends State<SetAvatarView> with SingleTickerProviderStateMixin {
+  PhotoViewController pVC = PhotoViewController();
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +27,7 @@ class _SetAvatarViewState extends State<SetAvatarView> {
 
   @override
   void dispose() {
+    pVC.dispose();
     super.dispose();
   }
 
@@ -48,14 +51,13 @@ class _SetAvatarViewState extends State<SetAvatarView> {
               height: 400.w,
               width: 400.w,
               child: PhotoView(
+                controller: pVC,
                 minScale: 0.1,
                 imageProvider: NetworkImage(
-                  !context.watch<NavViewModel>().isLogin
+                  context.watch<NavViewModel>().userInfoModel?.data?.avatar == "" ||
+                          context.watch<NavViewModel>().userInfoModel?.data?.avatar == null
                       ? ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"
-                      : context.watch<NavViewModel>().userInfoModel?.data?.avatar == "" ||
-                              context.watch<NavViewModel>().userInfoModel?.data?.avatar == null
-                          ? ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"
-                          : context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
+                      : context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
                 ),
               ),
             ),
@@ -105,7 +107,7 @@ class _SetAvatarViewState extends State<SetAvatarView> {
                           primary: Colors.white,
                           textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () => context.read<EditDataViewModel>().setAvatar(),
+                        onPressed: () => context.read<EditDataViewModel>().setAvatar(context),
                       ),
                     ),
                   ),
