@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
+import 'package:pet_community/util/cache_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
+import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
@@ -16,6 +19,8 @@ class NavViewModel extends ChangeNotifier {
   UserInfoModel? userInfoModel = UserInfoModel();
   bool isLogin = false;
   var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
+  int cacheSize = 0;
+
   // bool isDark = false; //夜间模式
 
   ///页面控制器
@@ -32,8 +37,9 @@ class NavViewModel extends ChangeNotifier {
   ];
 
   ///初始化viewModel
-  void initViewModel(TickerProvider tickerProvider) {
+  Future<void> initViewModel(TickerProvider tickerProvider) async {
     initAnimation(tickerProvider);
+    getCacheSize();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       getSpUserInfoModel();
     });
@@ -125,6 +131,7 @@ class NavViewModel extends ChangeNotifier {
     });
   }
 
+  ///编辑资料
   Future<void> editData(BuildContext context) async {
     if (isLogin) {
       String? token = SpUtil.getString(PublicKeys.token);
@@ -147,6 +154,8 @@ class NavViewModel extends ChangeNotifier {
     AppUtils.getContext().read<NavViewModel>().isLogin = false;
     SpUtil.setBool(PublicKeys.isLogin, false);
     AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
+    AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
+    AppUtils.getContext().read<MineViewModel>().notifyListeners();
     RouteUtil.pop(context);
     notifyListeners();
   }
@@ -156,6 +165,19 @@ class NavViewModel extends ChangeNotifier {
     context.read<InitAppViewModel>().isDark = isDark;
     context.read<InitAppViewModel>().notifyListeners();
     await SpUtil.setBool(PublicKeys.darkTheme, isDark);
+    notifyListeners();
+  }
+
+  ///获取缓存
+  Future<void> getCacheSize() async {
+    cacheSize = await CacheUtil.total();
+    notifyListeners();
+  }
+
+  ///清理缓存
+  Future<void> clearCache() async {
+    CacheUtil.clear();
+    cacheSize = await CacheUtil.total();
     notifyListeners();
   }
 }

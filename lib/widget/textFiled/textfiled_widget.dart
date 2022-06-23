@@ -14,6 +14,7 @@ class TextFileWidget extends StatelessWidget {
   final Function? onSubmitted;
   final Function? onChanged;
   final Function? onTap;
+  final Iterable<String>? autofillHints;
 
   const TextFileWidget({
     Key? key,
@@ -29,6 +30,7 @@ class TextFileWidget extends StatelessWidget {
     this.controller,
     this.readOnly = false,
     this.isHide = false,
+    this.autofillHints,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class TextFileWidget extends StatelessWidget {
       inputFormatters: inputFormatter,
       obscureText: isHide,
       maxLength: maxLength,
+      autofillHints: autofillHints,
       decoration: InputDecoration(
         prefixIcon: leftIcon,
         suffixIcon: rightIcon,

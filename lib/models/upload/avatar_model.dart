@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:pet_community/common/http/base_request.dart';
-import 'package:pet_community/config/api_config.dart';
-import 'package:pet_community/util/tools.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:pet_community/util/tools.dart';
 
 class UploadAvatarRequest {
   static Future<AvatarModel> uploadAvatar(int userId, String token, String filePath) async {

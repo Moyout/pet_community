@@ -59,20 +59,13 @@ class _EditDataViewState extends State<EditDataView> {
                     Hero(
                       tag: "avatar",
                       child: ClipOval(
-                        child: context.watch<EditDataViewModel>().uint8list == null
-                            ? Image.network(
-                                context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
-                                    ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                                width: 100.w,
-                                height: 100.w,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.memory(
-                                context.watch<EditDataViewModel>().uint8list!,
-                                width: 100.w,
-                                height: 100.w,
-                                fit: BoxFit.cover,
-                              ),
+                        child: Image.network(
+                          context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
+                              ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                          width: 100.w,
+                          height: 100.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Positioned(

@@ -1,80 +1,66 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_community/models/upload/avatar_model.dart';
+import 'package:pet_community/models/upload/background_model.dart';
 import 'package:pet_community/models/user/set_area_model.dart';
 import 'package:pet_community/models/user/set_avatar_model.dart';
+import 'package:pet_community/models/user/set_background_model.dart';
 import 'package:pet_community/models/user/set_sex_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/views/sign_login/sign_login_view.dart';
+import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 
 class EditDataViewModel extends ChangeNotifier {
   ImagePicker picker = ImagePicker();
-  Uint8List? uint8list;
-  File? image;
-  CroppedFile? croppedFile;
 
-  void initViewModel() {
-    image = null;
-    croppedFile = null;
-    uint8list = null;
-  }
+  void initViewModel() {}
 
-  void setAvatar(BuildContext context) {
-    getImage(context);
-  }
-
-  ///选择图片
-  Future<void> getImage(BuildContext context) async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
+  ///设置头像
+  Future<void> setAvatar(BuildContext context) async {
+    File? pickedFile = await getImage(context);
     if (pickedFile != null) {
-      image = File(pickedFile.path);
-      debugPrint("image--------->${image?.path}");
-
-      cropFile(context);
-      Uint8List? data = await image?.readAsBytes();
-      debugPrint("data----------${data!.length}");
-      debugPrint("data----------${(data.length / 1024)}");
-    } else {
-      debugPrint('No image selected.');
+      File? croppedFile = await cropFile(context, pickedFile.path);
+      if (croppedFile != null) {
+        String? token = SpUtil.getString(PublicKeys.token);
+        int? userId = SpUtil.getInt(PublicKeys.userId);
+        AvatarModel avatarModel = await UploadAvatarRequest.uploadAvatar(userId!, token!, croppedFile.path);
+        if (avatarModel.code == 0) {
+          String? filePath = avatarModel.data;
+          SetAvatarModel setAvatarModel = await SetAvatarRequest.setUserAvatar(userId, token, filePath!);
+          ToastUtil.showBottomToast(setAvatarModel.msg!);
+          UserInfoRequest.getUserInfo(userId, token);
+          notifyListeners();
+        } else if (avatarModel.code == 1007) {
+          LoginViewModel.tokenExpire(msg: avatarModel.msg);
+        }
+      }
     }
-    notifyListeners();
   }
 
-  ///图片裁剪
-  void cropFile(BuildContext context) async {
-    croppedFile = await ImageCropper().cropImage(
-      sourcePath: image!.path,
-      aspectRatioPresets: [CropAspectRatioPreset.square],
-      aspectRatio: const CropAspectRatio(ratioY: 275, ratioX: 200),
-      // compressQuality: 100,
-      maxHeight: 4000,
-      maxWidth: 2500,
-      compressQuality: 90,
-    );
-
-    uint8list = (await croppedFile?.readAsBytes())!;
-    debugPrint("uint8list?.length----------->${uint8list?.length}");
-    debugPrint("uint8list?.length----------->${(uint8list?.length)! / 1024}");
-
-    String? token = SpUtil.getString(PublicKeys.token);
-    int? userId = SpUtil.getInt(PublicKeys.userId);
-    AvatarModel avatarModel = await UploadAvatarRequest.uploadAvatar(userId!, token!, croppedFile!.path);
-    debugPrint("avatarModel.code--------->${avatarModel.code}");
-    if (avatarModel.code == 0) {
-      String? filePath = avatarModel.data;
-      SetAvatarModel setAvatarModel = await SetAvatarRequest.setUserAvatar(userId, token, filePath!);
-      ToastUtil.showBottomToast(setAvatarModel.msg!);
-      UserInfoRequest.getUserInfo(userId, token);
-      notifyListeners();
-    } else {
-      ToastUtil.showBottomToast(avatarModel.msg!);
-      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+  ///设置背景
+  Future<void> setBackground(BuildContext context) async {
+    File? pickedFile = await getImage(context);
+    if (pickedFile != null) {
+      File? croppedFile = await cropFile(context, pickedFile.path, maxHeight: 2000, ratioY: 3, ratioX: 5);
+      if (croppedFile != null) {
+        String? token = SpUtil.getString(PublicKeys.token);
+        int? userId = SpUtil.getInt(PublicKeys.userId);
+        BackgroundModel backgroundModel =
+            await UploadBackgroundRequest.uploadBackground(userId!, token!, croppedFile.path);
+        if (backgroundModel.code == 0) {
+          String? filePath = backgroundModel.data;
+          SetBackgroundModel setBackgroundModel =
+              await SetBackgroundRequest.setUserBackground(userId, token, filePath!);
+          ToastUtil.showBottomToast(setBackgroundModel.msg!);
+          UserInfoRequest.getUserInfo(userId, token);
+          notifyListeners();
+        } else if (backgroundModel.code == 1007) {
+          LoginViewModel.tokenExpire(msg: backgroundModel.msg);
+        }
+      }
     }
   }
 
@@ -97,5 +83,35 @@ class EditDataViewModel extends ChangeNotifier {
     ToastUtil.showBottomToast(setAreaModel.msg!);
     await UserInfoRequest.getUserInfo(userId, token);
     notifyListeners();
+  }
+
+  ///选择图片
+  Future<File?> getImage(BuildContext context) async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    File? image;
+    if (pickedFile != null) image = File(pickedFile.path);
+    return image;
+  }
+
+  ///图片裁剪
+  Future<File?> cropFile(
+    BuildContext context,
+    String sourcePath, {
+    int maxHeight = 4000,
+    int maxWidth = 2500,
+    double ratioY = 275,
+    double ratioX = 200,
+  }) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: sourcePath,
+      aspectRatioPresets: [CropAspectRatioPreset.square],
+      aspectRatio: CropAspectRatio(ratioY: ratioY, ratioX: ratioX),
+      maxHeight: maxHeight,
+      maxWidth: maxWidth,
+      compressQuality: 90,
+    );
+    File? file;
+    if (croppedFile != null) file = File(croppedFile.path);
+    return file;
   }
 }

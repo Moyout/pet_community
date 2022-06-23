@@ -7,10 +7,12 @@ class CommunityViewModel extends ChangeNotifier {
   RefreshController refreshC = RefreshController();
   ArticleModel articleModel = ArticleModel();
   int page = 1;
+  bool enablePullUp = true;
 
   ///初始化
   Future<void> initViewModel() async {
     page = 1;
+    enablePullUp = true;
     articleModel = await ArticleRequest.getArticle(page: page);
     notifyListeners();
   }
@@ -18,6 +20,7 @@ class CommunityViewModel extends ChangeNotifier {
   ///刷新
   Future<void> onRefresh() async {
     page = 1;
+    enablePullUp = true;
     articleModel = await ArticleRequest.getArticle(page: 1).whenComplete(() => refreshC.refreshToIdle());
     notifyListeners();
   }
@@ -32,6 +35,7 @@ class CommunityViewModel extends ChangeNotifier {
       });
       debugPrint("articleModel--------->${articleModel.data}");
     } else {
+      enablePullUp = false;
       ToastUtil.showBottomToast("已加载全部");
     }
     notifyListeners();

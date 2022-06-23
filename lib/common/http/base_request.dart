@@ -24,55 +24,59 @@ class BaseRequest {
   ///拦截器
   void interceptor() {
     // if (dio?.interceptors.length == 0) {
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-        debugPrint("\n================== 请求数据 ==========================");
-        debugPrint("url = ${options.uri.toString()}");
-        debugPrint("headers = ${options.headers}");
-        debugPrint("params = ${options.data}");
-        handler.next(options);
-        if (isShowLoading) {
-          ToastUtil.showLoadingToast(seconds: 10, clickClose: false);
-        }
-        // Toast.showLoadingToast(seconds: 10, clickClose: false);
-        // cancelToken.cancel();
-      },
-      onResponse: (Response response, ResponseInterceptorHandler handler) {
-        debugPrint("\n================== 响应数据 ==========================");
-        debugPrint("code = ${response.statusCode}");
-        debugPrint("data = ${response.data}");
-        debugPrint("\n");
-        handler.next(response);
-        ToastUtil.closeLoading();
-      },
-      onError: (DioError e, ErrorInterceptorHandler handler) async {
-        debugPrint("\n================== 错误响应数据 ======================");
-        debugPrint("type = ${e.type}");
-        debugPrint("message = ${e.message}");
-        debugPrint("\n");
-        handler.next(e);
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+          debugPrint("\n================== 请求数据 ==========================");
+          debugPrint("url = ${options.uri.toString()}");
+          debugPrint("headers = ${options.headers}");
+          debugPrint("params = ${options.data}");
+          handler.next(options);
+          if (isShowLoading) {
+            ToastUtil.showCustomLoadingToast(seconds: 10, clickClose: false);
+          }
+          // Toast.showLoadingToast(seconds: 10, clickClose: false);
+          // cancelToken.cancel();
+        },
+        onResponse: (Response response, ResponseInterceptorHandler handler) async {
+          debugPrint("\n================== 响应数据 ==========================");
+          debugPrint("code = ${response.statusCode}");
+          debugPrint("data = ${response.data}");
+          debugPrint("\n");
+          await Future.delayed(const Duration(milliseconds: 600), () {
+            ToastUtil.closeLoading();
+          });
+          handler.next(response);
+        },
+        onError: (DioError e, ErrorInterceptorHandler handler) async {
+          debugPrint("\n================== 错误响应数据 ======================");
+          debugPrint("type = ${e.type}");
+          debugPrint("message = ${e.message}");
+          debugPrint("\n");
+          handler.next(e);
 
-        ToastUtil.showBottomToast(e.message);
+          ToastUtil.showBottomToast(e.message);
 
-        /*error统一处理*/
-        if (e.type == DioErrorType.connectTimeout) {
-          // Toast.showBotToast("连接超时");
-        } else if (e.type == DioErrorType.sendTimeout) {
-          // Toast.showBotToast("请求超时");
-        } else if (e.type == DioErrorType.receiveTimeout) {
-          // Toast.showBotToast("响应超时");
-        } else if (e.type == DioErrorType.response) {
-          // Toast.showBotToast("出现异常");
-        } else if (e.type == DioErrorType.cancel) {
-          // Toast.showBotToast("请求取消");
-        } else {
-          // Toast.showBotToast("请求错误");
-        }
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          // Toast.closeLoading();
-        });
-      },
-    ));
+          /*error统一处理*/
+          if (e.type == DioErrorType.connectTimeout) {
+            // Toast.showBotToast("连接超时");
+          } else if (e.type == DioErrorType.sendTimeout) {
+            // Toast.showBotToast("请求超时");
+          } else if (e.type == DioErrorType.receiveTimeout) {
+            // Toast.showBotToast("响应超时");
+          } else if (e.type == DioErrorType.response) {
+            // Toast.showBotToast("出现异常");
+          } else if (e.type == DioErrorType.cancel) {
+            // Toast.showBotToast("请求取消");
+          } else {
+            // Toast.showBotToast("请求错误");
+          }
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            // Toast.closeLoading();
+          });
+        },
+      ),
+    );
     // }
   }
 
@@ -116,6 +120,7 @@ class BaseRequest {
     // if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
     //   Toast.showBotToast("请检查网络");
     // } else {
+
     response = await dio.post(url, queryParameters: parameters, options: options, data: data).catchError((e) {
       debugPrint("=======post错误========================>$e");
     });

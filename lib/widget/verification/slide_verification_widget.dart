@@ -60,10 +60,13 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       child: Container(
                         height: 30.w,
                         width: 30.w,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(context.watch<SlideVerificationViewModel>().opacity),
-                          borderRadius: BorderRadius.circular(2.w),
-                        ),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.black.withOpacity(context.watch<SlideVerificationViewModel>().opacity),
+                        //   borderRadius: BorderRadius.circular(2.w),
+                        // ),
+                        child: context.watch<SlideVerificationViewModel>().opacity == 0
+                            ? null
+                            : const Icon(Icons.extension, size: 45, color: Colors.black),
                       ),
                     ),
                   ),
@@ -77,10 +80,13 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       child: Container(
                         height: 30.w,
                         width: 30.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(context.watch<SlideVerificationViewModel>().opacity),
-                          borderRadius: BorderRadius.circular(2.w),
-                        ),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.white.withOpacity(context.watch<SlideVerificationViewModel>().opacity),
+                        //   borderRadius: BorderRadius.circular(2.w),
+                        // ),
+                        child: context.watch<SlideVerificationViewModel>().opacity == 0
+                            ? null
+                            : const Icon(Icons.extension, size: 45, color: Colors.white),
                       ),
                     ),
                   ),

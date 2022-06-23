@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
-import 'package:pet_community/views/sign_login/sign_login_view.dart';
+import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 
 class UserInfoRequest {
   static Future<UserInfoModel> getUserInfo(int userId, String token) async {
@@ -20,19 +18,21 @@ class UserInfoRequest {
       AppUtils.getContext().read<NavViewModel>().userInfoModel = scModel;
       AppUtils.getContext().read<NavViewModel>().notifyListeners();
     } else if (scModel.code == 1007) {
-      SpUtil.remove("UserInfoModel");
-      ToastUtil.showBottomToast(scModel.msg!);
-      AppUtils.getContext().read<NavViewModel>().isLogin = false;
-      SpUtil.setBool(PublicKeys.isLogin, false);
-      AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
-      AppUtils.getContext().read<NavViewModel>().notifyListeners();
-      Future.delayed(const Duration(milliseconds: 300), () {
-        AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
-        RouteUtil.push(AppUtils.getContext(), const SignLoginView(), animation: RouteAnimation.popDown);
-      });
+      LoginViewModel.tokenExpire(msg: scModel.msg);
     }
 
     // print(userInfoModel.data);
+    return scModel;
+  }
+
+  static Future<UserInfoModel> getOtherUserInfo(int userId) async {
+    String url = ApiConfig.baseUrl + "/user/getOtherUserInfo";
+    var response = await BaseRequest().toPost(
+      url,
+      parameters: {"userId": userId},
+      isShowLoading: true,
+    );
+    UserInfoModel scModel = UserInfoModel.fromJson(response);
     return scModel;
   }
 }

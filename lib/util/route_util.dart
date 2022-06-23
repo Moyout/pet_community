@@ -3,8 +3,13 @@ import 'package:pet_community/util/tools.dart';
 
 ///路由
 class RouteUtil {
-  static void push(BuildContext context, Widget widget, {RouteAnimation? animation = RouteAnimation.gradient}) {
-    Navigator.push(context, CustomRoute(widget, routeAnimation: animation!));
+  static void push(
+    BuildContext context,
+    Widget widget, {
+    RouteAnimation? animation = RouteAnimation.gradient,
+    int millisecond = 500,
+  }) {
+    Navigator.push(context, CustomRoute(widget, routeAnimation: animation!, millisecond: millisecond));
   }
 
   static void pushByMaterial(BuildContext context, Widget widget) {

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_viewmodel.dart';
-import 'package:pet_community/views/community/community_detail_view.dart';
+import 'package:pet_community/views/community/detail/community_detail_view.dart';
 import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,7 +31,7 @@ class _CommunityViewState extends State<CommunityView> {
           children: [
             Expanded(
               child: SmartRefresher(
-                enablePullUp: true,
+                enablePullUp: context.watch<CommunityViewModel>().enablePullUp,
                 controller: context.watch<CommunityViewModel>().refreshC,
                 onRefresh: () => context.read<CommunityViewModel>().onRefresh(),
                 onLoading: () => context.read<CommunityViewModel>().loadMore(),
@@ -44,9 +46,14 @@ class _CommunityViewState extends State<CommunityView> {
                               RouteUtil.pushByCupertino(
                                 context,
                                 CommunityDetailView(
-                                  title: context.read<CommunityViewModel>().articleModel.data![index].title!,
-                                  content: context.read<CommunityViewModel>().articleModel.data![index].content!,
-                                  index: index,
+                                  title: context.read<CommunityViewModel>().articleModel.data![index].title ?? "",
+                                  content: context.read<CommunityViewModel>().articleModel.data![index].content ?? "",
+                                  avatar: context.read<CommunityViewModel>().articleModel.data?[index].avatar ??
+                                      ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                                  articleId: context.read<CommunityViewModel>().articleModel.data![index].articleId!,
+                                  pictures: context.read<CommunityViewModel>().articleModel.data![index].pictures!,
+                                  userId: context.read<CommunityViewModel>().articleModel.data![index].userId!,
+                                  isShowUserInfoView: true,
                                 ),
                               );
                             },
@@ -60,17 +67,20 @@ class _CommunityViewState extends State<CommunityView> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     height: 50.w,
                                     child: Row(
                                       children: [
                                         ClipOval(
-                                          child: Image.network(
-                                            context.watch<CommunityViewModel>().articleModel.data![index].avatar ??
-                                                ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                                          child: CachedNetworkImage(
                                             width: 45.w,
                                             height: 45.w,
                                             fit: BoxFit.cover,
+                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                const CupertinoActivityIndicator(),
+                                            imageUrl:
+                                                context.watch<CommunityViewModel>().articleModel.data?[index].avatar ??
+                                                    ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
                                           ),
                                         ),
                                         SizedBox(width: 10.w),
@@ -136,12 +146,14 @@ class _CommunityViewState extends State<CommunityView> {
                                           child: Container(
                                             clipBehavior: Clip.antiAlias,
                                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                                            child: Image.network(
-                                              context
+                                            child: CachedNetworkImage(
+                                              imageUrl: context
                                                   .watch<CommunityViewModel>()
                                                   .articleModel
                                                   .data![index]
                                                   .pictures![index2],
+                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                  const CupertinoActivityIndicator(),
                                               height: height,
                                               width: width,
                                               fit: BoxFit.cover,

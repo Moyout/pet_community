@@ -26,23 +26,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
       key: context.watch<NavViewModel>().scaffoldKey,
       resizeToAvoidBottomInset: false,
       endDrawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            children: [
-              SwitchListTile(
-                title: const Text("夜间模式"),
-                value: context.watch<InitAppViewModel>().isDark,
-                onChanged: (bool value) => context.read<NavViewModel>().setThemeMode(value, context),
-              ),
-              const Spacer(),
-              if (context.read<NavViewModel>().isLogin)
-                TextButton(
-                  onPressed: () => context.read<NavViewModel>().loginOut(context),
-                  child: const Text("退出登录", style: TextStyle(color: Colors.red)),
-                ),
-            ],
-          ),
-        ),
+        child: buildDrawer(context),
       ),
       body: Stack(
         children: [
@@ -117,6 +101,39 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDrawer(BuildContext context) {
+    context.read<NavViewModel>().getCacheSize();
+    return SafeArea(
+      child: Column(
+        children: [
+          SwitchListTile(
+            title: const Text("夜间模式"),
+            value: context.watch<InitAppViewModel>().isDark,
+            onChanged: (bool value) => context.read<NavViewModel>().setThemeMode(value, context),
+          ),
+          ListTile(
+            onTap: context.watch<NavViewModel>().cacheSize > 0 ? () => context.read<NavViewModel>().clearCache() : null,
+            title: Text(
+              "清理缓存(${(context.watch<NavViewModel>().cacheSize / 1024 / 1024).roundToDouble()}M)",
+              style: TextStyle(color: context.watch<NavViewModel>().cacheSize > 0 ? Colors.blue : Colors.grey),
+            ),
+          ),
+          const Spacer(),
+          if (context.read<NavViewModel>().isLogin)
+            Container(
+              width: double.infinity,
+              color: ThemeUtil.reversePrimaryColor(context),
+              height: 35.w,
+              child: TextButton(
+                onPressed: () => context.read<NavViewModel>().loginOut(context),
+                child: const Text("退出登录", style: TextStyle(color: Colors.red)),
+              ),
+            ),
         ],
       ),
     );

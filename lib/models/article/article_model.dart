@@ -6,7 +6,7 @@ class ArticleRequest {
     var response = await BaseRequest().toGet(
       url,
       parameters: {"page": page, "count": count},
-      isShowLoading: false,
+      isShowLoading: true,
     );
     ArticleModel scModel = ArticleModel.fromJson(response);
 
