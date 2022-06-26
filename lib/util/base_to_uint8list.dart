@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
-
 class BaseToUint8List {
   Uint8List base64ToImage(String base) {
     String captchaCode = base.split(',')[1]; //'iVBORw0KGgoAAAANSUhEUg.....' 正确格式

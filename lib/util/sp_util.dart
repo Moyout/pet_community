@@ -1,8 +1,4 @@
-///
-///author: DJT
-///created on: 2021/8/2 5:05
-///
-import 'package:pet_community/models/user/user_info_model.dart';
+
 import 'package:pet_community/util/tools.dart';
 import 'dart:convert';
 

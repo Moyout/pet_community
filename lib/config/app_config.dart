@@ -1,5 +1,4 @@
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/widget/toast/ftoast_widget.dart';
 
 class AppConfig {
   /// 初始化持久化数据

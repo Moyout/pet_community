@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_detail_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/community/detail/comment_list_view.dart';
 import 'package:pet_community/views/community/user/user_info_view.dart';
-import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pet_community/widget/dialog/cupertino_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -133,7 +131,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                                                   },
                                                                 );
                                                               }).then((value) {
-                                                            debugPrint("value--------->${value}");
+                                                            debugPrint("value--------->$value");
                                                           });
                                                         }
                                                       },
@@ -166,6 +164,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                       child: Column(
                         children: [
                           Container(
+                            alignment: Alignment.centerLeft,
                             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
                             child: SelectableText(
                               widget.content,

@@ -1,4 +1,3 @@
-import 'package:pet_community/config/api_config.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/verification_model/slide_verification_viewmodel.dart';
 
@@ -57,7 +56,7 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       height: 30.w,
                       width: 30.w,
                       alignment: Alignment.center,
-                      child: Container(
+                      child: SizedBox(
                         height: 30.w,
                         width: 30.w,
                         // decoration: BoxDecoration(
@@ -77,7 +76,7 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       height: 30.w,
                       width: 30.w,
                       alignment: Alignment.center,
-                      child: Container(
+                      child: SizedBox(
                         height: 30.w,
                         width: 30.w,
                         // decoration: BoxDecoration(

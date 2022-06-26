@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/util/tools.dart';

@@ -1,12 +1,16 @@
 import 'package:pet_community/util/tools.dart';
 
 class VideoRequest {
-  static Future<VideoModel> getVideo({int page = 1, int count = 5}) async {
+  static Future<VideoModel> getVideo({
+    int page = 1,
+    int count = 10,
+    bool isShowLoading = true,
+  }) async {
     String url = ApiConfig.baseUrl + "/video/queryPetVideo";
     var response = await BaseRequest().toGet(
       url,
       parameters: {"page": page, "count": count},
-      isShowLoading: true,
+      isShowLoading: isShowLoading,
     );
     VideoModel scModel = VideoModel.fromJson(response);
 
@@ -40,9 +44,11 @@ class VideoModel {
       });
     }
   }
+
   int? _code;
   String? _msg;
   List<Data>? _data;
+
   VideoModel copyWith({
     int? code,
     String? msg,
@@ -53,8 +59,11 @@ class VideoModel {
         msg: msg ?? _msg,
         data: data ?? _data,
       );
+
   int? get code => _code;
+
   String? get msg => _msg;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -116,6 +125,7 @@ class Data {
     _publicationTime = json['publicationTime'];
     _userId = json['userId'];
   }
+
   int? _videoId;
   String? _userName;
   String? _avatar;
@@ -126,6 +136,7 @@ class Data {
   int? _likes;
   String? _publicationTime;
   int? _userId;
+
   Data copyWith({
     int? videoId,
     String? userName,
@@ -150,15 +161,25 @@ class Data {
         publicationTime: publicationTime ?? _publicationTime,
         userId: userId ?? _userId,
       );
+
   int? get videoId => _videoId;
+
   String? get userName => _userName;
+
   String? get avatar => _avatar;
+
   String? get cover => _cover;
+
   String? get title => _title;
+
   String? get content => _content;
+
   String? get video => _video;
+
   int? get likes => _likes;
+
   String? get publicationTime => _publicationTime;
+
   int? get userId => _userId;
 
   Map<String, dynamic> toJson() {

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_detail_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';

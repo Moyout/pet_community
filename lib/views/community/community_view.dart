@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_viewmodel.dart';
 import 'package:pet_community/views/community/detail/community_detail_view.dart';
-import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CommunityView extends StatefulWidget {
@@ -13,7 +11,7 @@ class CommunityView extends StatefulWidget {
   State<CommunityView> createState() => _CommunityViewState();
 }
 
-class _CommunityViewState extends State<CommunityView> {
+class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     context.read<CommunityViewModel>().initViewModel();
@@ -22,6 +20,7 @@ class _CommunityViewState extends State<CommunityView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: ThemeUtil.brightness(context) == Brightness.light ? Colors.grey.withOpacity(0.1) : null,
       appBar: AppBar(title: const Text("发现")),
@@ -33,10 +32,15 @@ class _CommunityViewState extends State<CommunityView> {
               child: SmartRefresher(
                 enablePullUp: context.watch<CommunityViewModel>().enablePullUp,
                 controller: context.watch<CommunityViewModel>().refreshC,
-                onRefresh: () => context.read<CommunityViewModel>().onRefresh(),
+                onRefresh: () => context.read<CommunityViewModel>().onRefresh(false),
                 onLoading: () => context.read<CommunityViewModel>().loadMore(),
                 child: context.watch<CommunityViewModel>().articleModel.data == null
-                    ? const SizedBox()
+                    ? Center(
+                        child: TextButton(
+                          onPressed: () => context.read<CommunityViewModel>().onRefresh(true),
+                          child: const Text("重新加载"),
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: context.watch<CommunityViewModel>().articleModel.data?.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -195,4 +199,7 @@ class _CommunityViewState extends State<CommunityView> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => false;
 }

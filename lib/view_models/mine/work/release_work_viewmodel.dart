@@ -71,14 +71,14 @@ class ReleaseWorkViewModel extends ChangeNotifier {
         break;
       }
     }
-    debugPrint("picUrl--------->${picUrl}");
+    debugPrint("picUrl--------->$picUrl");
     return isSuccess;
   }
 
   ///发布
   Future<bool> releaseArticle(BuildContext context) async {
     debugPrint("picUrl.isNotEmpty--------->${picUrl.isNotEmpty}");
-    debugPrint("picUrl.picUrl.length>0--------->${picUrl.length > 0}");
+    debugPrint("picUrl.picUrl.length>0--------->${picUrl.isNotEmpty}");
     bool isRelease = false;
     bool isSuccess = await uploadPic();
     if (isSuccess) {

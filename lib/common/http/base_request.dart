@@ -55,24 +55,27 @@ class BaseRequest {
           debugPrint("\n");
           handler.next(e);
 
-          ToastUtil.showBottomToast(e.message);
-
           /*error统一处理*/
           if (e.type == DioErrorType.connectTimeout) {
             // Toast.showBotToast("连接超时");
+            ToastUtil.showBottomToast("连接超时");
           } else if (e.type == DioErrorType.sendTimeout) {
             // Toast.showBotToast("请求超时");
+            ToastUtil.showBottomToast("请求超时");
           } else if (e.type == DioErrorType.receiveTimeout) {
             // Toast.showBotToast("响应超时");
+            ToastUtil.showBottomToast("响应超时");
           } else if (e.type == DioErrorType.response) {
             // Toast.showBotToast("出现异常");
+            ToastUtil.showBottomToast("出现异常");
           } else if (e.type == DioErrorType.cancel) {
             // Toast.showBotToast("请求取消");
+            ToastUtil.showBottomToast("请求取消");
           } else {
             // Toast.showBotToast("请求错误");
           }
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            // Toast.closeLoading();
+          Future.delayed(const Duration(milliseconds: 2000), () {
+            ToastUtil.closeLoading();
           });
         },
       ),

@@ -5,7 +5,6 @@ import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dar
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_view.dart';
-import 'package:pet_community/widget/common/unripple.dart';
 
 class EditDataView extends StatefulWidget {
   const EditDataView({Key? key}) : super(key: key);

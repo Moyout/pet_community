@@ -1,12 +1,16 @@
 import 'package:pet_community/util/tools.dart';
 
 class ArticleRequest {
-  static Future<ArticleModel> getArticle({int page = 1, int count = 5}) async {
+  static Future<ArticleModel> getArticle({
+    int page = 1,
+    int count = 5,
+    bool isShowLoading = true,
+  }) async {
     String url = ApiConfig.baseUrl + "/article/queryArticle";
     var response = await BaseRequest().toGet(
       url,
       parameters: {"page": page, "count": count},
-      isShowLoading: true,
+      isShowLoading: isShowLoading,
     );
     ArticleModel scModel = ArticleModel.fromJson(response);
 
@@ -40,9 +44,11 @@ class ArticleModel {
       });
     }
   }
+
   int? _code;
   String? _msg;
   List<Data>? _data;
+
   ArticleModel copyWith({
     int? code,
     String? msg,
@@ -53,8 +59,11 @@ class ArticleModel {
         msg: msg ?? _msg,
         data: data ?? _data,
       );
+
   int? get code => _code;
+
   String? get msg => _msg;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -116,6 +125,7 @@ class Data {
     _publicationTime = json['publicationTime'];
     _userId = json['userId'];
   }
+
   int? _articleId;
   String? _author;
   dynamic _avatar;
@@ -126,6 +136,7 @@ class Data {
   int? _likes;
   String? _publicationTime;
   int? _userId;
+
   Data copyWith({
     int? articleId,
     String? author,
@@ -150,15 +161,25 @@ class Data {
         publicationTime: publicationTime ?? _publicationTime,
         userId: userId ?? _userId,
       );
+
   int? get articleId => _articleId;
+
   String? get author => _author;
+
   dynamic get avatar => _avatar;
+
   String? get title => _title;
+
   String? get content => _content;
+
   String? get cover => _cover;
+
   List<String>? get pictures => _pictures;
+
   int? get likes => _likes;
+
   String? get publicationTime => _publicationTime;
+
   int? get userId => _userId;
 
   Map<String, dynamic> toJson() {

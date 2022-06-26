@@ -11,7 +11,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
-        android:label="pet_community"
+        android:label="宠物社区"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

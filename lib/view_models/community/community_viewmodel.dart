@@ -18,10 +18,13 @@ class CommunityViewModel extends ChangeNotifier {
   }
 
   ///刷新
-  Future<void> onRefresh() async {
+  Future<void> onRefresh(bool isShowLoading) async {
     page = 1;
     enablePullUp = true;
-    articleModel = await ArticleRequest.getArticle(page: 1).whenComplete(() => refreshC.refreshToIdle());
+    articleModel = await ArticleRequest.getArticle(
+      page: 1,
+      isShowLoading: isShowLoading,
+    ).whenComplete(() => refreshC.refreshToIdle());
     notifyListeners();
   }
 

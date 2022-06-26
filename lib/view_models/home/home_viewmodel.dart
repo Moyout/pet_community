@@ -12,15 +12,32 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> initViewModel() async {
     page = 1;
     enablePullUp = true;
-    videoModel = await VideoRequest.getVideo(page: page, count: 10);
+    videoModel = await VideoRequest.getVideo(page: page);
     notifyListeners();
   }
 
   ///刷新
-  Future<void> onRefresh() async {
+  Future<void> onRefresh(bool isShowLoading) async {
     page = 1;
     enablePullUp = true;
-    videoModel = await VideoRequest.getVideo(page: page, count: 10).whenComplete(() => refreshC.refreshToIdle());
+    videoModel = await VideoRequest.getVideo(page: page, isShowLoading: isShowLoading)
+        .whenComplete(() => refreshC.refreshToIdle());
+    notifyListeners();
+  }
+
+  ///加载更多//
+  Future<void> loadMore() async {
+    page++;
+    VideoModel model = await VideoRequest.getVideo(page: page).whenComplete(() => refreshC.loadComplete());
+    if (model.data!.isNotEmpty) {
+      model.data?.forEach((Data item) {
+        videoModel.data?.add(item);
+      });
+      debugPrint("model--------->${model.data}");
+    } else {
+      enablePullUp = false;
+      ToastUtil.showBottomToast("已加载全部");
+    }
     notifyListeners();
   }
 }

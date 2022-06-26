@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pet_community/enums/drag_state_enum.dart';
 import 'package:pet_community/util/tools.dart';
@@ -7,7 +6,6 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
-import 'package:pet_community/widget/common/unripple.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
 class UserInfoView extends StatefulWidget {

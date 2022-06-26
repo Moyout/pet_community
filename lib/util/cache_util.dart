@@ -6,7 +6,6 @@ class CacheUtil {
   /// 获取缓存大小
   static Future<int> total() async {
     Directory tempDir = await getTemporaryDirectory();
-    if (tempDir == null) return 0;
     int total = await _reduce(tempDir);
     return total;
   }
@@ -38,7 +37,6 @@ class CacheUtil {
   /// 清除缓存
   static Future<void> clear() async {
     Directory tempDir = await getTemporaryDirectory();
-    if (tempDir == null) return;
     await _delete(tempDir);
   }
 
