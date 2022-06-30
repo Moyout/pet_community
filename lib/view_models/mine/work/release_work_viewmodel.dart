@@ -5,6 +5,7 @@ import 'package:pet_community/models/article/release_article_model.dart';
 import 'package:pet_community/models/upload/article_model.dart';
 import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
@@ -115,12 +116,14 @@ class ReleaseWorkViewModel extends ChangeNotifier {
             Navigator.pop(context);
             bool isRelease = await releaseArticle(context);
             if (isRelease) Navigator.pop(context);
+            context.read<MineViewModel>().getUserWorks(context);
           },
         ),
       );
     } else {
       bool isRelease = await releaseArticle(context);
       if (isRelease) Navigator.pop(context);
+      context.read<MineViewModel>().getUserWorks(context);
     }
   }
 }
