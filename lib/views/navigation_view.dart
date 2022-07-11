@@ -1,10 +1,11 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/views/chat/chat_view.dart';
 import 'package:pet_community/views/community/community_view.dart';
 import 'package:pet_community/views/home/home_view.dart';
 import 'package:pet_community/views/mine/mine_view.dart';
+
+import 'message/message_view.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             children: const [
               HomeView(),
               CommunityView(),
-              ChatView(),
+              MessageView(),
               MineView(),
             ],
           ),
@@ -90,7 +91,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                                   : ThemeUtil.brightness(context) == Brightness.dark
                                       ? ThemeUtil.lightTheme().primaryColor
                                       : ThemeUtil.darkTheme().primaryColor,
-                              height: 0.8.w,
+                              // height: 0.8.w,
                             ),
                           ),
                         ],

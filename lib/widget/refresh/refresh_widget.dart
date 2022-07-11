@@ -89,12 +89,12 @@ class RefreshWidget extends StatelessWidget {
         },
       ),
 
-      headerTriggerDistance: 80.0.w,
+      headerTriggerDistance: 40.0.w,
       // header trigger refresh trigger distance
-      footerTriggerDistance: 80.0,
+      footerTriggerDistance: 40.0.w,
       springDescription: const SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
       // custom spring back animate,the props meaning see the flutter api
-      maxOverScrollExtent: 50,
+      maxOverScrollExtent: 50.w,
       //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
       maxUnderScrollExtent: 50,
       // Maximum dragging range at the bottom

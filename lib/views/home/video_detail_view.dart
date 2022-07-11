@@ -144,8 +144,8 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                               onTap: () => showComment(),
                               child: Container(
                                 margin: EdgeInsets.only(top: 20.w),
-                                child:
-                                    const Icon(IconData(0xe7d9, fontFamily: "AliIcon"), color: Colors.white, size: 35),
+                                child: Icon(const IconData(0xe7d9, fontFamily: "AliIcon"),
+                                    color: Colors.white, size: 35.w),
                               ),
                             ),
                             GestureDetector(
@@ -154,8 +154,8 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(top: 20.w),
-                                child:
-                                    const Icon(IconData(0xe60f, fontFamily: "AliIcon"), color: Colors.white, size: 35),
+                                child: Icon(const IconData(0xe60f, fontFamily: "AliIcon"),
+                                    color: Colors.white, size: 35.w),
                               ),
                             ),
                           ],
