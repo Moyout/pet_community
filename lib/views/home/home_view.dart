@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(title: const Text("首页")),
+      appBar: AppBar(title: Text("首页", style: TextStyle(fontSize: 15.sp))),
       body: Container(
         padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 50.w),
         child: ScrollConfiguration(

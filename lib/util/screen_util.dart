@@ -1,7 +1,3 @@
-///
-///author: DJT
-///created on: 2021/8/2 5:12
-///
 import 'dart:ui';
 
 import 'package:pet_community/util/tools.dart';
@@ -89,14 +85,9 @@ class ScreenUtil {
 
   static num setHeight(num size) => size * scaleHeight;
 
-  static double setSp(num size, {bool allowFontScalingSelf = false}) =>
-      allowFontScalingSelf == false
-          ? (_allowFontScaling!
-              ? (size * scaleText)
-              : ((size * scaleText) / _textScaleFactor!))
-          : (allowFontScalingSelf
-              ? (size * scaleText)
-              : ((size * scaleText) / _textScaleFactor!));
+  static double setSp(num size, {bool allowFontScalingSelf = false}) => allowFontScalingSelf == false
+      ? (_allowFontScaling! ? (size * scaleText) : ((size * scaleText) / _textScaleFactor!))
+      : (allowFontScalingSelf ? (size * scaleText) : ((size * scaleText) / _textScaleFactor!));
 
   static num setWidthPercent(num percent) => (_screenWidth! * percent) / 100;
 

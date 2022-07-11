@@ -11,7 +11,8 @@ class CommunityView extends StatefulWidget {
   State<CommunityView> createState() => _CommunityViewState();
 }
 
-class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveClientMixin {
+class _CommunityViewState extends State<CommunityView>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     context.read<CommunityViewModel>().initViewModel();
@@ -22,8 +23,10 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: ThemeUtil.brightness(context) == Brightness.light ? Colors.grey.withOpacity(0.1) : null,
-      appBar: AppBar(title: const Text("发现")),
+      backgroundColor: ThemeUtil.brightness(context) == Brightness.light
+          ? Colors.grey.withOpacity(0.1)
+          : null,
+      appBar: AppBar(title: Text("发现", style: TextStyle(fontSize: 15.sp))),
       body: ScrollConfiguration(
         behavior: OverScrollBehavior(),
         child: Column(
@@ -32,17 +35,25 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
               child: SmartRefresher(
                 enablePullUp: context.watch<CommunityViewModel>().enablePullUp,
                 controller: context.watch<CommunityViewModel>().refreshC,
-                onRefresh: () => context.read<CommunityViewModel>().onRefresh(false),
+                onRefresh: () =>
+                    context.read<CommunityViewModel>().onRefresh(false),
                 onLoading: () => context.read<CommunityViewModel>().loadMore(),
-                child: context.watch<CommunityViewModel>().articleModel.data == null
+                child: context.watch<CommunityViewModel>().articleModel.data ==
+                        null
                     ? Center(
                         child: TextButton(
-                          onPressed: () => context.read<CommunityViewModel>().onRefresh(true),
+                          onPressed: () => context
+                              .read<CommunityViewModel>()
+                              .onRefresh(true),
                           child: const Text("重新加载"),
                         ),
                       )
                     : ListView.builder(
-                        itemCount: context.watch<CommunityViewModel>().articleModel.data?.length,
+                        itemCount: context
+                            .watch<CommunityViewModel>()
+                            .articleModel
+                            .data
+                            ?.length,
                         itemBuilder: (BuildContext context, int index) {
                           int d = (index % 10) + 1;
                           return GestureDetector(
@@ -50,24 +61,55 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                               RouteUtil.pushByCupertino(
                                 context,
                                 CommunityDetailView(
-                                  title: context.read<CommunityViewModel>().articleModel.data![index].title ?? "",
-                                  content: context.read<CommunityViewModel>().articleModel.data![index].content ?? "",
-                                  avatar: context.read<CommunityViewModel>().articleModel.data?[index].avatar ??
-                                      ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
-                                  articleId: context.read<CommunityViewModel>().articleModel.data![index].articleId!,
-                                  pictures: context.read<CommunityViewModel>().articleModel.data![index].pictures!,
-                                  userId: context.read<CommunityViewModel>().articleModel.data![index].userId!,
+                                  title: context
+                                          .read<CommunityViewModel>()
+                                          .articleModel
+                                          .data![index]
+                                          .title ??
+                                      "",
+                                  content: context
+                                          .read<CommunityViewModel>()
+                                          .articleModel
+                                          .data![index]
+                                          .content ??
+                                      "",
+                                  avatar: context
+                                          .read<CommunityViewModel>()
+                                          .articleModel
+                                          .data?[index]
+                                          .avatar ??
+                                      ApiConfig.baseUrl +
+                                          "/images/avatar/avatar$d.png",
+                                  articleId: context
+                                      .read<CommunityViewModel>()
+                                      .articleModel
+                                      .data![index]
+                                      .articleId!,
+                                  pictures: context
+                                      .read<CommunityViewModel>()
+                                      .articleModel
+                                      .data![index]
+                                      .pictures!,
+                                  userId: context
+                                      .read<CommunityViewModel>()
+                                      .articleModel
+                                      .data![index]
+                                      .userId!,
                                   isShowUserInfoView: true,
                                 ),
                               );
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Theme.of(context).appBarTheme.backgroundColor,
+                                color: Theme.of(context)
+                                    .appBarTheme
+                                    .backgroundColor,
                                 borderRadius: BorderRadius.circular(6.w),
                               ),
-                              padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
-                              margin: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.w, horizontal: 10.w),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.w, horizontal: 10.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -80,23 +122,35 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                             width: 45.w,
                                             height: 45.w,
                                             fit: BoxFit.cover,
-                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            progressIndicatorBuilder: (context,
+                                                    url, downloadProgress) =>
                                                 const CupertinoActivityIndicator(),
-                                            imageUrl:
-                                                context.watch<CommunityViewModel>().articleModel.data?[index].avatar ??
-                                                    ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                                            imageUrl: context
+                                                    .watch<CommunityViewModel>()
+                                                    .articleModel
+                                                    .data?[index]
+                                                    .avatar ??
+                                                ApiConfig.baseUrl +
+                                                    "/images/avatar/avatar$d.png",
                                           ),
                                         ),
                                         SizedBox(width: 10.w),
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             SizedBox(
                                               width: 250.w,
                                               child: Text(
-                                                context.watch<CommunityViewModel>().articleModel.data![index].author!,
-                                                style: TextStyle(fontSize: 15.sp),
+                                                context
+                                                    .watch<CommunityViewModel>()
+                                                    .articleModel
+                                                    .data![index]
+                                                    .author!,
+                                                style:
+                                                    TextStyle(fontSize: 15.sp),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                               ),
@@ -107,7 +161,9 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                                   .articleModel
                                                   .data![index]
                                                   .publicationTime!,
-                                              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.grey),
                                             ),
                                           ],
                                         ),
@@ -115,9 +171,14 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10.w),
-                                    child: Text(
-                                        context.watch<CommunityViewModel>().articleModel.data![index].content ?? ""),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.w),
+                                    child: Text(context
+                                            .watch<CommunityViewModel>()
+                                            .articleModel
+                                            .data![index]
+                                            .content ??
+                                        ""),
                                   ),
                                   Wrap(
                                     spacing: 5.w,
@@ -137,26 +198,44 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                             .pictures!
                                             .length;
                                         int divideBy = 1;
-                                        count >= 3 ? divideBy = 3 : divideBy = count;
+                                        count >= 3
+                                            ? divideBy = 3
+                                            : divideBy = count;
                                         double? width, height, padding;
-                                        count == 4 ? padding = 10.w : padding = 0;
+                                        count == 4
+                                            ? padding = 10.w
+                                            : padding = 0;
                                         count <= 2
                                             ? width = 180.w
-                                            : width = (MediaQuery.of(context).size.width - 50.w) / divideBy;
-                                        count >= 3 ? height = 110.w : height = 180.w;
+                                            : width = (MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    50.w) /
+                                                divideBy;
+                                        count >= 3
+                                            ? height = 110.w
+                                            : height = 180.w;
                                         return Container(
                                           alignment: Alignment.centerLeft,
-                                          width: (MediaQuery.of(context).size.width - 50.w + padding) / divideBy,
+                                          width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  50.w +
+                                                  padding) /
+                                              divideBy,
                                           child: Container(
                                             clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.w)),
                                             child: CachedNetworkImage(
                                               imageUrl: context
                                                   .watch<CommunityViewModel>()
                                                   .articleModel
                                                   .data![index]
                                                   .pictures![index2],
-                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                              progressIndicatorBuilder: (context,
+                                                      url, downloadProgress) =>
                                                   const CupertinoActivityIndicator(),
                                               height: height,
                                               width: width,
@@ -169,12 +248,20 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                   ),
                                   SizedBox(height: 15.w),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(children: const [Icon(Icons.share_outlined, size: 18), Text("分享")]),
-                                      Row(children: const [Icon(Icons.comment_outlined, size: 18), Text("0")]),
+                                      Row(children: const [
+                                        Icon(Icons.share_outlined, size: 18),
+                                        Text("分享")
+                                      ]),
+                                      Row(children: const [
+                                        Icon(Icons.comment_outlined, size: 18),
+                                        Text("0")
+                                      ]),
                                       Row(children: [
-                                        const Icon(Icons.favorite_border, size: 18),
+                                        const Icon(Icons.favorite_border,
+                                            size: 18),
                                         Text(context
                                             .watch<CommunityViewModel>()
                                             .articleModel
