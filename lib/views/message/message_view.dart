@@ -9,6 +9,7 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends State<MessageView> {
+  ScrollController sc = ScrollController();
   @override
   void initState() {
     // var channel = IOWebSocketChannel.connect("ws://localhost:8081/chat");
@@ -24,12 +25,13 @@ class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            RouteUtil.pushByCupertino(context, ChatView());
-          },
-          child: Text("无信息"),
+      body: GestureDetector(
+        onTap: () {
+          RouteUtil.pushByCupertino(context, ChatView());
+        },
+        child: Scrollbar(
+          controller: sc,
+          child: Center(child: Text("无信息")),
         ),
       ),
     );
