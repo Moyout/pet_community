@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
 import 'package:pet_community/views/message/chat/emoji_view.dart';
@@ -25,11 +24,7 @@ class _ChatViewState extends State<ChatView> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => RouteUtil.pop(context),
-          child: Icon(
-            Icons.arrow_back_ios_new,
-            color: ThemeUtil.reversePrimaryColor(context),
-            size: 20.w,
-          ),
+          child: Icon(Icons.arrow_back_ios_new, color: ThemeUtil.reversePrimaryColor(context), size: 20.w),
         ),
         title: Text("xxx", style: TextStyle(fontSize: 18.sp)),
       ),
@@ -100,7 +95,7 @@ class _ChatViewState extends State<ChatView> {
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 10.w),
                     margin: EdgeInsets.symmetric(vertical: 5.w),
-                    child: Scrollbar(
+                    child: RawScrollbar(
                       controller: sc,
                       isAlwaysShown: true,
                       child: TextField(
@@ -115,7 +110,7 @@ class _ChatViewState extends State<ChatView> {
                         maxLines: 5,
                         minLines: 1,
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 16.sp),
+                        style: TextStyle(fontSize: 16.sp, letterSpacing: 1),
                         decoration: InputDecoration(
                           isCollapsed: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 6.w),
@@ -159,7 +154,7 @@ class _ChatViewState extends State<ChatView> {
                   ),
                   height: 30.w,
                   width: context.watch<ChatViewModel>().textC.text.isNotEmpty ? 50.w : 0,
-                  child: const Text("取消"),
+                  child: const Text("发送"),
                 ),
               ],
             ),
