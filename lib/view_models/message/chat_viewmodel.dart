@@ -6,6 +6,7 @@ class ChatViewModel extends ChangeNotifier {
   int numLines = 1; //文字行数
   bool currentEmoji = false; //表情库
   FocusNode focusNode = FocusNode();
+  ScrollController sc = ScrollController(); //滚动控制器
 
   ///初始化viewModel
   void initViewModel(BuildContext context) {

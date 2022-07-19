@@ -1,5 +1,5 @@
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/views/message/chat_view.dart';
+import 'package:pet_community/views/message/chat/chat_view.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({Key? key}) : super(key: key);

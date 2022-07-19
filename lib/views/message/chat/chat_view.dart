@@ -10,8 +10,6 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
-  ScrollController sc = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +34,7 @@ class _ChatViewState extends State<ChatView> {
           children: [
             Expanded(
               child: Scrollbar(
-                // controller: sc,
+                controller: context.watch<ChatViewModel>().sc,
                 child: ScrollConfiguration(
                   behavior: OverScrollBehavior(),
                   child: SingleChildScrollView(
@@ -96,9 +94,10 @@ class _ChatViewState extends State<ChatView> {
                     padding: EdgeInsets.symmetric(horizontal: 10.w),
                     margin: EdgeInsets.symmetric(vertical: 5.w),
                     child: RawScrollbar(
-                      controller: sc,
+                      controller: context.watch<ChatViewModel>().sc,
                       isAlwaysShown: true,
                       child: TextField(
+                        scrollController: context.watch<ChatViewModel>().sc,
                         focusNode: context.watch<ChatViewModel>().focusNode,
                         onTap: () {
                           context.read<ChatViewModel>().currentEmoji = false;
@@ -159,56 +158,6 @@ class _ChatViewState extends State<ChatView> {
               ],
             ),
             if (MediaQuery.of(context).viewInsets.bottom == 0) const EmojiView(),
-            // ScrollConfiguration(
-            //   behavior: OverScrollBehavior(),
-            //   child: SingleChildScrollView(
-            //     child: GestureDetector(
-            //       onTap: () {},
-            //       child: AnimatedContainer(
-            //         duration: const Duration(milliseconds: 200),
-            //         decoration: const BoxDecoration(color: Colors.white),
-            //         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5.w),
-            //         height: context.watch<ChatViewModel>().currentEmoji && MediaQuery.of(context).viewInsets.bottom == 0
-            //             ? 250.w
-            //             : 0,
-            //         child: DefaultTextStyle(
-            //           style: TextStyle(fontSize: 23.sp),
-            //           child: Stack(
-            //             children: [
-            //               GridView.builder(
-            //                 itemCount: emojiList.length,
-            //                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //                   crossAxisCount: 8,
-            //                   crossAxisSpacing: 5.w,
-            //                   mainAxisSpacing: 5.w,
-            //                   childAspectRatio: 1,
-            //                 ),
-            //                 itemBuilder: (context, index) {
-            //                   return GestureDetector(
-            //                     onTap: () => context.read<ChatViewModel>().insertEmoji(context, emojiList[index]),
-            //                     child: Container(
-            //                       alignment: Alignment.center,
-            //                       // color: Colors.primaries[index.clamp(0, 17)],
-            //                       child: Text(emojiList[index]),
-            //                     ),
-            //                   );
-            //                 },
-            //               ),
-            //               Positioned(
-            //                 bottom: 10.w,
-            //                 right: 10.w,
-            //                 child: GestureDetector(
-            //                   onTap: () => context.read<ChatViewModel>().backspace(),
-            //                   child: Icon(Icons.backspace, size: 23.w, color: ThemeUtil.reversePrimaryColor(context)),
-            //                 ),
-            //               )
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -37,6 +37,7 @@ class _VideoWidgetState extends State<VideoWidget> {
         child: Stack(
           children: [
             GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 if (context.read<VideoViewModel>().playerController?.value.isPlaying ?? false) {
                   context.read<VideoViewModel>().playerController?.pause();

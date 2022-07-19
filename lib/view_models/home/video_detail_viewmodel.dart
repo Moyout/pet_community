@@ -2,21 +2,21 @@ import 'package:pet_community/util/tools.dart';
 
 class VideoDetailViewModel extends ChangeNotifier {
   TextEditingController textC = TextEditingController();
-  bool isShow = true;
-  int numLines = 1;
+  ScrollController sc = ScrollController();
+  bool showComment = false;
 
   void initViewModel() {
-    isShow = true;
     textC.clear();
+    showComment = false;
   }
 
-  void setHideOrShow() {
-    isShow = !isShow;
+  void openComment() {
+    showComment = true;
     notifyListeners();
   }
 
-  void getTextLines() {
-    numLines = '\n'.allMatches(textC.text).length + 1;
+  void closeComment() {
+    showComment = false;
     notifyListeners();
   }
 }
