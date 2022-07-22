@@ -143,17 +143,24 @@ class _ChatViewState extends State<ChatView> {
                 AnimatedContainer(
                   alignment: Alignment.center,
                   duration: const Duration(milliseconds: 100),
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(4.w),
-                  ),
                   margin: EdgeInsets.only(
                     right: context.watch<ChatViewModel>().textC.text.isNotEmpty ? 5.w : 0,
                     bottom: 5.w,
                   ),
                   height: 30.w,
                   width: context.watch<ChatViewModel>().textC.text.isNotEmpty ? 50.w : 0,
-                  child: const Text("发送"),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      backgroundColor: Colors.deepPurple,
+                      padding: const EdgeInsets.all(0),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      "发送",
+                      style: TextStyle(color: ThemeUtil.primaryColor(context), fontSize: 10.sp),
+                    ),
+                  ),
                 ),
               ],
             ),

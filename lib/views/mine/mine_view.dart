@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pet_community/enums/drag_state_enum.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';

@@ -124,7 +124,7 @@ class _EmojiViewState extends State<EmojiView> {
                       onTap: () => context.read<ChatViewModel>().backspace(),
                       child: Icon(Icons.backspace, size: 23.w, color: ThemeUtil.reversePrimaryColor(context)),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -3,13 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:pet_community/util/tools.dart';
 
 class ScrollUtils {
-  final PageController pageController;
-  final TabController tabController;
+  // final PageController pageController;
+  // final TabController tabController;
   Drag? _drag;
 
-  ScrollUtils(this.pageController, this.tabController);
-
-  bool handleNotification(ScrollNotification notification) {
+  bool handleNotification(ScrollNotification notification, PageController pageController, TabController tabController) {
     if (notification is UserScrollNotification) {
       if (notification.direction == ScrollDirection.reverse && tabController.index == tabController.length - 1) {
         _drag = pageController.position.drag(DragStartDetails(), () {
