@@ -91,7 +91,7 @@ class _EmojiViewState extends State<EmojiView> {
           onTap: () {},
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            decoration: const BoxDecoration(color: Colors.white),
+            color: ThemeUtil.scaffoldColor(context),
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5.w),
             height: context.watch<ChatViewModel>().currentEmoji ? 250.w : 0,
             child: DefaultTextStyle(
