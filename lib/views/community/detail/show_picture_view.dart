@@ -1,6 +1,5 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_detail_viewmodel.dart';
-import 'package:pet_community/widget/common/unripple.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ShowPictureView extends StatefulWidget {

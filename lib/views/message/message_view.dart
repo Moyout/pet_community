@@ -27,11 +27,11 @@ class _MessageViewState extends State<MessageView> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          RouteUtil.pushByCupertino(context, ChatView());
+          RouteUtil.pushByCupertino(context, const ChatView());
         },
         child: Scrollbar(
           controller: sc,
-          child: Center(child: Text("无信息")),
+          child: const Center(child: Text("无信息")),
         ),
       ),
     );

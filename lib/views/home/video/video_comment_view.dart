@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:pet_community/util/scroll_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/home/video_detail_viewmodel.dart';

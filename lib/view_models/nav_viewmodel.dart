@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
+import 'package:pet_community/models/chat/chat_record_model.dart';
+import 'package:pet_community/models/chat/ws_response_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/cache_util.dart';
 import 'package:pet_community/util/tools.dart';
@@ -11,6 +14,7 @@ import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:vibration/vibration.dart';
+import 'package:web_socket_channel/io.dart';
 
 class NavViewModel extends ChangeNotifier {
   PageController pageController = PageController();
@@ -20,7 +24,7 @@ class NavViewModel extends ChangeNotifier {
   bool isLogin = false;
   var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
   int cacheSize = 0;
-
+  IOWebSocketChannel? channel; //webSocket
   // bool isDark = false; //夜间模式
 
   ///页面控制器
@@ -43,17 +47,17 @@ class NavViewModel extends ChangeNotifier {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       getSpUserInfoModel();
     });
+    connectWebSocket();
   }
 
   ///初始化登录信息
   void getSpUserInfoModel() {
-    // isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
     isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
     debugPrint("isLogin-------$isLogin");
     if (isLogin) {
       try {
-        Map userInfoMap = SpUtil.getObj("UserInfoModel");
-        userInfoModel = UserInfoModel.fromJson(userInfoMap);
+        Map? userInfoMap = SpUtil.getObj("UserInfoModel");
+        if (userInfoMap != null) userInfoModel = UserInfoModel.fromJson(userInfoMap);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -179,5 +183,34 @@ class NavViewModel extends ChangeNotifier {
     CacheUtil.clear();
     cacheSize = await CacheUtil.total();
     notifyListeners();
+  }
+
+  ///链接webSocket服务
+  void connectWebSocket() {
+    ChatRecordModel crm;
+    isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+    debugPrint("isLogin--------------》》${isLogin}");
+    if (isLogin) {
+      String? token = SpUtil.getString(PublicKeys.token);
+      int? userId = SpUtil.getInt(PublicKeys.userId);
+      if (token != null && userId != null) {
+        channel = IOWebSocketChannel.connect(Uri.parse('ws://10.0.2.2:8081/chat/$userId/$token'));
+        channel?.stream.listen(
+          (dynamic msg) {
+            try {
+              crm = ChatRecordModel.fromJson(jsonDecode(msg));
+              debugPrint("crm--------------》》${crm.msg}");
+              // channel?.sink.add(crm);
+            } catch (e) {
+              debugPrint("msg--------------》》${msg}");
+              // debugPrint("JsonEncoder(msg)--------------》》${JsonDecoder(msg)}");
+
+              WsResponseModel wsm = WsResponseModel.fromJson(jsonDecode(msg));
+              debugPrint("wsm--------------》》${wsm}");
+            }
+          },
+        );
+      }
+    }
   }
 }

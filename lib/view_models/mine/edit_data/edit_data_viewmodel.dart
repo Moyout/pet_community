@@ -9,7 +9,6 @@ import 'package:pet_community/models/user/set_avatar_model.dart';
 import 'package:pet_community/models/user/set_background_model.dart';
 import 'package:pet_community/models/user/set_sex_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 

@@ -75,7 +75,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                                 width: 34.w,
                                 height: 34.w,
                                 color: context.watch<NavViewModel>().bottomList[index].isActive
-                                    ? Colors.deepPurpleAccent
+                                    ? Colors.blue
                                     : ThemeUtil.brightness(context) == Brightness.dark
                                         ? ThemeUtil.lightTheme().primaryColor
                                         : ThemeUtil.darkTheme().primaryColor,
@@ -87,10 +87,10 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                             style: TextStyle(
                               fontSize: 10.sp,
                               color: context.watch<NavViewModel>().bottomList[index].isActive
-                                  ? Colors.deepPurpleAccent
+                                  ? Colors.blue
                                   : ThemeUtil.brightness(context) == Brightness.dark
-                                      ? ThemeUtil.lightTheme().primaryColor
-                                      : ThemeUtil.darkTheme().primaryColor,
+                                      ? ThemeUtil.lightTheme().primaryColor.withOpacity(0.5)
+                                      : ThemeUtil.darkTheme().primaryColor.withOpacity(0.5),
                               // height: 0.8.w,
                             ),
                           ),

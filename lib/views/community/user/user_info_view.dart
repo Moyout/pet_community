@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pet_community/enums/drag_state_enum.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -28,12 +27,8 @@ class _UserInfoViewState extends State<UserInfoView>
   bool isShowMore = false;
   EdgeInsetsGeometry horizontalPadding = EdgeInsets.symmetric(horizontal: 16.w);
 
-  TextStyle textStyle = TextStyle(
-      fontSize: 12.sp, color: Colors.grey, overflow: TextOverflow.ellipsis);
-  TextStyle textStyle2 = TextStyle(
-      fontSize: 14.sp,
-      fontWeight: FontWeight.bold,
-      overflow: TextOverflow.ellipsis);
+  TextStyle textStyle = TextStyle(fontSize: 12.sp, color: Colors.grey, overflow: TextOverflow.ellipsis);
+  TextStyle textStyle2 = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
 
   @override
   void initState() {
@@ -75,41 +70,22 @@ class _UserInfoViewState extends State<UserInfoView>
                           RouteUtil.push(
                               context,
                               SetBackgroundView(
-                                isOther: context
-                                            .read<UserInfoViewModel>()
-                                            .userInfoModel
-                                            .data
-                                            ?.userId ==
-                                        context
-                                            .read<NavViewModel>()
-                                            .userInfoModel
-                                            ?.data
-                                            ?.userId
+                                isOther: context.read<UserInfoViewModel>().userInfoModel.data?.userId ==
+                                        context.read<NavViewModel>().userInfoModel?.data?.userId
                                     ? false
                                     : true,
-                                background: context
-                                        .read<UserInfoViewModel>()
-                                        .userInfoModel
-                                        .data
-                                        ?.background ??
-                                    ApiConfig.baseUrl +
-                                        "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                                background: context.read<UserInfoViewModel>().userInfoModel.data?.background ??
+                                    ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
                               ),
                               animation: RouteAnimation.popDown);
                         },
                         child: Transform.scale(
                           scale: 1 + mvModelW.scale,
                           child: CachedNetworkImage(
-                            imageUrl: context
-                                    .watch<UserInfoViewModel>()
-                                    .userInfoModel
-                                    .data
-                                    ?.background ??
-                                ApiConfig.baseUrl +
-                                    "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    const CupertinoActivityIndicator(),
+                            imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data?.background ??
+                                ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                const CupertinoActivityIndicator(),
                             fit: BoxFit.cover,
                             height: 400.w,
                           ),
@@ -123,8 +99,7 @@ class _UserInfoViewState extends State<UserInfoView>
                       child: Container(
                         height: 60.w,
                         decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(10.w)),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(10.w)),
                           // color: ThemeUtil.primaryColor(context),
                           gradient: LinearGradient(
                             colors: [
@@ -201,8 +176,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                 // }
                               },
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text("获赞", style: textStyle),
                                   Text("0", style: textStyle2),
@@ -231,30 +205,22 @@ class _UserInfoViewState extends State<UserInfoView>
                       bottom: 6.w,
                       left: 15.w,
                       child: GestureDetector(
-                        onTap: () => context
-                            .read<UserInfoViewModel>()
-                            .avatarOnTap(context, widget.avatar),
+                        onTap: () => context.read<UserInfoViewModel>().avatarOnTap(context, widget.avatar),
                         child: Container(
                           width: 70.w,
                           height: 70.w,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50.w)),
+                            borderRadius: BorderRadius.all(Radius.circular(50.w)),
                             border: Border.all(color: Colors.white, width: 3.w),
                           ),
                           child: Hero(
                             tag: "avatar",
                             child: ClipOval(
                               child: CachedNetworkImage(
-                                imageUrl: context
-                                        .watch<UserInfoViewModel>()
-                                        .userInfoModel
-                                        .data
-                                        ?.avatar ??
-                                    widget.avatar,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        const CupertinoActivityIndicator(),
+                                imageUrl:
+                                    context.watch<UserInfoViewModel>().userInfoModel.data?.avatar ?? widget.avatar,
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    const CupertinoActivityIndicator(),
                                 width: 70.w,
                                 height: 70.w,
                                 fit: BoxFit.cover,
@@ -276,9 +242,7 @@ class _UserInfoViewState extends State<UserInfoView>
                 child: Container(
                   alignment: Alignment.centerLeft,
                   color: ThemeUtil.primaryColor(context),
-                  child: (UserInfoViewModel.offsetY /
-                              UserInfoViewModel.maxHeight) >=
-                          1
+                  child: (UserInfoViewModel.offsetY / UserInfoViewModel.maxHeight) >= 1
                       ? const SizedBox()
                       : Container(
                           padding: horizontalPadding,
@@ -291,12 +255,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                   width: 220.w,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    context
-                                            .watch<UserInfoViewModel>()
-                                            .userInfoModel
-                                            .data
-                                            ?.userName ??
-                                        "--",
+                                    context.watch<UserInfoViewModel>().userInfoModel.data?.userName ?? "--",
                                     style: textStyle2,
                                   ),
                                 ),
@@ -308,80 +267,46 @@ class _UserInfoViewState extends State<UserInfoView>
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (context
-                                              .watch<UserInfoViewModel>()
-                                              .userInfoModel
-                                              .data
-                                              ?.sex !=
-                                          "保密")
+                                      if (context.watch<UserInfoViewModel>().userInfoModel.data?.sex != "保密")
                                         Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.w, vertical: 1.w),
+                                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
                                           margin: EdgeInsets.only(right: 5.w),
                                           clipBehavior: Clip.antiAlias,
                                           decoration: BoxDecoration(
                                             color: Colors.grey.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(2.w),
+                                            borderRadius: BorderRadius.circular(2.w),
                                             // color: ThemeUtil.primaryColor(context),
                                           ),
                                           child: Row(
                                             children: [
-                                              context
-                                                          .watch<
-                                                              UserInfoViewModel>()
-                                                          .userInfoModel
-                                                          .data
-                                                          ?.sex ==
-                                                      "男"
-                                                  ? const Icon(
-                                                      Icons.male_outlined,
-                                                      color: Colors.blue,
-                                                      size: 14)
-                                                  : const Icon(Icons.female,
-                                                      color: Colors.red,
-                                                      size: 14),
+                                              context.watch<UserInfoViewModel>().userInfoModel.data?.sex == "男"
+                                                  ? const Icon(Icons.male_outlined, color: Colors.blue, size: 14)
+                                                  : const Icon(Icons.female, color: Colors.red, size: 14),
                                               Text(
                                                 " ${context.watch<UserInfoViewModel>().userInfoModel.data?.sex} ",
                                                 style: textStyle.copyWith(
                                                   fontSize: 10.sp,
-                                                  color: ThemeUtil
-                                                      .reversePrimaryColor(
-                                                          context),
+                                                  color: ThemeUtil.reversePrimaryColor(context),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      if (context
-                                              .watch<UserInfoViewModel>()
-                                              .userInfoModel
-                                              .data
-                                              ?.area !=
-                                          "未设置")
+                                      if (context.watch<UserInfoViewModel>().userInfoModel.data?.area != "未设置")
                                         Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.w, vertical: 1.w),
+                                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
                                           margin: EdgeInsets.only(right: 5.w),
                                           clipBehavior: Clip.antiAlias,
                                           decoration: BoxDecoration(
                                             color: Colors.grey.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(2.w),
+                                            borderRadius: BorderRadius.circular(2.w),
                                             // color: ThemeUtil.primaryColor(context),
                                           ),
                                           child: Text(
-                                            context
-                                                    .watch<UserInfoViewModel>()
-                                                    .userInfoModel
-                                                    .data
-                                                    ?.area ??
-                                                "--",
+                                            context.watch<UserInfoViewModel>().userInfoModel.data?.area ?? "--",
                                             style: textStyle.copyWith(
                                               fontSize: 10.sp,
-                                              color:
-                                                  ThemeUtil.reversePrimaryColor(
-                                                      context),
+                                              color: ThemeUtil.reversePrimaryColor(context),
                                             ),
                                           ),
                                         ),
@@ -397,38 +322,24 @@ class _UserInfoViewState extends State<UserInfoView>
             ),
             SliverToBoxAdapter(
               child: Container(
-                padding:
-                    horizontalPadding.add(EdgeInsets.symmetric(vertical: 5.w)),
+                padding: horizontalPadding.add(EdgeInsets.symmetric(vertical: 5.w)),
                 color: ThemeUtil.primaryColor(context),
                 width: 250.w,
                 child: LayoutBuilder(
                   builder: (context, box) {
                     TextSpan textSpan = TextSpan(
-                      text: context
-                              .watch<UserInfoViewModel>()
-                              .userInfoModel
-                              .data
-                              ?.signature ??
-                          "--",
+                      text: context.watch<UserInfoViewModel>().userInfoModel.data?.signature ?? "--",
                       style: textStyle,
                     );
-                    TextPainter textPainter = TextPainter(
-                        text: textSpan,
-                        maxLines: 6,
-                        textDirection: TextDirection.ltr);
+                    TextPainter textPainter =
+                        TextPainter(text: textSpan, maxLines: 6, textDirection: TextDirection.ltr);
                     textPainter.layout(maxWidth: box.maxWidth);
                     return Stack(
                       children: [
                         Text(
-                          context
-                                  .watch<UserInfoViewModel>()
-                                  .userInfoModel
-                                  .data
-                                  ?.signature ??
-                              "--",
+                          context.watch<UserInfoViewModel>().userInfoModel.data?.signature ?? "--",
                           maxLines: !isShowMore ? 6 : null,
-                          style:
-                              textStyle.copyWith(overflow: TextOverflow.clip),
+                          style: textStyle.copyWith(overflow: TextOverflow.clip),
                         ),
                         Positioned(
                           bottom: 0,
@@ -441,8 +352,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                         isShowMore = true;
                                         setState(() {});
                                       },
-                                      child: const Text("更多",
-                                          style: TextStyle(color: Colors.blue)),
+                                      child: const Text("更多", style: TextStyle(color: Colors.blue)),
                                     )
                                   : const SizedBox(),
                         )
@@ -452,9 +362,7 @@ class _UserInfoViewState extends State<UserInfoView>
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-                child: Container(
-                    color: ThemeUtil.primaryColor(context), height: 10)),
+            SliverToBoxAdapter(child: Container(color: ThemeUtil.primaryColor(context), height: 10)),
             SliverPersistentHeader(
               pinned: true,
               delegate: SliverHeaderDelegate(
@@ -474,10 +382,7 @@ class _UserInfoViewState extends State<UserInfoView>
                       const Text("作品"),
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text("收藏"),
-                          Icon(Icons.lock, size: 18)
-                        ],
+                        children: const [Text("收藏"), Icon(Icons.lock, size: 18)],
                       )
                     ],
                   ),
@@ -493,31 +398,15 @@ class _UserInfoViewState extends State<UserInfoView>
                   height: context.watch<UserInfoViewModel>().tC.index == 1
                       ? tabViewHeight * 2.5
                       : tabViewHeight *
-                          (((context
-                                                  .watch<UserInfoViewModel>()
-                                                  .userArticleModel
-                                                  .data
-                                                  ?.length ??
-                                              9) /
-                                          3)
-                                      .ceil() <
-                                  3
+                          (((context.watch<UserInfoViewModel>().userArticleModel.data?.length ?? 9) / 3).ceil() < 3
                               ? 3
-                              : ((context
-                                              .watch<UserInfoViewModel>()
-                                              .userArticleModel
-                                              .data
-                                              ?.length ??
-                                          9) /
-                                      3)
-                                  .ceil()),
+                              : ((context.watch<UserInfoViewModel>().userArticleModel.data?.length ?? 9) / 3).ceil()),
                   child: TabBarView(
                     controller: context.watch<UserInfoViewModel>().tC,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       WorksTab(
-                        userArticleModel:
-                            context.watch<UserInfoViewModel>().userArticleModel,
+                        userArticleModel: context.watch<UserInfoViewModel>().userArticleModel,
                         isShowRelease: false,
                         isShowUserInfoView: false,
                       ),
@@ -535,8 +424,7 @@ class _UserInfoViewState extends State<UserInfoView>
                           const Text("收藏内容不可见"),
                           Text(
                             "该用户将收藏列表设为私密",
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 12.sp),
+                            style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                           ),
                         ],
                       ),

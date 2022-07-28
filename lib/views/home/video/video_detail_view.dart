@@ -88,12 +88,9 @@ class _VideoDetailViewState extends State<VideoDetailView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                // color: Colors.blueAccent,
-                child: Text(
-                  "@${widget.userName}",
-                  style: TextStyle(color: Colors.white.withOpacity(0.5), letterSpacing: 1.2, fontSize: 16.sp),
-                ),
+              Text(
+                "@${widget.userName}",
+                style: TextStyle(color: Colors.white.withOpacity(0.5), letterSpacing: 1.2, fontSize: 16.sp),
               ),
               SizedBox(height: 10.w),
               Text(

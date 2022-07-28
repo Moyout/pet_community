@@ -35,9 +35,7 @@ class _ChatViewState extends State<ChatView> {
           color: ThemeUtil.scaffoldColor(context),
           child: Column(
             children: [
-              Expanded(
-                child: ChatRecordView(),
-              ),
+              const Expanded(child: ChatRecordView()),
               Divider(
                 thickness: 1.w,
                 height: 0,

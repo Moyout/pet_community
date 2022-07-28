@@ -1,6 +1,6 @@
+import 'dart:convert';
 
 import 'package:pet_community/util/tools.dart';
-import 'dart:convert';
 
 class SpUtil {
   static SpUtil? _singleton;
@@ -52,10 +52,10 @@ class SpUtil {
   }
 
   /// 根据key获取T泛型类型
-  static Map getObj(String key) {
+  static Map? getObj(String key) {
     String? data = _prefs?.getString(key);
 
-    return json.decode(data!);
+    return data != null ? json.decode(data) : null;
   }
 
   ///获取String

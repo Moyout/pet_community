@@ -26,71 +26,68 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // backgroundColor: Colors.black,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.light,
-          statusBarColor: Colors.transparent,
-        ),
-        child: Stack(
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                if (context.read<VideoViewModel>().playerController?.value.isPlaying ?? false) {
-                  context.read<VideoViewModel>().playerController?.pause();
-                } else {
-                  context.read<VideoViewModel>().playerController?.play();
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                // color: Colors.black,
-                child: AspectRatio(
-                  aspectRatio: context.watch<VideoViewModel>().playerController?.value.aspectRatio ?? 1 / 2,
-                  child: !context.watch<VideoViewModel>().playerController!.value.isInitialized
-                      ? Hero(
-                          tag: widget.picUrl + widget.index.toString(),
-                          child: CachedNetworkImage(
-                            cacheKey: widget.picUrl,
-                            imageUrl: widget.picUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Hero(
-                          tag: widget.picUrl + widget.index.toString(),
-                          child: VideoPlayer(context.watch<VideoViewModel>().playerController!),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
+        statusBarColor: Colors.transparent,
+      ),
+      child: Stack(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (context.read<VideoViewModel>().playerController?.value.isPlaying ?? false) {
+                context.read<VideoViewModel>().playerController?.pause();
+              } else {
+                context.read<VideoViewModel>().playerController?.play();
+              }
+            },
+            child: Container(
+              alignment: Alignment.center,
+              // color: Colors.black,
+              child: AspectRatio(
+                aspectRatio: context.watch<VideoViewModel>().playerController?.value.aspectRatio ?? 1 / 2,
+                child: !context.watch<VideoViewModel>().playerController!.value.isInitialized
+                    ? Hero(
+                        tag: widget.picUrl + widget.index.toString(),
+                        child: CachedNetworkImage(
+                          cacheKey: widget.picUrl,
+                          imageUrl: widget.picUrl,
+                          fit: BoxFit.cover,
                         ),
-                ),
+                      )
+                    : Hero(
+                        tag: widget.picUrl + widget.index.toString(),
+                        child: VideoPlayer(context.watch<VideoViewModel>().playerController!),
+                      ),
               ),
             ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: buildProgress(),
+          ),
+          if (!context.watch<VideoViewModel>().playerController!.value.isPlaying)
             Positioned(
               left: 0,
               right: 0,
+              top: 0,
               bottom: 0,
-              child: buildProgress(),
-            ),
-            if (!context.watch<VideoViewModel>().playerController!.value.isPlaying)
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    if (context.read<VideoViewModel>().playerController?.value.isPlaying ?? false) {
-                      context.read<VideoViewModel>().playerController?.pause();
-                    } else {
-                      context.read<VideoViewModel>().playerController?.play();
-                    }
-                  },
-                  child: const Icon(IconData(0xe7fd, fontFamily: "AliIcon"), color: Colors.grey, size: 80),
-                ),
+              child: GestureDetector(
+                onTap: () {
+                  if (context.read<VideoViewModel>().playerController?.value.isPlaying ?? false) {
+                    context.read<VideoViewModel>().playerController?.pause();
+                  } else {
+                    context.read<VideoViewModel>().playerController?.play();
+                  }
+                },
+                child: const Icon(IconData(0xe7fd, fontFamily: "AliIcon"), color: Colors.grey, size: 80),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
