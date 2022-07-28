@@ -198,16 +198,24 @@ class NavViewModel extends ChangeNotifier {
         channel?.stream.listen(
           (dynamic msg) {
             try {
-              crm = ChatRecordModel.fromJson(jsonDecode(msg));
-              debugPrint("crm--------------》》${crm.msg}");
+              dynamic data = jsonDecode(msg);
+
+              WsResponseModel wsm = WsResponseModel.fromJson(data);
+              debugPrint("wsm--------------》》${wsm.msg}");
               // channel?.sink.add(crm);
             } catch (e) {
-              debugPrint("msg--------------》》${msg}");
               // debugPrint("JsonEncoder(msg)--------------》》${JsonDecoder(msg)}");
-
-              WsResponseModel wsm = WsResponseModel.fromJson(jsonDecode(msg));
-              debugPrint("wsm--------------》》${wsm}");
+              dynamic data = jsonDecode(msg);
+              crm = ChatRecordModel.fromJson(data);
+              debugPrint("crm--------------》》${crm.data}");
+              debugPrint("crm--------------》》${crm.userId}");
             }
+          },
+          onDone: () {
+            debugPrint("ws- onDone-------------》 ");
+          },
+          onError: (e) {
+            debugPrint("e--------------》》${e}");
           },
         );
       }
