@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
-import 'package:pet_community/models/chat/ws_response_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/cache_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
+import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
@@ -25,6 +26,13 @@ class NavViewModel extends ChangeNotifier {
   var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
   int cacheSize = 0;
   IOWebSocketChannel? channel; //webSocket
+  // ChatRecordModel? crm;
+  WebSocket? ws;
+
+  // List<ChatRecordModel> chatList = [];//聊天记录列表
+
+  Map<int, List<ChatRecordModel>> contactList = {};
+
   // bool isDark = false; //夜间模式
 
   ///页面控制器
@@ -118,6 +126,7 @@ class NavViewModel extends ChangeNotifier {
       onClickBottom(index);
       pageTo(index);
     }
+    connectWebSocket();
   }
 
   ///检查网络状态
@@ -161,6 +170,10 @@ class NavViewModel extends ChangeNotifier {
     AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     RouteUtil.pop(context);
+    ws?.close();
+    ws = null;
+    channel?.sink.close();
+    channel = null;
     notifyListeners();
   }
 
@@ -186,38 +199,57 @@ class NavViewModel extends ChangeNotifier {
   }
 
   ///链接webSocket服务
-  void connectWebSocket() {
-    ChatRecordModel crm;
+  Future<void> connectWebSocket() async {
     isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
-    debugPrint("isLogin--------------》》${isLogin}");
     if (isLogin) {
       String? token = SpUtil.getString(PublicKeys.token);
       int? userId = SpUtil.getInt(PublicKeys.userId);
       if (token != null && userId != null) {
-        channel = IOWebSocketChannel.connect(Uri.parse('ws://10.0.2.2:8081/chat/$userId/$token'));
-        channel?.stream.listen(
-          (dynamic msg) {
-            try {
-              dynamic data = jsonDecode(msg);
+        try {
+          if (ws == null) {
+            ws = await WebSocket.connect('ws://10.0.2.2:8081/chat/$userId/$token');
+            if (ws != null) {
+              channel = IOWebSocketChannel(ws!);
+              channel?.stream.listen(
+                (dynamic msg) {
+                  dynamic data = jsonDecode(msg);
+                  ChatRecordModel? crm = ChatRecordModel.fromJson(data);
+                  debugPrint("crm--------------》》${crm.code}");
+                  debugPrint("crm--------------》》${crm.data}");
+                  debugPrint("crm--------------》》${crm.userId}");
+                  debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
+                  debugPrint("crm--------------》》${crm.userAvatar}");
+                  if (crm.data != null) {
+                    if (contactList[crm.userId] == null) {
+                      contactList.addAll({crm.userId!: []});
+                    }
+                    contactList[crm.userId]?.add(crm);
+                  }
+                  if (crm.code == 1008 || crm.code == 1007) {
+                    LoginViewModel.tokenExpire(msg: crm.msg);
+                  }
 
-              WsResponseModel wsm = WsResponseModel.fromJson(data);
-              debugPrint("wsm--------------》》${wsm.msg}");
-              // channel?.sink.add(crm);
-            } catch (e) {
-              // debugPrint("JsonEncoder(msg)--------------》》${JsonDecoder(msg)}");
-              dynamic data = jsonDecode(msg);
-              crm = ChatRecordModel.fromJson(data);
-              debugPrint("crm--------------》》${crm.data}");
-              debugPrint("crm--------------》》${crm.userId}");
+                  debugPrint("chatList--------------》》$contactList");
+                },
+                onDone: () {
+                  ws?.close();
+                  ws = null;
+                  channel?.sink.close();
+                  channel = null;
+                  connectWebSocket();
+                  debugPrint("ws-onDone-onDone-------------》 ");
+                },
+                onError: (e) {
+                  debugPrint("e--------------》》$e");
+                },
+              );
             }
-          },
-          onDone: () {
-            debugPrint("ws- onDone-------------》 ");
-          },
-          onError: (e) {
-            debugPrint("e--------------》》${e}");
-          },
-        );
+          }
+        } on SocketException catch (e) {
+          // TODO
+          debugPrint("e--------------》》$e");
+          connectWebSocket();
+        }
       }
     }
   }

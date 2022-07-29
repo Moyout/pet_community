@@ -3,6 +3,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
+import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
@@ -250,14 +251,38 @@ class _UserInfoViewState extends State<UserInfoView>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: Container(
-                                  // color: Colors.red,
-                                  width: 220.w,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    context.watch<UserInfoViewModel>().userInfoModel.data?.userName ?? "--",
-                                    style: textStyle2,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        // color: Colors.red,
+                                        width: 220.w,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          context.watch<UserInfoViewModel>().userInfoModel.data?.userName ?? "--",
+                                          style: textStyle2,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Colors.deepPurple,
+                                        shape: const StadiumBorder(),
+                                        primary: ThemeUtil.primaryColor(context),
+                                        padding: const EdgeInsets.all(0),
+                                      ),
+                                      onPressed: () {
+                                        RouteUtil.pushReplacement(
+                                          context,
+                                          ChatView(
+                                            userId: widget.userId,
+                                            name: context.read<UserInfoViewModel>().userInfoModel.data?.userName ?? "",
+                                          ),
+                                        );
+                                      },
+                                      child: Text("发信息", style: TextStyle(fontSize: 12.sp)),
+                                    )
+                                  ],
                                 ),
                               ),
                               Expanded(

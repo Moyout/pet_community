@@ -43,6 +43,8 @@ class LoginViewModel extends ChangeNotifier {
         context.read<MineViewModel>().notifyListeners();
         context.read<NavViewModel>().notifyListeners();
 
+        context.read<NavViewModel>().connectWebSocket();
+
         Navigator.pop(context);
         notifyListeners();
       }

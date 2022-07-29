@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class ChatViewModel extends ChangeNotifier {
   TextEditingController textC = TextEditingController();
@@ -7,6 +11,7 @@ class ChatViewModel extends ChangeNotifier {
   bool currentEmoji = false; //表情库
   FocusNode focusNode = FocusNode();
   ScrollController sc = ScrollController(); //滚动控制器
+  ScrollController chatListC = ScrollController(); //滚动控制器
 
   ///初始化viewModel
   void initViewModel(BuildContext context) {
@@ -91,5 +96,25 @@ class ChatViewModel extends ChangeNotifier {
 
   bool _isUtf16Surrogate(int value) {
     return value & 0xF800 == 0xD800;
+  }
+
+  void sendMsg(BuildContext context, int userId) {
+    NavViewModel nvm = context.read<NavViewModel>();
+    ChatRecordModel? crm = ChatRecordModel(
+      type: 0,
+      userAvatar: nvm.userInfoModel?.data?.avatar,
+      userName: nvm.userInfoModel?.data?.userName,
+      userId: nvm.userInfoModel?.data?.userId,
+      addresseeId: userId,
+      data: textC.text,
+    );
+    String data = jsonEncode(crm);
+    nvm.channel?.sink.add(data);
+    nvm.contactList[userId]?.add(crm);
+    nvm.notifyListeners();
+    textC.clear();
+    chatListC.animateTo(chatListC.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    notifyListeners();
   }
 }

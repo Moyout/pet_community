@@ -4,7 +4,10 @@ import 'package:pet_community/views/message/chat/chat_record_view.dart';
 import 'package:pet_community/views/message/chat/emoji_view.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({Key? key}) : super(key: key);
+  final String name;
+  final int userId;
+
+  const ChatView({Key? key, required this.userId, this.name = ""}) : super(key: key);
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -25,7 +28,7 @@ class _ChatViewState extends State<ChatView> {
           onTap: () => RouteUtil.pop(context),
           child: Icon(Icons.arrow_back_ios_new, color: ThemeUtil.reversePrimaryColor(context), size: 20.w),
         ),
-        title: Text("xxx", style: TextStyle(fontSize: 18.sp)),
+        title: Text(widget.name, style: TextStyle(fontSize: 14.sp)),
       ),
       body: GestureDetector(
         onTap: () {
@@ -35,7 +38,7 @@ class _ChatViewState extends State<ChatView> {
           color: ThemeUtil.scaffoldColor(context),
           child: Column(
             children: [
-              const Expanded(child: ChatRecordView()),
+              Expanded(child: ChatRecordView(userId: widget.userId)),
               Divider(
                 thickness: 1.w,
                 height: 0,
@@ -116,18 +119,18 @@ class _ChatViewState extends State<ChatView> {
                       alignment: Alignment.center,
                       duration: const Duration(milliseconds: 100),
                       margin: EdgeInsets.only(
-                        right: context.watch<ChatViewModel>().textC.text.isNotEmpty ? 5.w : 0,
+                        right: context.watch<ChatViewModel>().textC.text.trim().isNotEmpty ? 5.w : 0,
                         bottom: 5.w,
                       ),
                       height: 30.w,
-                      width: context.watch<ChatViewModel>().textC.text.isNotEmpty ? 50.w : 0,
+                      width: context.watch<ChatViewModel>().textC.text.trim().isNotEmpty ? 50.w : 0,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: const StadiumBorder(),
                           backgroundColor: Colors.deepPurple,
                           padding: const EdgeInsets.all(0),
                         ),
-                        onPressed: () {},
+                        onPressed: () => context.read<ChatViewModel>().sendMsg(context, widget.userId),
                         child: Text(
                           "发送",
                           style: TextStyle(color: ThemeUtil.primaryColor(context), fontSize: 10.sp),
