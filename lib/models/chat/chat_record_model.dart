@@ -16,6 +16,7 @@ class ChatRecordModel {
     int? addresseeId,
     String? data,
     String? msg,
+    int? sendTime,
   }) {
     _code = code;
     _type = type;
@@ -26,6 +27,7 @@ class ChatRecordModel {
     _addresseeId = addresseeId;
     _data = data;
     _msg = msg;
+    _sendTime = sendTime;
   }
 
   ChatRecordModel.fromJson(dynamic json) {
@@ -38,6 +40,7 @@ class ChatRecordModel {
     _addresseeId = json['addresseeId'];
     _data = json['data'];
     _msg = json['msg'];
+    _sendTime = json['sendTime'];
   }
 
   int? _code;
@@ -49,6 +52,7 @@ class ChatRecordModel {
   int? _addresseeId;
   String? _data;
   String? _msg;
+  int? _sendTime;
 
   ChatRecordModel copyWith({
     int? code,
@@ -60,6 +64,7 @@ class ChatRecordModel {
     int? addresseeId,
     String? data,
     String? msg,
+    int? sendTime,
   }) =>
       ChatRecordModel(
         code: code ?? _code,
@@ -71,6 +76,7 @@ class ChatRecordModel {
         addresseeId: addresseeId ?? _addresseeId,
         data: data ?? _data,
         msg: msg ?? _msg,
+        sendTime: sendTime ?? _sendTime,
       );
 
   int? get code => _code;
@@ -88,6 +94,7 @@ class ChatRecordModel {
 
   String? get data => _data;
   String? get msg => _msg;
+  int? get sendTime => _sendTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -100,6 +107,7 @@ class ChatRecordModel {
     map['addresseeId'] = _addresseeId;
     map['data'] = _data;
     map['msg'] = _msg;
+    map['sendTime'] = _sendTime;
     return map;
   }
 }

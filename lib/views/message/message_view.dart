@@ -1,6 +1,7 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class MessageView extends StatefulWidget {
   const MessageView({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   ScrollController sc = ScrollController();
+  final fifteenAgo = DateTime.now().subtract(Duration(minutes: 15));
 
   @override
   void initState() {
@@ -38,6 +40,8 @@ class _MessageViewState extends State<MessageView> {
               child: Column(
                 children: [
                   ...context.watch<NavViewModel>().contactList.entries.map((e) {
+                    var date = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime! * 1000);
+
                     return TextButton(
                       onPressed: () {},
                       child: Row(
@@ -72,7 +76,7 @@ class _MessageViewState extends State<MessageView> {
                             ],
                           ),
                           const Spacer(),
-                          Text("${e.value.last}")
+                          Text(timeago.format(date))
                         ],
                       ),
                     );
