@@ -1,7 +1,10 @@
+import 'package:intl/intl.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
+import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({Key? key}) : super(key: key);
@@ -12,7 +15,6 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   ScrollController sc = ScrollController();
-  final fifteenAgo = DateTime.now().subtract(Duration(minutes: 15));
 
   @override
   void initState() {
@@ -22,7 +24,8 @@ class _MessageViewState extends State<MessageView> {
     //   channel.sink.add('received!');
     //   channel.sink.close(status.goingAway);
     // });
-
+    // timeago.setDefaultLocale("zh_cn");
+    timeago.setLocaleMessages("zh_CN", ZhCnMessages());
     super.initState();
   }
 
@@ -40,10 +43,23 @@ class _MessageViewState extends State<MessageView> {
               child: Column(
                 children: [
                   ...context.watch<NavViewModel>().contactList.entries.map((e) {
-                    var date = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime! * 1000);
-
+                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime ?? 0);
+                    String dateTimeStr = DateFormat("HH:mm").format(dateTime);
                     return TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        debugPrint("e--------------》》${e.value.first.userId}");
+                        RouteUtil.pushByCupertino(
+                          context,
+                          ChatView(
+                            userId: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
+                                ? e.value.last.userId!
+                                : e.value.last.addresseeId!,
+                            name: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
+                                ? e.value.last.userName ?? ""
+                                : e.value.last.addressee ?? "",
+                          ),
+                        );
+                      },
                       child: Row(
                         children: [
                           Container(
@@ -63,8 +79,10 @@ class _MessageViewState extends State<MessageView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                e.value.last.userName ?? "",
-                                style: TextStyle(fontSize: 16.sp, color: ThemeUtil.reversePrimaryColor(context)),
+                                e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
+                                    ? e.value.last.userName ?? ""
+                                    : e.value.last.addressee ?? "",
+                                style: TextStyle(fontSize: 14.sp, color: ThemeUtil.reversePrimaryColor(context)),
                               ),
                               Text(
                                 e.value.last.data ?? "",
@@ -76,7 +94,7 @@ class _MessageViewState extends State<MessageView> {
                             ],
                           ),
                           const Spacer(),
-                          Text(timeago.format(date))
+                          Text(dateTimeStr, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                         ],
                       ),
                     );

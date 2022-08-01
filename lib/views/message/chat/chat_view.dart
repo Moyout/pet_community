@@ -130,7 +130,7 @@ class _ChatViewState extends State<ChatView> {
                           backgroundColor: Colors.deepPurple,
                           padding: const EdgeInsets.all(0),
                         ),
-                        onPressed: () => context.read<ChatViewModel>().sendMsg(context, widget.userId),
+                        onPressed: () => context.read<ChatViewModel>().sendMsg(context, widget.userId, widget.name),
                         child: Text(
                           "发送",
                           style: TextStyle(color: ThemeUtil.primaryColor(context), fontSize: 10.sp),

@@ -98,8 +98,10 @@ class ChatViewModel extends ChangeNotifier {
     return value & 0xF800 == 0xD800;
   }
 
-  void sendMsg(BuildContext context, int userId) {
+  ///发送
+  void sendMsg(BuildContext context, int userId, String addressee) {
     NavViewModel nvm = context.read<NavViewModel>();
+    int sendTime = DateTime.now().millisecondsSinceEpoch;
     ChatRecordModel? crm = ChatRecordModel(
       type: 0,
       userAvatar: nvm.userInfoModel?.data?.avatar,
@@ -107,10 +109,19 @@ class ChatViewModel extends ChangeNotifier {
       userId: nvm.userInfoModel?.data?.userId,
       addresseeId: userId,
       data: textC.text,
+      sendTime: sendTime,
+      addressee: addressee,
     );
     String data = jsonEncode(crm);
     nvm.channel?.sink.add(data);
-    nvm.contactList[userId]?.add(crm);
+    if (crm.data != null) {
+      if (nvm.contactList[userId] == null) {
+        nvm.contactList.addAll({userId: []});
+      }
+      nvm.contactList[userId]?.add(crm);
+    }
+    debugPrint("nvm--------------》》${nvm.contactList}");
+    // nvm.contactList[userId]?.add(crm);
     nvm.notifyListeners();
     textC.clear();
     chatListC.animateTo(chatListC.position.maxScrollExtent,

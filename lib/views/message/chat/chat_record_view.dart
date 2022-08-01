@@ -20,7 +20,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
         behavior: OverScrollBehavior(),
         child: ListView.builder(
           controller: context.watch<ChatViewModel>().chatListC,
-          itemCount: context.watch<NavViewModel>().contactList[widget.userId]?.length,
+          itemCount: context.watch<NavViewModel>().contactList[widget.userId]?.length ?? 0,
           itemBuilder: (context, index) {
             return Container(
               // color: Colors.red,
@@ -29,7 +29,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                 mainAxisAlignment: context.read<NavViewModel>().contactList[widget.userId]?[index].userId !=
                         context.read<NavViewModel>().userInfoModel?.data?.userId
                     ? MainAxisAlignment.start
-                    : MainAxisAlignment.end, //TODO: 位置
+                    : MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   context.read<NavViewModel>().contactList[widget.userId]?[index].userId !=

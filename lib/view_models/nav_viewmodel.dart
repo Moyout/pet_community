@@ -208,6 +208,7 @@ class NavViewModel extends ChangeNotifier {
         try {
           if (ws == null) {
             ws = await WebSocket.connect('ws://10.0.2.2:8081/chat/$userId/$token');
+            // ws = await WebSocket.connect('ws://106.52.246.134:8081/chat/$userId/$token');
             if (ws != null) {
               channel = IOWebSocketChannel(ws!);
               channel?.stream.listen(
@@ -228,7 +229,6 @@ class NavViewModel extends ChangeNotifier {
                   if (crm.code == 1008 || crm.code == 1007) {
                     LoginViewModel.tokenExpire(msg: crm.msg);
                   }
-
                   debugPrint("chatList--------------》》$contactList");
                 },
                 onDone: () {
@@ -246,7 +246,6 @@ class NavViewModel extends ChangeNotifier {
             }
           }
         } on SocketException catch (e) {
-          // TODO
           debugPrint("e--------------》》$e");
           connectWebSocket();
         }
