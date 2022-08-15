@@ -1,4 +1,4 @@
-package com.moyou.pet.pet_community;
+package com.moyou.pet_community;
 
 import io.flutter.embedding.android.FlutterActivity;
 
