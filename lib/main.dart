@@ -10,6 +10,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized(); //WidgetsFlutterBinding 承担各类的初始化以及功能配置
   ScreenUtil.initialize(); //初始化屏幕适配
   AppConfig.initSp(); //初始化SP
+  AppConfig.startJPush(); //初始化jpush
   AppConfig.errorWidget(); //错误widget
   AppConfig.setScreenOrientations(); //竖屏
   runApp(MultiProvider(providers: providers, child: const MyApp()));
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
 
     return RefreshWidget(
       child: MaterialApp(
-        title: 'Flutter',
+        title: '宠物社区',
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],
         localizationsDelegates: const [

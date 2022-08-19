@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.moyou.pet_community">
 
     <!--网络权限-->
@@ -8,13 +9,20 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 安装权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.VIBRATE" /><!--振动器权限，JPUSH支持通知开启振动功能，小米推送必须-->
+    <!--        tools:replace="android:name"-->
+<!--    android:name="${applicationName}"-->
+
     <application
-        android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:label="宠物社区"
-        android:usesCleartextTraffic="true">
+        tools:replace="android:label"
+        android:usesCleartextTraffic="true"
+        >
+
         <activity
             android:name=".MainActivity"
+
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
@@ -43,5 +51,14 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+
+        <service
+            android:name=".FcmNotifyService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

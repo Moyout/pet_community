@@ -3,8 +3,6 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:timeago/timeago.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({Key? key}) : super(key: key);
@@ -25,7 +23,6 @@ class _MessageViewState extends State<MessageView> {
     //   channel.sink.close(status.goingAway);
     // });
     // timeago.setDefaultLocale("zh_cn");
-    timeago.setLocaleMessages("zh_CN", ZhCnMessages());
     super.initState();
   }
 

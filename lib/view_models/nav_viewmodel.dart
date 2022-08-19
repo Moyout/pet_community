@@ -207,8 +207,8 @@ class NavViewModel extends ChangeNotifier {
       if (token != null && userId != null) {
         try {
           if (ws == null) {
-            ws = await WebSocket.connect('ws://10.0.2.2:8081/chat/$userId/$token');
-            // ws = await WebSocket.connect('ws://106.52.246.134:8081/chat/$userId/$token');
+            // ws = await WebSocket.connect('ws://10.0.2.2:8081/chat/$userId/$token');
+            ws = await WebSocket.connect('ws://106.52.246.134:8081/chat/$userId/$token');
             if (ws != null) {
               channel = IOWebSocketChannel(ws!);
               channel?.stream.listen(

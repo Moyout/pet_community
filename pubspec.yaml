@@ -84,7 +84,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
-  timeago: ^3.2.2
+#  timeago: ^3.2.2
+
+  jpush_flutter: ^2.3.5
 
 
 
