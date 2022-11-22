@@ -1,7 +1,6 @@
 import 'package:pet_community/models/user/set_signature_model.dart';
 import 'package:pet_community/models/user/set_username_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 

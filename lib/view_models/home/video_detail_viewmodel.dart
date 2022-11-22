@@ -1,22 +1,54 @@
+import 'package:flutter/rendering.dart';
 import 'package:pet_community/util/tools.dart';
 
 class VideoDetailViewModel extends ChangeNotifier {
   TextEditingController textC = TextEditingController();
-  bool isShow = true;
-  int numLines = 1;
+  ScrollController sc = ScrollController();
+  bool showComment = false;
+  FocusNode focusNode = FocusNode();
+  bool isNoSliding = false;
+  late PointerMoveEvent pointerMoveEvent;
 
   void initViewModel() {
-    isShow = true;
     textC.clear();
+    showComment = false;
   }
 
-  void setHideOrShow() {
-    isShow = !isShow;
+  ///打开评论
+  void openComment() {
+    showComment = true;
     notifyListeners();
   }
 
-  void getTextLines() {
-    numLines = '\n'.allMatches(textC.text).length + 1;
+  ///关闭评论
+  void closeComment() {
+    showComment = false;
     notifyListeners();
+  }
+
+  void getFocusNode(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      FocusScope.of(context).requestFocus(focusNode); // 获取焦点
+    });
+  }
+
+  bool slidingProcessing(ScrollNotification notification, ScrollController sc) {
+    if (notification is UserScrollNotification) {
+      if (notification.direction == ScrollDirection.forward && pointerMoveEvent.localDelta.dy > 0 && sc.offset == 0.0) {
+        isNoSliding = true;
+        notifyListeners();
+      }
+    }
+    return true;
+  }
+
+  void slidingListener(PointerMoveEvent value) {
+    pointerMoveEvent = value;
+    notifyListeners();
+    debugPrint("pointerMoveEvent--------------》》${pointerMoveEvent.localDelta.dy}");
+    if (pointerMoveEvent.localDelta.dy < 0) {
+      isNoSliding = false;
+      notifyListeners();
+    }
   }
 }

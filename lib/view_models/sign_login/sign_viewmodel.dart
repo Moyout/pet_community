@@ -1,7 +1,6 @@
 import 'package:pet_community/models/sign_login/send_code_model.dart';
 import 'package:pet_community/models/sign_login/sign_model.dart';
 import 'package:pet_community/util/email_util.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/verification_model/slide_verification_viewmodel.dart';
 import 'package:pet_community/widget/toast/ftoast_widget.dart';

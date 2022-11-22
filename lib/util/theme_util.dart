@@ -40,6 +40,12 @@ class ThemeUtil {
           // foregroundColor: MaterialStateProperty.all(Colors.black87),
         ),
       ),
+      // scrollbarTheme: ScrollbarThemeData(
+      //   trackColor: MaterialStateProperty.all(Colors.red),
+      //   thumbColor: MaterialStateProperty.all(Colors.green),
+      //   trackBorderColor: MaterialStateProperty.all(Colors.yellow),
+      //   thickness: MaterialStateProperty.all(10),
+      //  ),
     );
   }
 

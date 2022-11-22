@@ -3,7 +3,6 @@ import 'package:pet_community/models/article_comment/comment_model.dart';
 import 'package:pet_community/models/article_comment/comment_model.dart' as comment_model_data;
 import 'package:pet_community/models/article_comment/delete_comment_model.dart';
 import 'package:pet_community/models/article_comment/release_comment_model.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';

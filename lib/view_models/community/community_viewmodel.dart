@@ -1,5 +1,4 @@
 import 'package:pet_community/models/article/article_model.dart';
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

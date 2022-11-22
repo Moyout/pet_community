@@ -1,5 +1,4 @@
 export 'package:cached_network_image/cached_network_image.dart';
-export 'package:chewie/chewie.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';

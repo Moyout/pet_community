@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/home/home_viewmodel.dart';
-import 'package:pet_community/views/home/video_detail_view.dart';
+import 'package:pet_community/views/home/video/video_detail_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeView extends StatefulWidget {

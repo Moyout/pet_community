@@ -1,4 +1,3 @@
-import 'package:pet_community/util/toast_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_viewmodel.dart';
