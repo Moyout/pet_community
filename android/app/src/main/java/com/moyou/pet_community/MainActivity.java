@@ -10,7 +10,7 @@ import io.flutter.embedding.android.FlutterActivity;
 public class MainActivity extends FlutterActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
+//        setTheme(R.style.Theme_AppCompat);
         super.onCreate(savedInstanceState);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);

@@ -58,20 +58,20 @@ android {
 
     }
 
-    signingConfigs {
-        config {
-            storeFile file('djt.jks')
-            storePassword 'daijintao.'
-            keyPassword 'daijintao.'
-            keyAlias 'moyou'
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
-    }
+//    signingConfigs {
+//        config {
+//            storeFile file('djt.jks')
+//            storePassword 'daijintao.'
+//            keyPassword 'daijintao.'
+//            keyAlias 'moyou'
+//            v1SigningEnabled true
+//            v2SigningEnabled true
+//        }
+//    }
 
     buildTypes {
         debug{
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
         }
         release {
             minifyEnabled true
@@ -96,7 +96,7 @@ dependencies{
 
     implementation 'cn.jiguang.sdk.plugin:xiaomi:4.7.2'
     // 接入华为厂商
-    implementation 'com.huawei.hms:push:4.0.2.300'
+//    implementation 'com.huawei.hms:push:4.0.2.300'
     implementation 'cn.jiguang.sdk.plugin:huawei:4.7.2'// 极光厂商插件版本与接入 JPush 版本保持一致，下同
     // 接入 FCM 厂商
     implementation 'com.google.firebase:firebase-messaging:23.0.7'

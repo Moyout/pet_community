@@ -80,7 +80,7 @@ class MineViewModel extends ChangeNotifier {
           animation: RouteAnimation.popDown);
     } else {
       context.read<SignLoginViewModel>().initialPage = 1;
-      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+      RouteUtil.pushByCupertino(context, const SignLoginView());
     }
   }
 

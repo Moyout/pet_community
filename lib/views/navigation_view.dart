@@ -23,6 +23,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: context.watch<NavViewModel>().scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -47,10 +48,12 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             left: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).padding.bottom + 5.w),
+              padding: EdgeInsets.fromLTRB(0, 10.w,0,15.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.w)),
+                // borderRadius: BorderRadius.vertical(top: Radius.circular(20.w)),
                 color: ThemeUtil.primaryColor(context),
+                // color: Colors.red,
+
               ),
               child: Row(
                 children: List.generate(context.watch<NavViewModel>().bottomList.length, (int index) {

@@ -54,7 +54,7 @@ dependencies:
 
   connectivity_plus: ^2.2.1 # ????????
 
-  fluttertoast: ^8.0.9
+  #fluttertoast: ^8.0.9
 
 #  screenshot: ^1.2.3
   bot_toast: ^4.0.2
@@ -86,7 +86,7 @@ dependencies:
 
 #  timeago: ^3.2.2
 
-  jpush_flutter: ^2.3.5
+  #jpush_flutter: ^2.3.5
 
 
 
