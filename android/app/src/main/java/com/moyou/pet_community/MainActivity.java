@@ -11,6 +11,8 @@ public class MainActivity extends FlutterActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        setTheme(R.style.Theme_AppCompat);
+        setTheme(R.style.SplashTheme);
+
         super.onCreate(savedInstanceState);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);

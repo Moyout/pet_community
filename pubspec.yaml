@@ -109,9 +109,9 @@ dev_dependencies:
 ###  ????app???
 flutter_icons:
   # use "flutter pub run flutter_launcher_icons:main"
-  android: "launcher_icon"
+  android: "ic_launcher"
   ios: true
-  image_path: "assets/images/launcher_icon.png"
+  image_path: "assets/images/ic_launcher.png"
 
 flutter:
 

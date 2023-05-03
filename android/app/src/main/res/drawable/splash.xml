@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 底部的实际颜色 -->
+    <!--    <item android:drawable="?attr/colorPrimaryDark" />-->
+    <!-- 覆盖图层，在这里书写要显示的图片或者文字等 -->
+    <item android:drawable="@android:color/white" />
+    <item
+        android:width="200dp"
+        android:height="200dp"
+        android:drawable="@drawable/ic_launcher"
+        android:gravity="center" />
+
+
+</layer-list>

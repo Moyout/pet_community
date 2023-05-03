@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Splash" parent="Theme.AppCompat" >
-        <item name="android:windowBackground" >@drawable/launcher_icon</item>
+        <item name="android:windowBackground" >@mipmap/ic_launcher</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
-    
+
 </resources>

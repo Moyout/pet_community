@@ -38,7 +38,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.moyou.pet_community"
         minSdkVersion 23
-        targetSdkVersion flutter.targetSdkVersion
+//        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 30
+
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 //        ndk {
@@ -102,5 +104,6 @@ dependencies{
     implementation 'com.google.firebase:firebase-messaging:23.0.7'
     implementation 'cn.jiguang.sdk.plugin:fcm:4.7.2'
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
 }

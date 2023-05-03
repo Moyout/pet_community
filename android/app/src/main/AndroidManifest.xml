@@ -14,7 +14,7 @@
 <!--    android:name="${applicationName}"-->
 
     <application
-        android:icon="@mipmap/launcher_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="宠物社区"
         tools:replace="android:label"
         android:usesCleartextTraffic="true"
@@ -22,12 +22,11 @@
 
         <activity
             android:name=".MainActivity"
-
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustResize">
 <!--            android:theme="@style/LaunchTheme"-->
             <!-- Specifies an Android theme to apply to this Activity as soon as
@@ -54,12 +53,12 @@
             android:value="2" />
 
 
-        <service
+       <!-- <service
             android:name=".FcmNotifyService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
+        </service>-->
     </application>
 </manifest>
