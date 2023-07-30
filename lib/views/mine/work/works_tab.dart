@@ -65,8 +65,6 @@ class _WorksTabState extends State<WorksTab> {
                         CommunityDetailView(
                           title: widget.userArticleModel.data![index].title ?? "",
                           content: widget.userArticleModel.data![index].content ?? "",
-                          avatar: widget.userArticleModel.data![index].avatar ??
-                              ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
                           articleId: widget.userArticleModel.data![index].articleId!,
                           pictures: widget.userArticleModel.data![index].pictures!,
                           userId: widget.userArticleModel.data![index].userId!,

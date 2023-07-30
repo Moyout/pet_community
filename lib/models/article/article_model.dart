@@ -1,3 +1,4 @@
+import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class ArticleRequest {
@@ -23,20 +24,16 @@ class ArticleRequest {
 /// msg : "操作成功"
 /// data : [{"articleId":31263,"author":"moyou","avatar":null,"title":"title","content":"content","cover":"cover","pictures":["pictures"],"likes":0,"publicationTime":"2022-05-31T06:54:45","userId":100018},{"articleId":31264,"author":"moyou","avatar":null,"title":"title","content":"content","cover":"cover","pictures":["pictures"],"likes":0,"publicationTime":"2022-05-31T06:55:05","userId":100018},{"articleId":31267,"author":"moyou","avatar":null,"title":"title","content":"content","cover":"cover","pictures":["pictures"],"likes":0,"publicationTime":"2022-05-31T10:31:28","userId":100018},{"articleId":31269,"author":"moyou","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1653287231038.jpg","title":"title","content":"content","cover":"cover","pictures":["pictures"],"likes":0,"publicationTime":"2022-05-31T10:48:29","userId":100018},{"articleId":31270,"author":"moyou","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1653287231038.jpg","title":"title","content":"content","cover":"cover","pictures":["pictures"],"likes":0,"publicationTime":"2022-05-31T10:49:08","userId":100018}]
 
-class ArticleModel {
+class ArticleModel extends ResponseModel {
   ArticleModel({
-    int? code,
-    String? msg,
     List<Data>? data,
   }) {
-    _code = code;
-    _msg = msg;
     _data = data;
   }
 
   ArticleModel.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
+    code = json['code'];
+    msg = json['msg'];
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
@@ -45,31 +42,23 @@ class ArticleModel {
     }
   }
 
-  int? _code;
-  String? _msg;
   List<Data>? _data;
 
   ArticleModel copyWith({
-    int? code,
-    String? msg,
     List<Data>? data,
   }) =>
       ArticleModel(
-        code: code ?? _code,
-        msg: msg ?? _msg,
         data: data ?? _data,
       );
 
-  int? get code => _code;
-
-  String? get msg => _msg;
-
+  @override
   List<Data>? get data => _data;
 
+  @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['msg'] = msg;
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
@@ -91,8 +80,6 @@ class ArticleModel {
 class Data {
   Data({
     int? articleId,
-    String? author,
-    dynamic avatar,
     String? title,
     String? content,
     String? cover,
@@ -102,8 +89,6 @@ class Data {
     int? userId,
   }) {
     _articleId = articleId;
-    _author = author;
-    _avatar = avatar;
     _title = title;
     _content = content;
     _cover = cover;
@@ -115,8 +100,7 @@ class Data {
 
   Data.fromJson(dynamic json) {
     _articleId = json['articleId'];
-    _author = json['author'];
-    _avatar = json['avatar'];
+
     _title = json['title'];
     _content = json['content'];
     _cover = json['cover'];
@@ -127,8 +111,6 @@ class Data {
   }
 
   int? _articleId;
-  String? _author;
-  dynamic _avatar;
   String? _title;
   String? _content;
   String? _cover;
@@ -151,8 +133,6 @@ class Data {
   }) =>
       Data(
         articleId: articleId ?? _articleId,
-        author: author ?? _author,
-        avatar: avatar ?? _avatar,
         title: title ?? _title,
         content: content ?? _content,
         cover: cover ?? _cover,
@@ -163,10 +143,6 @@ class Data {
       );
 
   int? get articleId => _articleId;
-
-  String? get author => _author;
-
-  dynamic get avatar => _avatar;
 
   String? get title => _title;
 
@@ -185,8 +161,6 @@ class Data {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['articleId'] = _articleId;
-    map['author'] = _author;
-    map['avatar'] = _avatar;
     map['title'] = _title;
     map['content'] = _content;
     map['cover'] = _cover;

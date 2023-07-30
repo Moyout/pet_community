@@ -4,10 +4,18 @@
     <!-- 覆盖图层，在这里书写要显示的图片或者文字等 -->
     <item android:drawable="@android:color/white" />
     <item
-        android:width="200dp"
-        android:height="200dp"
+        android:width="160dp"
+        android:height="160dp"
+        android:bottom="200dp"
         android:drawable="@drawable/ic_launcher"
         android:gravity="center" />
+        <item
+            android:width="200dp"
+            android:height="50dp"
 
+            android:drawable="@drawable/pet_text"
+            android:bottom="10dp"
+            android:gravity="center" />
 
 </layer-list>
+

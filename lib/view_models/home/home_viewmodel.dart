@@ -3,7 +3,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  VideoModel videoModel = VideoModel();
+  late VideoModel videoModel = VideoModel();
   RefreshController refreshC = RefreshController();
   int page = 1;
   bool enablePullUp = true;

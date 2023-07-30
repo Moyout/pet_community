@@ -12,7 +12,6 @@ class CommunityDetailView extends StatefulWidget {
   final int userId;
   final String title;
   final String content;
-  final String avatar;
   final List<String> pictures;
   final bool isShowUserInfoView;
 
@@ -21,7 +20,6 @@ class CommunityDetailView extends StatefulWidget {
     required this.title,
     required this.content,
     required this.articleId,
-    required this.avatar,
     required this.pictures,
     required this.userId,
     required this.isShowUserInfoView,
@@ -76,7 +74,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                 },
                                 child: ClipOval(
                                   child: CachedNetworkImage(
-                                    imageUrl: widget.avatar,
+                                    imageUrl: "widget.avatar",
                                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                                         const CupertinoActivityIndicator(),
                                     width: 40.w,
@@ -321,7 +319,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
             ),
             UserInfoView(
               userId: widget.userId,
-              avatar: widget.avatar,
+              avatar: "widget.avatar",
             ),
           ],
         ),

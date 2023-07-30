@@ -39,7 +39,7 @@ class _StartUpViewState extends State<StartUpView> {
                 fit: BoxFit.cover,
                 errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                   return Image.asset(
-                    "assets/images/launch_images/pet${state.random}.jpg",
+                    "assets/images/launch_images/pet${(state.random / 10).ceil()}.jpg",
                     fit: BoxFit.cover,
                   );
                 },

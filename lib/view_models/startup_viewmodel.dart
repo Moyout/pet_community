@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/views/navigation_view.dart';
 
@@ -7,7 +8,7 @@ class StartUpViewModel extends ChangeNotifier {
   late Timer _timer;
   int seconds = 4; //秒数
   late int jpgFileCount;
-  late int random = 0; //随机
+  late int random = 1; //随机
 
   // late Uint8List bytes; //启动图
   ///初始化ViewModel
@@ -47,6 +48,7 @@ class StartUpViewModel extends ChangeNotifier {
       notifyListeners();
     }
     debugPrint("jpgFileCount      $jpgFileCount");
+    debugPrint("random--------->${random}");
     // bytes = BaseToUint8List().base64ToImage("");
   }
 }

@@ -7,9 +7,8 @@ import 'package:pet_community/widget/video/video_widget.dart';
 import 'package:share_extend/share_extend.dart';
 
 class VideoDetailView extends StatefulWidget {
-  final String? userName;
+  final int? videoId;
   final String? content;
-  final String avatar;
   final String videoUrl;
   final String picUrl;
   final int userId;
@@ -17,12 +16,11 @@ class VideoDetailView extends StatefulWidget {
 
   const VideoDetailView({
     Key? key,
+    required this.videoId,
     required this.videoUrl,
     required this.picUrl,
     required this.index,
-    required this.userName,
     this.content,
-    required this.avatar,
     required this.userId,
   }) : super(key: key);
 
@@ -38,7 +36,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
   @override
   void initState() {
     super.initState();
-    context.read<VideoDetailViewModel>().initViewModel();
+    context.read<VideoDetailViewModel>().initViewModel(widget.videoId);
   }
 
   @override
@@ -89,7 +87,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "@${widget.userName}",
+                "@${context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.userName}",
                 style: TextStyle(color: Colors.white.withOpacity(0.5), letterSpacing: 1.2, fontSize: 16.sp),
               ),
               SizedBox(height: 10.w),
@@ -113,19 +111,29 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        debugPrint("asd---------> {asd}");
                         pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
                       child: Center(
                         child: Hero(
                           tag: widget.index,
                           child: ClipOval(
-                            child: CachedNetworkImage(
-                              width: 50.w,
-                              height: 50.w,
-                              fit: BoxFit.cover,
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  const CupertinoActivityIndicator(),
-                              imageUrl: widget.avatar,
+                            child: Consumer<VideoDetailViewModel>(
+                              builder: (context, VideoDetailViewModel model, child) {
+                                return model.videoDetailModel != null
+                                    ? CachedNetworkImage(
+                                        width: 50.w,
+                                        height: 50.w,
+                                        fit: BoxFit.cover,
+                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            const CupertinoActivityIndicator(),
+                                        imageUrl: model.videoDetailModel?.data?.userInfo.avatar ?? "",
+                                        errorWidget: (context, url, error) {
+                                          return Container();
+                                        },
+                                      )
+                                    : Container();
+                              },
                             ),
                           ),
                         ),
@@ -180,6 +188,8 @@ class _VideoDetailViewState extends State<VideoDetailView> {
   }
 
   Widget buildUserInfoWidget() {
-    return UserInfoView(userId: widget.userId, avatar: widget.avatar);
+    return UserInfoView(
+        userId: widget.userId,
+        avatar: context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.avatar ?? "");
   }
 }

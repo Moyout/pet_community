@@ -21,7 +21,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 //apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -47,15 +47,15 @@ android {
 //            //选择要添加的对应 cpu 类型的 .so 库。
 //            abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
 //        }
-        manifestPlaceholders = [
-                applicationName:"MainActivity",
-//                JPUSH_PKGNAME: "com.moyou.pet_community",
-                JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "5248bceabc505fc3c349b32a",
-                JPUSH_CHANNEL: "developer-default",
-                XIAOMI_APPID : "MI-2882303761520175551",
-                XIAOMI_APPKEY : "MI-5832017568551"
-        ]
+//        manifestPlaceholders = [
+//                applicationName:"MainActivity",
+////                JPUSH_PKGNAME: "com.moyou.pet_community",
+//                JPUSH_PKGNAME: applicationId,
+//                JPUSH_APPKEY : "5248bceabc505fc3c349b32a",
+//                JPUSH_CHANNEL: "developer-default",
+//                XIAOMI_APPID : "MI-2882303761520175551",
+//                XIAOMI_APPKEY : "MI-5832017568551"
+//        ]
 
 
     }
@@ -92,18 +92,18 @@ flutter {
 }
 
 dependencies{
-    implementation 'cn.jiguang.sdk:jcore:3.3.0'  // 此处以JCore 2.7.2 版本为例。
+//    implementation 'cn.jiguang.sdk:jcore:3.3.0'  // 此处以JCore 2.7.2 版本为例。
 
-    implementation 'cn.jiguang.sdk:jpush:4.7.2'  // 此处以JPush 4.0.0 版本为例
+//    implementation 'cn.jiguang.sdk:jpush:4.7.2'  // 此处以JPush 4.0.0 版本为例
 
-    implementation 'cn.jiguang.sdk.plugin:xiaomi:4.7.2'
+//    implementation 'cn.jiguang.sdk.plugin:xiaomi:4.7.2'
     // 接入华为厂商
 //    implementation 'com.huawei.hms:push:4.0.2.300'
-    implementation 'cn.jiguang.sdk.plugin:huawei:4.7.2'// 极光厂商插件版本与接入 JPush 版本保持一致，下同
+//    implementation 'cn.jiguang.sdk.plugin:huawei:4.7.2'// 极光厂商插件版本与接入 JPush 版本保持一致，下同
     // 接入 FCM 厂商
-    implementation 'com.google.firebase:firebase-messaging:23.0.7'
-    implementation 'cn.jiguang.sdk.plugin:fcm:4.7.2'
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+//    implementation 'com.google.firebase:firebase-messaging:23.0.7'
+//    implementation 'cn.jiguang.sdk.plugin:fcm:4.7.2'
+//    implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
 }

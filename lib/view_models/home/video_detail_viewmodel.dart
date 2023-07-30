@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:pet_community/models/video/video_detail_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class VideoDetailViewModel extends ChangeNotifier {
@@ -8,10 +9,17 @@ class VideoDetailViewModel extends ChangeNotifier {
   FocusNode focusNode = FocusNode();
   bool isNoSliding = false;
   late PointerMoveEvent pointerMoveEvent;
+  VideoDetailModel? videoDetailModel;
 
-  void initViewModel() {
+  Future<void> initViewModel(int? videoId) async {
     textC.clear();
     showComment = false;
+    videoDetailModel = null;
+    if (videoId != null) {
+      VideoDetailModel vdm = await VideoDetailRequest.getVideoDetail(videoId: videoId);
+      videoDetailModel = vdm;
+      notifyListeners();
+    }
   }
 
   ///打开评论

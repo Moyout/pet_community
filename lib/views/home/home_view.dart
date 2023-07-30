@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
             onRefresh: () => context.read<HomeViewModel>().onRefresh(false),
             onLoading: () => context.read<HomeViewModel>().loadMore(),
             enablePullUp: context.watch<HomeViewModel>().enablePullUp,
-            child: context.watch<HomeViewModel>().videoModel.data == null
+            child: context.watch<HomeViewModel>().videoModel == null
                 ? Center(
                     child: TextButton(
                       onPressed: () => context.read<HomeViewModel>().onRefresh(true),
@@ -52,13 +52,14 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                           RouteUtil.push(
                             context,
                             VideoDetailView(
-                              avatar: context.read<HomeViewModel>().videoModel.data?[index].avatar ??
-                                  ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
-                              userName: context.read<HomeViewModel>().videoModel.data?[index].userName,
+                              videoId: context.read<HomeViewModel>().videoModel.data?[index].videoId,
+                              // avatar: context.read<HomeViewModel>().videoModel.data?[index].avatar ??
+                              //     ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                              // userName: context.read<HomeViewModel>().videoModel.data?[index].userName,
                               videoUrl: context.read<HomeViewModel>().videoModel.data![index].video!,
                               picUrl: context.read<HomeViewModel>().videoModel.data![index].cover!,
                               content: context.read<HomeViewModel>().videoModel.data?[index].content,
-                              userId: context.read<HomeViewModel>().videoModel.data![index].userId!,
+                              userId: context.read<HomeViewModel>().videoModel.data![index].userId,
                               index: index,
                             ),
                           );
@@ -110,8 +111,8 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                               fit: BoxFit.cover,
                                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                                   const CupertinoActivityIndicator(),
-                                              imageUrl: context.watch<HomeViewModel>().videoModel.data?[index].avatar ??
-                                                  ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                                              imageUrl:
+                                                  "http://www.urmbf.top:8081/images/100027/petVideoCover/avatar4.png",
                                             ),
                                           ),
                                         ),
@@ -119,7 +120,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                                             child: Text(
-                                              context.watch<HomeViewModel>().videoModel.data?[index].userName ?? "",
+                                              " context.watch<HomeViewModel>().videoModel.data?[index].userName" ?? "",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
