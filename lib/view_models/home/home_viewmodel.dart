@@ -29,9 +29,9 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> loadMore() async {
     page++;
     VideoModel model = await VideoRequest.getVideo(page: page).whenComplete(() => refreshC.loadComplete());
-    if (model.data!.isNotEmpty) {
-      model.data?.forEach((Data item) {
-        videoModel.data?.add(item);
+    if (model.data!.videos!.isNotEmpty) {
+      model.data?.videos!.forEach((Videos item) {
+        videoModel.data?.videos?.add(item);
       });
       debugPrint("model--------->${model.data}");
     } else {

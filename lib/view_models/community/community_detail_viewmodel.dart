@@ -67,9 +67,9 @@ class CommunityDetailViewModel extends ChangeNotifier {
     commentPage++;
     CommentModel model = await CommentRequest.getComment(articleId: articleId, page: commentPage)
         .whenComplete(() => refreshC.loadComplete());
-    if (model.data!.isNotEmpty) {
-      model.data?.forEach((comment_model_data.Data item) {
-        commentModel.data?.add(item);
+    if (model.data!.articleComments.isNotEmpty) {
+      model.data?.articleComments.forEach((comment_model_data.ArticleComments item) {
+        commentModel.data?.articleComments.add(item);
       });
     } else {
       enablePullUp = false;
@@ -96,15 +96,13 @@ class CommunityDetailViewModel extends ChangeNotifier {
         );
         if (releaseCommentModel.code == 0) {
           if (!enablePullUp) {
-            commentModel.data?.add(
-              comment_model_data.Data(
+            commentModel.data?.articleComments.add(
+              comment_model_data.ArticleComments(
                 articleId: articleId,
-                avatar: avatar,
-                userId: context.read<NavViewModel>().userInfoModel?.data?.userId,
-                commentator: commentator,
+                userId: context.read<NavViewModel>().userInfoModel!.data!.userId!,
                 commentContent: textC.text.trimRight(),
                 commentTime: DateTime.now().toString().substring(0, 19),
-                commentId: releaseCommentModel.data?.commentId,
+                commentId: releaseCommentModel.data!.commentId!,
               ),
             );
           }
@@ -130,7 +128,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
     DeleteCommentModel deleteCommentModel =
         await DeleteCommentRequest.deleteComment(commentId: commentId, userId: userId!, token: token!);
     if (deleteCommentModel.code == 0) {
-      commentModel.data?.removeWhere((element) => element.commentId == commentId);
+      commentModel.data?.articleComments.removeWhere((element) => element.commentId == commentId);
       isDelete = true;
     } else if (deleteCommentModel.code == 1007) {
       LoginViewModel.tokenExpire();
@@ -161,6 +159,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
           .read<CommunityViewModel>()
           .articleModel
           .data
+          ?.articles
           ?.removeWhere((element) => articleId == element.articleId);
       AppUtils.getContext().read<MineViewModel>().notifyListeners();
       AppUtils.getContext().read<CommunityViewModel>().notifyListeners();

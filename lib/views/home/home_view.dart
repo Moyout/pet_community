@@ -44,7 +44,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                     crossAxisCount: 2,
                     crossAxisSpacing: 5.w,
                     mainAxisSpacing: 5.w,
-                    itemCount: context.watch<HomeViewModel>().videoModel.data?.length ?? 0,
+                    itemCount: context.watch<HomeViewModel>().videoModel.data?.videos?.length ?? 0,
                     itemBuilder: (BuildContext context, int index) {
                       int d = (index % 10) + 1;
                       return GestureDetector(
@@ -52,14 +52,14 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                           RouteUtil.push(
                             context,
                             VideoDetailView(
-                              videoId: context.read<HomeViewModel>().videoModel.data?[index].videoId,
+                              videoId: context.read<HomeViewModel>().videoModel.data?.videos![index].videoId,
                               // avatar: context.read<HomeViewModel>().videoModel.data?[index].avatar ??
                               //     ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
                               // userName: context.read<HomeViewModel>().videoModel.data?[index].userName,
-                              videoUrl: context.read<HomeViewModel>().videoModel.data![index].video!,
-                              picUrl: context.read<HomeViewModel>().videoModel.data![index].cover!,
-                              content: context.read<HomeViewModel>().videoModel.data?[index].content,
-                              userId: context.read<HomeViewModel>().videoModel.data![index].userId,
+                              videoUrl: context.read<HomeViewModel>().videoModel.data!.videos![index].video!,
+                              picUrl: context.read<HomeViewModel>().videoModel.data!.videos![index].cover!,
+                              content: context.read<HomeViewModel>().videoModel.data?.videos![index].content,
+                              userId: context.read<HomeViewModel>().videoModel.data!.videos![index].userId,
                               index: index,
                             ),
                           );
@@ -74,11 +74,11 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Hero(
-                                tag: "${context.watch<HomeViewModel>().videoModel.data![index].cover}" +
+                                tag: "${context.watch<HomeViewModel>().videoModel.data!.videos![index].cover}" +
                                     index.toString(),
                                 child: CachedNetworkImage(
-                                  cacheKey: context.watch<HomeViewModel>().videoModel.data![index].cover,
-                                  imageUrl: context.watch<HomeViewModel>().videoModel.data![index].cover!,
+                                  cacheKey: context.watch<HomeViewModel>().videoModel.data!.videos![index].cover,
+                                  imageUrl: context.watch<HomeViewModel>().videoModel.data!.videos![index].cover!,
                                   progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                                     height: index % 2 == 0 ? 150.w : 250.w,
                                     child: const Center(child: CupertinoActivityIndicator()),
@@ -93,7 +93,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 5.w),
                                       child: Text(
-                                        context.watch<HomeViewModel>().videoModel.data?[index].title ?? "",
+                                        context.watch<HomeViewModel>().videoModel.data?.videos![index].title ?? "",
                                         textAlign: TextAlign.start,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -120,7 +120,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                                             child: Text(
-                                              " context.watch<HomeViewModel>().videoModel.data?[index].userName" ?? "",
+                                              " context.watch<HomeViewModel>().videoModel.data?[index].userName",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

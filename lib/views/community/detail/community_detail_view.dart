@@ -241,7 +241,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
 
                           ///暂无评论widget
                           if (context.watch<CommunityDetailViewModel>().commentModel.data != null)
-                            if (context.watch<CommunityDetailViewModel>().commentModel.data!.isEmpty)
+                            if (context.watch<CommunityDetailViewModel>().commentModel.data!.articleComments.isEmpty)
                               Column(
                                 children: [
                                   Icon(
@@ -256,7 +256,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                 ],
                               ),
                           if (context.watch<CommunityDetailViewModel>().commentModel.data != null)
-                            if (context.watch<CommunityDetailViewModel>().commentModel.data!.isNotEmpty)
+                            if (context.watch<CommunityDetailViewModel>().commentModel.data!.articleComments.isNotEmpty)
                               CommentListView(articleId: widget.articleId, userId: widget.userId),
                         ],
                       ),

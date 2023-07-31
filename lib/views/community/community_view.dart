@@ -42,7 +42,7 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                         ),
                       )
                     : ListView.builder(
-                        itemCount: context.watch<CommunityViewModel>().articleModel.data?.length,
+                        itemCount: context.watch<CommunityViewModel>().articleModel.data?.articles?.length,
                         itemBuilder: (BuildContext context, int index) {
                           int d = (index % 10) + 1;
                           return GestureDetector(
@@ -50,11 +50,16 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                               RouteUtil.pushByCupertino(
                                 context,
                                 CommunityDetailView(
-                                  title: context.read<CommunityViewModel>().articleModel.data![index].title ?? "",
-                                  content: context.read<CommunityViewModel>().articleModel.data![index].content ?? "",
-                                  articleId: context.read<CommunityViewModel>().articleModel.data![index].articleId!,
-                                  pictures: context.read<CommunityViewModel>().articleModel.data![index].pictures!,
-                                  userId: context.read<CommunityViewModel>().articleModel.data![index].userId!,
+                                  title: context.read<CommunityViewModel>().articleModel.data!.articles?[index].title ??
+                                      "",
+                                  content:
+                                      context.read<CommunityViewModel>().articleModel.data!.articles?[index].content ??
+                                          "",
+                                  articleId:
+                                      context.read<CommunityViewModel>().articleModel.data!.articles![index].articleId,
+                                  pictures:
+                                      context.read<CommunityViewModel>().articleModel.data!.articles![index].pictures!,
+                                  userId: context.read<CommunityViewModel>().articleModel.data!.articles![index].userId,
                                   isShowUserInfoView: true,
                                 ),
                               );
@@ -105,7 +110,8 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                               context
                                                   .watch<CommunityViewModel>()
                                                   .articleModel
-                                                  .data![index]
+                                                  .data!
+                                                  .articles![index]
                                                   .publicationTime!,
                                               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                                             ),
@@ -116,8 +122,13 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                   ),
                                   Container(
                                     margin: EdgeInsets.symmetric(vertical: 10.w),
-                                    child: Text(
-                                        context.watch<CommunityViewModel>().articleModel.data![index].content ?? ""),
+                                    child: Text(context
+                                            .watch<CommunityViewModel>()
+                                            .articleModel
+                                            .data!
+                                            .articles![index]
+                                            .content ??
+                                        ""),
                                   ),
                                   Wrap(
                                     spacing: 5.w,
@@ -127,13 +138,15 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                           context
                                               .watch<CommunityViewModel>()
                                               .articleModel
-                                              .data![index]
+                                              .data!
+                                              .articles![index]
                                               .pictures!
                                               .length, (index2) {
                                         int count = context
                                             .watch<CommunityViewModel>()
                                             .articleModel
-                                            .data![index]
+                                            .data!
+                                            .articles![index]
                                             .pictures!
                                             .length;
                                         int divideBy = 1;
@@ -154,7 +167,8 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                               imageUrl: context
                                                   .watch<CommunityViewModel>()
                                                   .articleModel
-                                                  .data![index]
+                                                  .data!
+                                                  .articles![index]
                                                   .pictures![index2],
                                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                                   const CupertinoActivityIndicator(),
@@ -178,8 +192,9 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                         Text(context
                                             .watch<CommunityViewModel>()
                                             .articleModel
-                                            .data![index]
-                                            .likes!
+                                            .data!
+                                            .articles![index]
+                                            .likes
                                             .toString())
                                       ]),
                                     ],

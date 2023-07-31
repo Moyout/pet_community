@@ -24,7 +24,7 @@ class _CommentListViewState extends State<CommentListView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ...List.generate(context.read<CommunityDetailViewModel>().commentModel.data!.length, (index) {
+        ...List.generate(context.read<CommunityDetailViewModel>().commentModel.data!.articleComments.length, (index) {
           int d = (index % 10) + 1;
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
@@ -36,8 +36,7 @@ class _CommentListViewState extends State<CommentListView> {
                   children: [
                     ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: context.watch<CommunityDetailViewModel>().commentModel.data?[index].avatar ??
-                            ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
+                        imageUrl: "",
                         width: 40.w,
                         height: 40.w,
                         fit: BoxFit.cover,
@@ -53,10 +52,26 @@ class _CommentListViewState extends State<CommentListView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             if ((widget.userId ==
-                                        context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId ||
-                                    context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId ==
+                                        context
+                                            .watch<CommunityDetailViewModel>()
+                                            .commentModel
+                                            .data
+                                            ?.articleComments[index]
+                                            .userId ||
+                                    context
+                                            .watch<CommunityDetailViewModel>()
+                                            .commentModel
+                                            .data
+                                            ?.articleComments[index]
+                                            .userId ==
                                         context.watch<NavViewModel>().userInfoModel?.data?.userId) &&
-                                context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId != null)
+                                context
+                                        .watch<CommunityDetailViewModel>()
+                                        .commentModel
+                                        .data
+                                        ?.articleComments[index]
+                                        .userId !=
+                                    null)
                               Container(
                                 height: 12.w,
                                 width: 20.w,
@@ -64,16 +79,31 @@ class _CommentListViewState extends State<CommentListView> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: widget.userId ==
-                                          context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId
+                                          context
+                                              .watch<CommunityDetailViewModel>()
+                                              .commentModel
+                                              .data
+                                              ?.articleComments[index]
+                                              .userId
                                       ? Colors.red
                                       : Colors.blue,
                                   borderRadius: BorderRadius.circular(3.w),
                                 ),
                                 child: Text(
                                   widget.userId ==
-                                          context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId
+                                          context
+                                              .watch<CommunityDetailViewModel>()
+                                              .commentModel
+                                              .data
+                                              ?.articleComments[index]
+                                              .userId
                                       ? "楼主"
-                                      : (context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId ==
+                                      : (context
+                                                      .watch<CommunityDetailViewModel>()
+                                                      .commentModel
+                                                      .data
+                                                      ?.articleComments[index]
+                                                      .userId ==
                                                   context.watch<NavViewModel>().userInfoModel?.data?.userId) &&
                                               context.watch<NavViewModel>().userInfoModel?.data?.userId != null
                                           ? "自己"
@@ -86,7 +116,7 @@ class _CommentListViewState extends State<CommentListView> {
                               alignment: Alignment.centerLeft,
                               constraints: BoxConstraints(maxWidth: 150.w, minWidth: 0),
                               child: Text(
-                                " ${context.read<CommunityDetailViewModel>().commentModel.data![index].commentator}",
+                                " commentator}",
                                 style: TextStyle(fontSize: 12.sp),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -95,7 +125,7 @@ class _CommentListViewState extends State<CommentListView> {
                           ],
                         ),
                         Text(
-                          "${context.read<CommunityDetailViewModel>().commentModel.data![index].commentTime}",
+                          "${context.read<CommunityDetailViewModel>().commentModel.data!.articleComments[index].commentTime}",
                           style: TextStyle(
                             color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),
                             fontSize: 10.sp,
@@ -115,7 +145,7 @@ class _CommentListViewState extends State<CommentListView> {
                   child: Stack(
                     children: [
                       SelectableText(
-                        "${context.read<CommunityDetailViewModel>().commentModel.data![index].commentContent}",
+                        "${context.read<CommunityDetailViewModel>().commentModel.data!.articleComments[index].commentContent}",
                         style: TextStyle(
                           letterSpacing: 1.0,
                           fontSize: 13.sp,
@@ -124,7 +154,12 @@ class _CommentListViewState extends State<CommentListView> {
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: (context.watch<CommunityDetailViewModel>().commentModel.data?[index].userId ==
+                        child: (context
+                                        .watch<CommunityDetailViewModel>()
+                                        .commentModel
+                                        .data
+                                        ?.articleComments[index]
+                                        .userId ==
                                     context.watch<NavViewModel>().userInfoModel?.data?.userId &&
                                 context.watch<NavViewModel>().userInfoModel?.data?.userId != null)
                             ? InkWell(
@@ -140,8 +175,9 @@ class _CommentListViewState extends State<CommentListView> {
                                                 AppUtils.getContext()
                                                     .read<CommunityDetailViewModel>()
                                                     .commentModel
-                                                    .data![index]
-                                                    .commentId!);
+                                                    .data!
+                                                    .articleComments[index]
+                                                    .commentId);
                                             // if (delete) Navigator.pop(AppUtils.getContext());
                                           },
                                         );

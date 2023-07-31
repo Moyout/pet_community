@@ -1,3 +1,4 @@
+import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class CommentRequest {
@@ -19,146 +20,155 @@ class CommentRequest {
 }
 
 /// code : 0
-/// msg : "操作成功"
-/// data : [{"commentId":1001,"commentator":"陌友2","avatar":null,"commentContent":"这是一条评论内容","commentTime":"2022-04-29T20:54:04","articleId":31269,"userId":100018}]
+/// msg : "成功"
+/// data : {"total":4,"articleComments":[{"commentId":20001,"commentContent":"好可爱的修勾","commentTime":"2022-06-26T03:05:16","articleId":31379,"userId":100029},{"commentId":20002,"commentContent":"可爱","commentTime":"2022-06-26T09:06:27","articleId":31379,"userId":100028},{"commentId":20003,"commentContent":"太可爱了吧","commentTime":"2022-06-26T08:07:12","articleId":31379,"userId":100028},{"commentId":20004,"commentContent":"带着小发卡太可爱了","commentTime":"2022-06-26T10:08:00","articleId":31379,"userId":100027}]}
 
-class CommentModel {
+class CommentModel extends ResponseModel {
   CommentModel({
-    int? code,
-    String? msg,
-    List<Data>? data,
+    Data? data,
   }) {
-    _code = code;
-    _msg = msg;
     _data = data;
   }
 
   CommentModel.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
-      });
-    }
+    code = json['code'];
+    msg = json['msg'];
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
-  int? _code;
-  String? _msg;
-  List<Data>? _data;
+  Data? _data;
 
   CommentModel copyWith({
-    int? code,
-    String? msg,
-    List<Data>? data,
+    Data? data,
   }) =>
       CommentModel(
-        code: code ?? _code,
-        msg: msg ?? _msg,
         data: data ?? _data,
       );
 
-  int? get code => _code;
+  @override
+  Data? get data => _data;
 
-  String? get msg => _msg;
-
-  List<Data>? get data => _data;
-
+  @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['msg'] = msg;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
 }
 
-/// commentId : 1001
-/// commentator : "陌友2"
-/// avatar : null
-/// commentContent : "这是一条评论内容"
-/// commentTime : "2022-04-29T20:54:04"
-/// articleId : 31269
-/// userId : 100018
+/// total : 4
+/// articleComments : [{"commentId":20001,"commentContent":"好可爱的修勾","commentTime":"2022-06-26T03:05:16","articleId":31379,"userId":100029},{"commentId":20002,"commentContent":"可爱","commentTime":"2022-06-26T09:06:27","articleId":31379,"userId":100028},{"commentId":20003,"commentContent":"太可爱了吧","commentTime":"2022-06-26T08:07:12","articleId":31379,"userId":100028},{"commentId":20004,"commentContent":"带着小发卡太可爱了","commentTime":"2022-06-26T10:08:00","articleId":31379,"userId":100027}]
 
 class Data {
   Data({
-    int? commentId,
-    String? commentator,
-    dynamic avatar,
+    required int total,
+    required List<ArticleComments> articleComments,
+  }) {
+    _total = total;
+    _articleComments = articleComments;
+  }
+
+  Data.fromJson(dynamic json) {
+    _total = json['total'];
+    if (json['articleComments'] != null) {
+      _articleComments = [];
+      json['articleComments'].forEach((v) {
+        _articleComments.add(ArticleComments.fromJson(v));
+      });
+    }
+  }
+
+  late int _total;
+  late List<ArticleComments> _articleComments;
+
+  Data copyWith({
+    required int total,
+    required List<ArticleComments> articleComments,
+  }) =>
+      Data(
+        total: total,
+        articleComments: articleComments,
+      );
+
+  int get total => _total;
+
+  List<ArticleComments> get articleComments => _articleComments;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['total'] = _total;
+    map['articleComments'] = _articleComments.map((v) => v.toJson()).toList();
+    return map;
+  }
+}
+
+/// commentId : 20001
+/// commentContent : "好可爱的修勾"
+/// commentTime : "2022-06-26T03:05:16"
+/// articleId : 31379
+/// userId : 100029
+
+class ArticleComments {
+  ArticleComments({
+    required int commentId,
     String? commentContent,
     String? commentTime,
-    int? articleId,
-    int? userId,
+    required int articleId,
+    required int userId,
   }) {
     _commentId = commentId;
-    _commentator = commentator;
-    _avatar = avatar;
     _commentContent = commentContent;
     _commentTime = commentTime;
     _articleId = articleId;
     _userId = userId;
   }
 
-  Data.fromJson(dynamic json) {
+  ArticleComments.fromJson(dynamic json) {
     _commentId = json['commentId'];
-    _commentator = json['commentator'];
-    _avatar = json['avatar'];
     _commentContent = json['commentContent'];
     _commentTime = json['commentTime'];
     _articleId = json['articleId'];
     _userId = json['userId'];
   }
 
-  int? _commentId;
-  String? _commentator;
-  dynamic _avatar;
+  late int _commentId;
   String? _commentContent;
   String? _commentTime;
-  int? _articleId;
-  int? _userId;
+  late int _articleId;
+  late int _userId;
 
-  Data copyWith({
-    int? commentId,
-    String? commentator,
-    dynamic avatar,
+  ArticleComments copyWith({
+    required int commentId,
     String? commentContent,
     String? commentTime,
-    int? articleId,
-    int? userId,
+    required int articleId,
+    required int userId,
   }) =>
-      Data(
-        commentId: commentId ?? _commentId,
-        commentator: commentator ?? _commentator,
-        avatar: avatar ?? _avatar,
+      ArticleComments(
+        commentId: commentId,
         commentContent: commentContent ?? _commentContent,
         commentTime: commentTime ?? _commentTime,
-        articleId: articleId ?? _articleId,
-        userId: userId ?? _userId,
+        articleId: articleId,
+        userId: userId,
       );
 
-  int? get commentId => _commentId;
-
-  String? get commentator => _commentator;
-
-  dynamic get avatar => _avatar;
+  int get commentId => _commentId;
 
   String? get commentContent => _commentContent;
 
   String? get commentTime => _commentTime;
 
-  int? get articleId => _articleId;
+  int get articleId => _articleId;
 
-  int? get userId => _userId;
+  int get userId => _userId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['commentId'] = _commentId;
-    map['commentator'] = _commentator;
-    map['avatar'] = _avatar;
     map['commentContent'] = _commentContent;
     map['commentTime'] = _commentTime;
     map['articleId'] = _articleId;

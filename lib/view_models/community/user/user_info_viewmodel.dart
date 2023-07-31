@@ -96,7 +96,7 @@ class UserInfoViewModel extends ChangeNotifier {
       userArticleModel = model;
       notifyListeners();
     } else {
-      ToastUtil.showBottomToast(model.msg!);
+      ToastUtil.showBottomToast(model.msg);
     }
   }
 }

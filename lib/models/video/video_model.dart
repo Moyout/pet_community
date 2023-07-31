@@ -22,61 +22,106 @@ class VideoRequest {
 
 /// code : 0
 /// msg : "成功"
-/// data : [{"videoId":10002,"userName":"qwe","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg","cover":"http://106.52.246.134:8081/images/100018/petVideoCover/4e8187dde9424a568a2965760d3b980b.png","title":"title","content":"content","video":"http://106.52.246.134:8081/images/100018/petVideo/4e8187dde9424a568a2965760d3b980b.mp4","likes":0,"publicationTime":"2022-06-22T17:06:40","userId":100018},{"videoId":10003,"userName":"qwe","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg","cover":"http://106.52.246.134:8081/images/100018/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"title","content":"content","video":"http://106.52.246.134:8081/images/100018/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":0,"publicationTime":"2022-06-22T17:08:48","userId":100018},{"videoId":10004,"userName":"qwe","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg","cover":"http://106.52.246.134:8081/images/100018/petVideoCover/d12fc3d91dd942e0872d982e63be3ba4.png","title":"title","content":"content","video":"http://106.52.246.134:8081/images/100018/petVideo/d12fc3d91dd942e0872d982e63be3ba4.mp4","likes":0,"publicationTime":"2022-06-22T17:09:11","userId":100018},{"videoId":10014,"userName":"qwe","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg","cover":"http://106.52.246.134:8081/images/100018/petVideoCover/4e8187dde9424a568a2965760d3b980b.png","title":"title","content":"content","video":"http://106.52.246.134:8081/images/100018/petVideo/4e8187dde9424a568a2965760d3b980b.mp4","likes":0,"publicationTime":"2022-06-22T17:06:40","userId":100018},{"videoId":10015,"userName":"qwe","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg","cover":"http://106.52.246.134:8081/images/100018/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"title","content":"content","video":"http://106.52.246.134:8081/images/100018/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":0,"publicationTime":"2022-06-22T17:08:48","userId":100018}]
+/// data : {"total":2,"videos":[{"videoId":10023,"cover":"http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"标题","content":"今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的","video":"http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":7,"publicationTime":"2023-07-29T19:19:11","userId":100027},{"videoId":10025,"cover":"http://localhost:8081/images/100029/petVideoCover/6c6d0be14ed2e7502d2638d0a93d69b6.png","title":"title2","content":"像不像你女朋友生气时候的样子😂2","video":"http://localhost:8081/images/100029/petVideo/6c6d0be14ed2e7502d2638d0a93d69b6.mp4","likes":30,"publicationTime":"2023-07-29T21:42:30","userId":100029}]}
 
 class VideoModel extends ResponseModel {
   VideoModel({
-    List<Data>? data,
+    Data? data,
   }) {
     _data = data;
   }
 
-  VideoModel.fromJson(Map<String, dynamic> json) {
+  VideoModel.fromJson(dynamic json) {
     code = json['code'];
     msg = json['msg'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data']?.forEach((v) {
-        _data?.add(Data.fromJson(v));
-      });
-    }
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
-  List<Data>? _data;
+  Data? _data;
 
   VideoModel copyWith({
-    List<Data>? data,
+    int? code,
+    String? msg,
+    Data? data,
   }) =>
       VideoModel(
         data: data ?? _data,
       );
 
   @override
-  List<Data>? get data => _data;
+  Data? get data => _data;
 
   @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['code'] = code;
+    map['msg'] = msg;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
 }
 
-/// videoId : 10002
-/// userName : "qwe"
-/// avatar : "http://106.52.246.134:8081/images/100018/avatar/image_cropper_1655747662535.jpg"
-/// cover : "http://106.52.246.134:8081/images/100018/petVideoCover/4e8187dde9424a568a2965760d3b980b.png"
-/// title : "title"
-/// content : "content"
-/// video : "http://106.52.246.134:8081/images/100018/petVideo/4e8187dde9424a568a2965760d3b980b.mp4"
-/// likes : 0
-/// publicationTime : "2022-06-22T17:06:40"
-/// userId : 100018
+/// total : 2
+/// videos : [{"videoId":10023,"cover":"http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"标题","content":"今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的","video":"http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":7,"publicationTime":"2023-07-29T19:19:11","userId":100027},{"videoId":10025,"cover":"http://localhost:8081/images/100029/petVideoCover/6c6d0be14ed2e7502d2638d0a93d69b6.png","title":"title2","content":"像不像你女朋友生气时候的样子😂2","video":"http://localhost:8081/images/100029/petVideo/6c6d0be14ed2e7502d2638d0a93d69b6.mp4","likes":30,"publicationTime":"2023-07-29T21:42:30","userId":100029}]
 
 class Data {
   Data({
+    required int total,
+    List<Videos>? videos,
+  }) {
+    _total = total;
+    _videos = videos;
+  }
+
+  Data.fromJson(dynamic json) {
+    _total = json['total'];
+    if (json['videos'] != null) {
+      _videos = [];
+      json['videos'].forEach((v) {
+        _videos?.add(Videos.fromJson(v));
+      });
+    }
+  }
+
+  late int _total;
+  List<Videos>? _videos;
+
+  Data copyWith({
+    required int total,
+    List<Videos>? videos,
+  }) =>
+      Data(
+        total: total,
+        videos: videos ?? _videos,
+      );
+
+  int get total => _total;
+
+  List<Videos>? get videos => _videos;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['total'] = _total;
+    if (_videos != null) {
+      map['videos'] = _videos?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+/// videoId : 10023
+/// cover : "http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png"
+/// title : "标题"
+/// content : "今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的"
+/// video : "http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4"
+/// likes : 7
+/// publicationTime : "2023-07-29T19:19:11"
+/// userId : 100027
+
+class Videos {
+  Videos({
     required int videoId,
     String? cover,
     String? title,
@@ -96,7 +141,7 @@ class Data {
     _userId = userId;
   }
 
-  Data.fromJson(Map json) {
+  Videos.fromJson(dynamic json) {
     _videoId = json['videoId'];
     _cover = json['cover'];
     _title = json['title'];
@@ -116,10 +161,8 @@ class Data {
   String? _publicationTime;
   late int _userId;
 
-  Data copyWith({
+  Videos copyWith({
     required int videoId,
-    String? userName,
-    String? avatar,
     String? cover,
     String? title,
     String? content,
@@ -128,7 +171,7 @@ class Data {
     String? publicationTime,
     required int userId,
   }) =>
-      Data(
+      Videos(
         videoId: videoId,
         cover: cover ?? _cover,
         title: title ?? _title,
