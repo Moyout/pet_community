@@ -40,8 +40,6 @@ class VideoModel extends ResponseModel {
   Data? _data;
 
   VideoModel copyWith({
-    int? code,
-    String? msg,
     Data? data,
   }) =>
       VideoModel(
@@ -69,7 +67,7 @@ class VideoModel extends ResponseModel {
 class Data {
   Data({
     required int total,
-    List<Videos>? videos,
+    required List<Videos> videos,
   }) {
     _total = total;
     _videos = videos;
@@ -80,33 +78,31 @@ class Data {
     if (json['videos'] != null) {
       _videos = [];
       json['videos'].forEach((v) {
-        _videos?.add(Videos.fromJson(v));
+        _videos.add(Videos.fromJson(v));
       });
     }
   }
 
   late int _total;
-  List<Videos>? _videos;
+  late List<Videos> _videos;
 
   Data copyWith({
     required int total,
-    List<Videos>? videos,
+    required List<Videos> videos,
   }) =>
       Data(
         total: total,
-        videos: videos ?? _videos,
+        videos: videos,
       );
 
   int get total => _total;
 
-  List<Videos>? get videos => _videos;
+  List<Videos> get videos => _videos;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['total'] = _total;
-    if (_videos != null) {
-      map['videos'] = _videos?.map((v) => v.toJson()).toList();
-    }
+    map['videos'] = _videos.map((v) => v.toJson()).toList();
     return map;
   }
 }

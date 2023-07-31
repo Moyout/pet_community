@@ -50,15 +50,15 @@ class _VideoWidgetState extends State<VideoWidget> {
                 aspectRatio: context.watch<VideoViewModel>().playerController?.value.aspectRatio ?? 1 / 2,
                 child: !context.watch<VideoViewModel>().playerController!.value.isInitialized
                     ? Hero(
-                        tag: widget.picUrl + widget.index.toString(),
+                        tag: "cover${widget.index}",
                         child: CachedNetworkImage(
-                          cacheKey: widget.picUrl,
+                          cacheKey: "coverImage${widget.index}",
                           imageUrl: widget.picUrl,
                           fit: BoxFit.cover,
                         ),
                       )
                     : Hero(
-                        tag: widget.picUrl + widget.index.toString(),
+                        tag: "cover${widget.index}",
                         child: VideoPlayer(context.watch<VideoViewModel>().playerController!),
                       ),
               ),

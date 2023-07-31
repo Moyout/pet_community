@@ -116,12 +116,13 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                       },
                       child: Center(
                         child: Hero(
-                          tag: widget.index,
+                          tag: "userAvatar:${widget.index}",
                           child: ClipOval(
                             child: Consumer<VideoDetailViewModel>(
                               builder: (context, VideoDetailViewModel model, child) {
                                 return model.videoDetailModel != null
                                     ? CachedNetworkImage(
+                                        // cacheKey: "userAvatar:${widget.userId}",
                                         width: 50.w,
                                         height: 50.w,
                                         fit: BoxFit.cover,

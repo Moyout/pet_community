@@ -2,7 +2,7 @@ import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class UserAvatarRequest {
-  static Future<UserAvatarModel> getUserAvatar(int userId, String token) async {
+  static Future<UserAvatarModel> getUserAvatar(int userId) async {
     String url = ApiConfig.baseUrl + "/user/getUserAvatar/$userId";
     var response = await BaseRequest().toGet(url);
     UserAvatarModel scModel = UserAvatarModel.fromJson(response);

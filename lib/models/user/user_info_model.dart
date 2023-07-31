@@ -26,12 +26,12 @@ class UserInfoRequest {
     return scModel;
   }
 
-  static Future<UserInfoModel> getOtherUserInfo(int userId) async {
+  static Future<UserInfoModel> getOtherUserInfo(int userId, bool showLoading) async {
     String url = ApiConfig.baseUrl + "/user/getOtherUserInfo";
     var response = await BaseRequest().toPost(
       url,
       parameters: {"userId": userId},
-      isShowLoading: true,
+      isShowLoading: showLoading,
     );
     UserInfoModel scModel = UserInfoModel.fromJson(response);
     return scModel;

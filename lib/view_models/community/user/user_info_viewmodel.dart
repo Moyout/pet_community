@@ -82,7 +82,7 @@ class UserInfoViewModel extends ChangeNotifier {
   }
 
   Future<void> getUserInfoModel(int userId) async {
-    UserInfoModel model = await UserInfoRequest.getOtherUserInfo(userId);
+    UserInfoModel model = await UserInfoRequest.getOtherUserInfo(userId, true);
     if (model.code == 0) {
       userInfoModel = model;
     } else {}
