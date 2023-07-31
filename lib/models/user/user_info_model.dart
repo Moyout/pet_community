@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
@@ -41,48 +42,36 @@ class UserInfoRequest {
 /// msg : "操作成功"
 /// data : {"userId":100018,"userName":"吴绮诗a","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1653287231038.jpg","phone":null,"background":null,"email":"1067600623@qq.com","sex":"女","signature":"很懒aa😂👿😉😡😘😘","area":"广东省"}
 
-class UserInfoModel {
+class UserInfoModel extends ResponseModel {
   UserInfoModel({
-    int? code,
-    String? msg,
     Data? data,
   }) {
-    _code = code;
-    _msg = msg;
     _data = data;
   }
 
   UserInfoModel.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
+    code = json['code'];
+    msg = json['msg'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
-  int? _code;
-  String? _msg;
   Data? _data;
 
   UserInfoModel copyWith({
-    int? code,
-    String? msg,
     Data? data,
   }) =>
       UserInfoModel(
-        code: code ?? _code,
-        msg: msg ?? _msg,
         data: data ?? _data,
       );
 
-  int? get code => _code;
-
-  String? get msg => _msg;
-
+  @override
   Data? get data => _data;
 
+  @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['msg'] = msg;
     if (_data != null) {
       map['data'] = _data?.toJson();
     }
@@ -102,11 +91,11 @@ class UserInfoModel {
 
 class Data {
   Data({
-    int? userId,
+    required int userId,
     String? userName,
     String? avatar,
-    dynamic phone,
-    dynamic background,
+    String? phone,
+    String? background,
     String? email,
     String? sex,
     String? signature,
@@ -135,29 +124,29 @@ class Data {
     _area = json['area'];
   }
 
-  int? _userId;
+  late int _userId;
   String? _userName;
   String? _avatar;
-  dynamic _phone;
-  dynamic _background;
+  String? _phone;
+  String? _background;
   String? _email;
   String? _sex;
   String? _signature;
   String? _area;
 
   Data copyWith({
-    int? userId,
+    required int userId,
     String? userName,
     String? avatar,
-    dynamic phone,
-    dynamic background,
+    String? phone,
+    String? background,
     String? email,
     String? sex,
     String? signature,
     String? area,
   }) =>
       Data(
-        userId: userId ?? _userId,
+        userId: userId,
         userName: userName ?? _userName,
         avatar: avatar ?? _avatar,
         phone: phone ?? _phone,
@@ -168,15 +157,15 @@ class Data {
         area: area ?? _area,
       );
 
-  int? get userId => _userId;
+  int get userId => _userId;
 
   String? get userName => _userName;
 
   String? get avatar => _avatar;
 
-  dynamic get phone => _phone;
+  String? get phone => _phone;
 
-  dynamic get background => _background;
+  String? get background => _background;
 
   String? get email => _email;
 

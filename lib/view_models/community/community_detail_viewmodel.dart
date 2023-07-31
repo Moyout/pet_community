@@ -99,7 +99,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
             commentModel.data?.articleComments.add(
               comment_model_data.ArticleComments(
                 articleId: articleId,
-                userId: context.read<NavViewModel>().userInfoModel!.data!.userId!,
+                userId: context.read<NavViewModel>().userInfoModel!.data!.userId,
                 commentContent: textC.text.trimRight(),
                 commentTime: DateTime.now().toString().substring(0, 19),
                 commentId: releaseCommentModel.data!.commentId!,

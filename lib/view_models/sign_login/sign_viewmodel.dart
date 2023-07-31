@@ -52,7 +52,7 @@ class SignViewModel extends ChangeNotifier {
   Future<void> sendVerificationCode() async {
     if (accountC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       SendCodeModel sendCodeModel = await SendCodeRequest.sendCode(accountC.text, passwordC.text);
-      ToastUtil.showBottomToast(sendCodeModel.msg!);
+      ToastUtil.showBottomToast(sendCodeModel.msg);
     } else {
       ToastUtil.showBottomToast("账号或密码不能为空");
     }
@@ -66,7 +66,7 @@ class SignViewModel extends ChangeNotifier {
     }
     if (accountC.text.isNotEmpty && passwordC.text.isNotEmpty && verificationC.text.isNotEmpty) {
       SignModel signModel = await SignRequest.activationAccount(accountC.text, passwordC.text, verificationC.text);
-      ToastUtil.showBottomToast(signModel.msg!);
+      ToastUtil.showBottomToast(signModel.msg);
     } else {
       ToastUtil.showBottomToast("请填写完整信息");
     }

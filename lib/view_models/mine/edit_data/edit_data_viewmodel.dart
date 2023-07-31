@@ -29,7 +29,7 @@ class EditDataViewModel extends ChangeNotifier {
         if (avatarModel.code == 0) {
           String? filePath = avatarModel.data;
           SetAvatarModel setAvatarModel = await SetAvatarRequest.setUserAvatar(userId, token, filePath!);
-          ToastUtil.showBottomToast(setAvatarModel.msg!);
+          ToastUtil.showBottomToast(setAvatarModel.msg);
           UserInfoRequest.getUserInfo(userId, token);
           notifyListeners();
         } else if (avatarModel.code == 1007) {
@@ -53,7 +53,7 @@ class EditDataViewModel extends ChangeNotifier {
           String? filePath = backgroundModel.data;
           SetBackgroundModel setBackgroundModel =
               await SetBackgroundRequest.setUserBackground(userId, token, filePath!);
-          ToastUtil.showBottomToast(setBackgroundModel.msg!);
+          ToastUtil.showBottomToast(setBackgroundModel.msg);
           UserInfoRequest.getUserInfo(userId, token);
           notifyListeners();
         } else if (backgroundModel.code == 1007) {
@@ -68,7 +68,7 @@ class EditDataViewModel extends ChangeNotifier {
     int userId = SpUtil.getInt(PublicKeys.userId)!;
     String token = SpUtil.getString(PublicKeys.token)!;
     SetSexModel setSexModel = await SetSexRequest.setUserSex(userId, token, sex);
-    ToastUtil.showBottomToast(setSexModel.msg!);
+    ToastUtil.showBottomToast(setSexModel.msg);
     await UserInfoRequest.getUserInfo(userId, token);
     notifyListeners();
     Navigator.pop(context);
@@ -79,7 +79,7 @@ class EditDataViewModel extends ChangeNotifier {
     int userId = SpUtil.getInt(PublicKeys.userId)!;
     String token = SpUtil.getString(PublicKeys.token)!;
     SetAreaModel setAreaModel = await SetAreaRequest.setUserArea(userId, token, area);
-    ToastUtil.showBottomToast(setAreaModel.msg!);
+    ToastUtil.showBottomToast(setAreaModel.msg);
     await UserInfoRequest.getUserInfo(userId, token);
     notifyListeners();
   }

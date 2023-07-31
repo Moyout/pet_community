@@ -65,9 +65,9 @@ class _WorksTabState extends State<WorksTab> {
                         CommunityDetailView(
                           title: widget.userArticleModel.data![index].title ?? "",
                           content: widget.userArticleModel.data![index].content ?? "",
-                          articleId: widget.userArticleModel.data![index].articleId!,
+                          articleId: widget.userArticleModel.data![index].articleId,
                           pictures: widget.userArticleModel.data![index].pictures!,
-                          userId: widget.userArticleModel.data![index].userId!,
+                          userId: widget.userArticleModel.data![index].userId,
                           isShowUserInfoView: widget.isShowUserInfoView,
                         ),
                       );

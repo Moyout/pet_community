@@ -77,14 +77,14 @@ class UserArticleModel extends ResponseModel {
 
 class Data {
   Data({
-    int? articleId,
+    required int articleId,
     String? title,
     String? content,
     String? cover,
     List<String>? pictures,
-    int? likes,
+    required int likes,
     String? publicationTime,
-    int? userId,
+    required int userId,
   }) {
     _articleId = articleId;
 
@@ -109,38 +109,38 @@ class Data {
     _userId = json['userId'];
   }
 
-  int? _articleId;
+  late int _articleId;
 
   String? _title;
   String? _content;
   String? _cover;
   List<String>? _pictures;
-  int? _likes;
+  late int _likes;
   String? _publicationTime;
-  int? _userId;
+  late int _userId;
 
   Data copyWith({
-    int? articleId,
+    required int articleId,
     String? title,
     String? content,
     String? cover,
     List<String>? pictures,
-    int? likes,
+    required int likes,
     String? publicationTime,
-    int? userId,
+    required int userId,
   }) =>
       Data(
-        articleId: articleId ?? _articleId,
+        articleId: articleId,
         title: title ?? _title,
         content: content ?? _content,
         cover: cover ?? _cover,
         pictures: pictures ?? _pictures,
-        likes: likes ?? _likes,
+        likes: likes,
         publicationTime: publicationTime ?? _publicationTime,
-        userId: userId ?? _userId,
+        userId: userId,
       );
 
-  int? get articleId => _articleId;
+  int get articleId => _articleId;
 
   String? get title => _title;
 
@@ -150,11 +150,11 @@ class Data {
 
   List<String>? get pictures => _pictures;
 
-  int? get likes => _likes;
+  int get likes => _likes;
 
   String? get publicationTime => _publicationTime;
 
-  int? get userId => _userId;
+  int get userId => _userId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

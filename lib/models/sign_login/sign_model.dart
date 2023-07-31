@@ -1,5 +1,6 @@
 import 'package:pet_community/common/http/base_request.dart';
 import 'package:pet_community/config/api_config.dart';
+import 'package:pet_community/models/response_model.dart';
 
 class SignRequest {
   static Future<SignModel> activationAccount(
@@ -22,48 +23,34 @@ class SignRequest {
 /// msg : "账号已存在"
 /// data : null
 
-class SignModel {
+class SignModel extends ResponseModel {
   SignModel({
-    int? code,
-    String? msg,
     dynamic data,
   }) {
-    _code = code;
-    _msg = msg;
     _data = data;
   }
 
   SignModel.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
+    code = json['code'];
+    msg = json['msg'];
     _data = json['data'];
   }
 
-  int? _code;
-  String? _msg;
   dynamic _data;
 
   SignModel copyWith({
-    int? code,
-    String? msg,
     dynamic data,
   }) =>
       SignModel(
-        code: code ?? _code,
-        msg: msg ?? _msg,
         data: data ?? _data,
       );
-
-  int? get code => _code;
-
-  String? get msg => _msg;
 
   dynamic get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['msg'] = msg;
     map['data'] = _data;
     return map;
   }

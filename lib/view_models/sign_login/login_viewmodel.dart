@@ -26,7 +26,7 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> loginAccount(BuildContext context) async {
     if (accountC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       LoginModel loginModel = await LoginRequest.loginAccount(accountC.text, passwordC.text);
-      ToastUtil.showBottomToast(loginModel.msg!);
+      ToastUtil.showBottomToast(loginModel.msg);
       if (loginModel.code == 200) {
         SpUtil.setString(PublicKeys.token, loginModel.data?.token);
         SpUtil.setInt(PublicKeys.userId, loginModel.data?.userId);

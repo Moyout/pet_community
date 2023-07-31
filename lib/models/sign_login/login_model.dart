@@ -1,5 +1,5 @@
-import 'package:pet_community/common/http/base_request.dart';
-import 'package:pet_community/config/api_config.dart';
+import 'package:pet_community/models/response_model.dart';
+import 'package:pet_community/util/tools.dart';
 
 class LoginRequest {
   static Future<LoginModel> loginAccount(String email, String password) async {
@@ -16,45 +16,38 @@ class LoginRequest {
 
 /// code : 200
 /// msg : "账号登录成功"
-/// data : {"userId":100017,"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDY3NjAwNjIzQHFxLmNvbSIsImV4cCI6MTY1MzcwMzgxNywiaW5mbyI6eyJ1c2VyTmFtZSI6IueUqOaItzEwMDAxNyIsInVzZXJJZCI6MTAwMDE3fX0.uwedRsGOXIcnFMyiElR67n7TCUg3Suu2uBAovXepn1c"}
+/// data : {"userId":100027,"email":"1067600623@qq.com","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDY3NjAwNjIzQHFxLmNvbSIsImV4cCI6MTY5MDg3OTQ3NiwiaW5mbyI6eyJsZXZlbCI6MiwidXNlck5hbWUiOiLnlKjmiLcyNzI3MjciLCJ1c2VySWQiOjEwMDAyNywiZW1haWwiOiIxMDY3NjAwNjIzQHFxLmNvbSJ9fQ.1WigqjiXkpuTDtwyMBuqn4ZTSKrZXxG-UZxpOHK1tBk"}
 
-class LoginModel {
+class LoginModel extends ResponseModel {
   LoginModel({
-    int? code,
-    String? msg,
     Data? data,
   }) {
-    _code = code;
-    _msg = msg;
     _data = data;
   }
 
   LoginModel.fromJson(dynamic json) {
-    _code = json['code'];
-    _msg = json['msg'];
+    code = json['code'];
+    msg = json['msg'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-  int? _code;
-  String? _msg;
+
   Data? _data;
+
   LoginModel copyWith({
-    int? code,
-    String? msg,
     Data? data,
   }) =>
       LoginModel(
-        code: code ?? _code,
-        msg: msg ?? _msg,
         data: data ?? _data,
       );
-  int? get code => _code;
-  String? get msg => _msg;
+
+  @override
   Data? get data => _data;
 
+  @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['code'] = _code;
-    map['msg'] = _msg;
+    map['code'] = code;
+    map['msg'] = msg;
     if (_data != null) {
       map['data'] = _data?.toJson();
     }
@@ -62,38 +55,52 @@ class LoginModel {
   }
 }
 
-/// userId : 100017
-/// token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDY3NjAwNjIzQHFxLmNvbSIsImV4cCI6MTY1MzcwMzgxNywiaW5mbyI6eyJ1c2VyTmFtZSI6IueUqOaItzEwMDAxNyIsInVzZXJJZCI6MTAwMDE3fX0.uwedRsGOXIcnFMyiElR67n7TCUg3Suu2uBAovXepn1c"
+/// userId : 100027
+/// email : "1067600623@qq.com"
+/// token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDY3NjAwNjIzQHFxLmNvbSIsImV4cCI6MTY5MDg3OTQ3NiwiaW5mbyI6eyJsZXZlbCI6MiwidXNlck5hbWUiOiLnlKjmiLcyNzI3MjciLCJ1c2VySWQiOjEwMDAyNywiZW1haWwiOiIxMDY3NjAwNjIzQHFxLmNvbSJ9fQ.1WigqjiXkpuTDtwyMBuqn4ZTSKrZXxG-UZxpOHK1tBk"
 
 class Data {
   Data({
-    int? userId,
-    String? token,
+    required int userId,
+    String? email,
+    required String token,
   }) {
     _userId = userId;
+    _email = email;
     _token = token;
   }
 
   Data.fromJson(dynamic json) {
     _userId = json['userId'];
+    _email = json['email'];
     _token = json['token'];
   }
-  int? _userId;
-  String? _token;
+
+  late int _userId;
+  String? _email;
+  late String _token;
+
   Data copyWith({
-    int? userId,
-    String? token,
+    required int userId,
+    String? email,
+    required String token,
   }) =>
       Data(
-        userId: userId ?? _userId,
-        token: token ?? _token,
+        userId: userId,
+        email: email ?? _email,
+        token: token,
       );
-  int? get userId => _userId;
-  String? get token => _token;
+
+  int get userId => _userId;
+
+  String? get email => _email;
+
+  String get token => _token;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['userId'] = _userId;
+    map['email'] = _email;
     map['token'] = _token;
     return map;
   }

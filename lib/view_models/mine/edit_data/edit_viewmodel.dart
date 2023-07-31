@@ -25,20 +25,20 @@ class EditViewModel extends ChangeNotifier {
 
   ///设置UserName
   Future<void> setUserName(BuildContext context) async {
-    int userId = context.read<NavViewModel>().userInfoModel!.data!.userId!;
+    int userId = context.read<NavViewModel>().userInfoModel!.data!.userId;
     String token = SpUtil.getString(PublicKeys.token)!;
     SetUsernameModel setUsernameModel = await SetUserNameRequest.setUserName(userId, token, textC.text.trim());
-    ToastUtil.showBottomToast(setUsernameModel.msg!);
+    ToastUtil.showBottomToast(setUsernameModel.msg);
     UserInfoRequest.getUserInfo(userId, token);
     Navigator.pop(context);
   }
 
   ///设置签名
   Future<void> setUserSignature(BuildContext context) async {
-    int userId = context.read<NavViewModel>().userInfoModel!.data!.userId!;
+    int userId = context.read<NavViewModel>().userInfoModel!.data!.userId;
     String token = SpUtil.getString(PublicKeys.token)!;
     SetSignatureModel setSignatureModel = await SetSignatureRequest.setUserSignature(userId, token, textC.text.trim());
-    ToastUtil.showBottomToast(setSignatureModel.msg!);
+    ToastUtil.showBottomToast(setSignatureModel.msg);
     UserInfoRequest.getUserInfo(userId, token);
     Navigator.pop(context);
   }
