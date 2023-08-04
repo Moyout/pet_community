@@ -103,24 +103,25 @@ class ChatViewModel extends ChangeNotifier {
     NavViewModel nvm = context.read<NavViewModel>();
     int sendTime = DateTime.now().millisecondsSinceEpoch;
     ChatRecordModel? crm = ChatRecordModel(
+      code: 0,
       type: 0,
-      userAvatar: nvm.userInfoModel?.data?.avatar,
-      userName: nvm.userInfoModel?.data?.userName,
-      userId: nvm.userInfoModel?.data?.userId,
-      addresseeId: userId,
+      userId: nvm.userInfoModel!.data!.userId,
       data: textC.text,
       sendTime: sendTime,
-      addressee: addressee,
+      receiverId: userId,
     );
+    debugPrint("crm--------->${crm}");
+
     String data = jsonEncode(crm);
-    nvm.channel?.sink.add(data);
-    if (crm.data != null) {
-      if (nvm.contactList[userId] == null) {
-        nvm.contactList.addAll({userId: []});
-      }
-      nvm.contactList[userId]?.add(crm);
-    }
-    debugPrint("nvm--------------》》${nvm.contactList}");
+    nvm.wsChannel?.sink.add(data);
+    // debugPrint("data--------->${data}");
+    // if (crm.data != null) {
+    //   if (nvm.contactList[userId] == null) {
+    //     nvm.contactList.addAll({userId: []});
+    //   }
+    //   nvm.contactList[userId]?.add(crm);
+    // }
+    // debugPrint("nvm--------------》》${nvm.contactList}");
     // nvm.contactList[userId]?.add(crm);
     nvm.notifyListeners();
     textC.clear();

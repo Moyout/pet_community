@@ -25,7 +25,7 @@ class NavViewModel extends ChangeNotifier {
   bool isLogin = false;
   var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
   int cacheSize = 0;
-  IOWebSocketChannel? channel; //webSocket
+  IOWebSocketChannel? wsChannel; //webSocket
   // ChatRecordModel? crm;
   WebSocket? ws;
 
@@ -172,8 +172,8 @@ class NavViewModel extends ChangeNotifier {
     RouteUtil.pop(context);
     ws?.close();
     ws = null;
-    channel?.sink.close();
-    channel = null;
+    wsChannel?.sink.close();
+    wsChannel = null;
     notifyListeners();
   }
 
@@ -201,31 +201,52 @@ class NavViewModel extends ChangeNotifier {
   ///链接webSocket服务
   Future<void> connectWebSocket() async {
     isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+
     if (isLogin) {
       String? token = SpUtil.getString(PublicKeys.token);
       int? userId = SpUtil.getInt(PublicKeys.userId);
       if (token != null && userId != null) {
         try {
           if (ws == null) {
-            // ws = await WebSocket.connect('ws://10.0.2.2:8081/chat/$userId/$token');
-            ws = await WebSocket.connect('ws://www.urmbf.top:8081/online/$userId');
+            ws = await WebSocket.connect(
+              'ws://10.0.2.2:8081/chat/$userId',
+              protocols: [token],
+            );
+            // ws = await WebSocket.connect('ws://www.urmbf.top:8081/online/$userId');
             if (ws != null) {
-              channel = IOWebSocketChannel(ws!);
-              channel?.stream.listen(
+              wsChannel = IOWebSocketChannel(ws!);
+              wsChannel?.stream.listen(
                 (dynamic msg) {
+                  debugPrint("msg--------->${msg}");
                   dynamic data = jsonDecode(msg);
+                  debugPrint("data--------->${data}");
                   ChatRecordModel? crm = ChatRecordModel.fromJson(data);
-                  debugPrint("crm--------------》》${crm.code}");
-                  debugPrint("crm--------------》》${crm.data}");
-                  debugPrint("crm--------------》》${crm.userId}");
+                  debugPrint("code--------------》》${crm.code}");
+                  debugPrint("data--------------》》${crm.data}");
+                  debugPrint("userId--------------》》${crm.userId}");
                   debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
-                  debugPrint("crm--------------》》${crm.userAvatar}");
-                  if (crm.data != null) {
-                    if (contactList[crm.userId] == null) {
-                      contactList.addAll({crm.userId!: []});
+                  if (crm.data != null || crm.msg != null) {
+                    //当前userId发送给receiverId
+                    if (crm.userId == userId) {
+                      if (contactList[crm.receiverId] == null) {
+                        contactList.addAll({crm.receiverId: []});
+                      }
+                      contactList[crm.receiverId]?.add(crm);
+
+                      //对方发送给当前userId
+                    } else if (crm.receiverId == userId) {
+                      if (contactList[crm.userId] == null) {
+                        contactList.addAll({crm.userId: []});
+                      }
+                      contactList[crm.userId]?.add(crm);
                     }
-                    contactList[crm.userId]?.add(crm);
                   }
+                  // if (crm.data != null) {
+                  //   if (contactList[crm.receiverId] == null) {
+                  //     contactList.addAll({crm.receiverId: []});
+                  //   }
+                  //   contactList[crm.receiverId]?.add(crm);
+                  // }
                   if (crm.code == 1008 || crm.code == 1007) {
                     LoginViewModel.tokenExpire(msg: crm.msg);
                   }
@@ -234,8 +255,8 @@ class NavViewModel extends ChangeNotifier {
                 onDone: () {
                   ws?.close();
                   ws = null;
-                  channel?.sink.close();
-                  channel = null;
+                  wsChannel?.sink.close();
+                  wsChannel = null;
                   connectWebSocket();
                   debugPrint("ws-onDone-onDone-------------》 ");
                 },

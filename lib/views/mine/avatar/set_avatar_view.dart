@@ -1,12 +1,10 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
-import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:photo_view/photo_view.dart';
 
 class SetAvatarView extends StatefulWidget {
   final bool isOther;
-  final String avatar;
+  final String? avatar;
 
   const SetAvatarView({
     Key? key,
@@ -19,6 +17,13 @@ class SetAvatarView extends StatefulWidget {
 }
 
 class _SetAvatarViewState extends State<SetAvatarView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    debugPrint("widget--------->${widget.avatar}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +40,11 @@ class _SetAvatarViewState extends State<SetAvatarView> {
               children: [
                 Hero(
                   tag: "avatar",
-                  child: PhotoView(
-                    imageProvider: NetworkImage(
-                      widget.isOther
-                          ? widget.avatar
-                          : context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
-                              ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                    ),
-                  ),
+                  child: widget.avatar != null
+                      ? PhotoView(
+                          imageProvider: NetworkImage(widget.avatar!),
+                        )
+                      : PhotoView(imageProvider: const AssetImage("assets/images/ic_launcher.png")),
                 )
               ],
             ),

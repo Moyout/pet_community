@@ -26,7 +26,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
     return Scaffold(
       appBar: AppBar(title: Text("首页", style: TextStyle(fontSize: 15.sp))),
       body: Container(
-        padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 50.w),
+        padding: EdgeInsets.only(bottom: 70.w),
         child: ScrollConfiguration(
           behavior: OverScrollBehavior(),
           child: SmartRefresher(
@@ -63,9 +63,13 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                           );
                         },
                         child: Container(
+                          // margin: EdgeInsets.only(right: 2.w, left: 2.w),
+                          margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).appBarTheme.backgroundColor,
+                            color: ThemeUtil.brightness(context) == Brightness.light
+                                ? Colors.white
+                                : Theme.of(context).appBarTheme.backgroundColor,
                             borderRadius: BorderRadius.circular(5.w),
                           ),
                           child: Column(
@@ -85,26 +89,27 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                   ),
                                 ),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     if (context.watch<HomeViewModel>().videoModel.data?.videos[index].title != null)
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 5.w),
-                                        child: Text(
-                                          context.watch<HomeViewModel>().videoModel.data?.videos[index].title ?? "",
-                                          textAlign: TextAlign.start,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
+                                      SizedBox(height: 5.w),
+                                    if (context.watch<HomeViewModel>().videoModel.data?.videos[index].title != null)
+                                      Text(
+                                        context.watch<HomeViewModel>().videoModel.data?.videos[index].title ?? "",
+                                        textAlign: TextAlign.start,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 12.sp),
                                       ),
-                                    UserAvatarName(
-                                      index: index,
-                                      userId: context.watch<HomeViewModel>().videoModel.data!.videos[index].userId,
+                                    Container(
+                                      padding: EdgeInsets.symmetric(vertical: 5.w),
+                                      child: UserAvatarName(
+                                        index: index,
+                                        userId: context.watch<HomeViewModel>().videoModel.data!.videos[index].userId,
+                                      ),
                                     ),
-                                    SizedBox(height: 5.w),
                                   ],
                                 ),
                               ),

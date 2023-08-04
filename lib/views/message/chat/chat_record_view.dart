@@ -39,8 +39,8 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                           margin: EdgeInsets.only(right: 5.w, left: 5.w),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                           child: CachedNetworkImage(
-                            imageUrl: context.read<NavViewModel>().contactList[widget.userId]?[index].userAvatar ??
-                                ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                            imageUrl:
+                                ApiConfig.baseUrl + "/images/pet1.jpg",
                             width: 30.w,
                             height: 30.w,
                             fit: BoxFit.cover,
@@ -102,8 +102,8 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                           margin: EdgeInsets.only(right: 5.w, left: 5.w),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                           child: CachedNetworkImage(
-                            imageUrl: context.read<NavViewModel>().contactList[widget.userId]?[index].userAvatar ??
-                                ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                            imageUrl:
+                                ApiConfig.baseUrl + "/images/pet1.jpg",
                             width: 30.w,
                             height: 30.w,
                             fit: BoxFit.cover,

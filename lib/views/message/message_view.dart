@@ -40,7 +40,7 @@ class _MessageViewState extends State<MessageView> {
               child: Column(
                 children: [
                   ...context.watch<NavViewModel>().contactList.entries.map((e) {
-                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime ?? 0);
+                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime );
                     String dateTimeStr = DateFormat("HH:mm").format(dateTime);
                     return TextButton(
                       onPressed: () {
@@ -49,11 +49,11 @@ class _MessageViewState extends State<MessageView> {
                           context,
                           ChatView(
                             userId: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                ? e.value.last.userId!
-                                : e.value.last.addresseeId!,
+                                ? e.value.last.userId
+                                : e.value.last.receiverId,
                             name: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                ? e.value.last.userName ?? ""
-                                : e.value.last.addressee ?? "",
+                                ? "name"
+                                : "name2",
                           ),
                         );
                       },
@@ -64,8 +64,8 @@ class _MessageViewState extends State<MessageView> {
                             margin: EdgeInsets.only(right: 5.w, left: 5.w),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                             child: CachedNetworkImage(
-                              imageUrl: e.value[0].userAvatar ??
-                                  ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                              imageUrl:
+                                  ApiConfig.baseUrl + "/images/pet1.jpg",
                               width: 40.w,
                               height: 40.w,
                               fit: BoxFit.cover,
@@ -77,12 +77,12 @@ class _MessageViewState extends State<MessageView> {
                             children: [
                               Text(
                                 e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                    ? e.value.last.userName ?? ""
-                                    : e.value.last.addressee ?? "",
+                                    ? "${e.value.last.userId}"
+                                    :   "${e.value.last.receiverId}",
                                 style: TextStyle(fontSize: 14.sp, color: ThemeUtil.reversePrimaryColor(context)),
                               ),
                               Text(
-                                e.value.last.data ?? "",
+                                "${e.value.last.data}",
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),

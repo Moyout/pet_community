@@ -97,7 +97,7 @@ class Data {
 
   int get total => _total;
 
-  List<Articles>? get articles => _articles;
+  List<Articles> get articles => _articles;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -124,7 +124,7 @@ class Articles {
     String? cover,
     List<String>? pictures,
     required int likes,
-    String? publicationTime,
+    required String publicationTime,
     required int userId,
   }) {
     _articleId = articleId;
@@ -154,7 +154,7 @@ class Articles {
   String? _cover;
   List<String>? _pictures;
   late int _likes;
-  String? _publicationTime;
+  late String _publicationTime;
   late int _userId;
 
   Articles copyWith({
@@ -164,7 +164,7 @@ class Articles {
     String? cover,
     List<String>? pictures,
     required int likes,
-    String? publicationTime,
+    required String publicationTime,
     required int userId,
   }) =>
       Articles(
@@ -174,7 +174,7 @@ class Articles {
         cover: cover ?? _cover,
         pictures: pictures ?? _pictures,
         likes: likes,
-        publicationTime: publicationTime ?? _publicationTime,
+        publicationTime: publicationTime,
         userId: userId,
       );
 
@@ -190,7 +190,7 @@ class Articles {
 
   int get likes => _likes;
 
-  String? get publicationTime => _publicationTime;
+  String get publicationTime => _publicationTime;
 
   int get userId => _userId;
 

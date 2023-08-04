@@ -39,20 +39,26 @@ class _UserAvatarNameState extends State<UserAvatarName> with AutomaticKeepAlive
 
     return Row(
       children: [
-        if (avatar != null)
-          Hero(
-            tag: "userAvatar:${widget.index}",
-            child: ClipOval(
-              child: CachedNetworkImage(
-                // cacheKey: "userAvatar:${widget.userId}",
-                width: 25.w,
-                height: 25.w,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, downloadProgress) => const CupertinoActivityIndicator(),
-                imageUrl: avatar!,
-              ),
-            ),
+        Hero(
+          tag: "userAvatar:${widget.index}",
+          child: ClipOval(
+            child: avatar != null
+                ? CachedNetworkImage(
+                    // cacheKey: "userAvatar:${widget.userId}",
+                    width: 20.w,
+                    height: 20.w,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder: (context, url, downloadProgress) => const CupertinoActivityIndicator(),
+                    imageUrl: avatar!,
+                  )
+                : Image.asset(
+                    "assets/images/ic_launcher.png",
+                    width: 20.w,
+                    height: 20.w,
+                    fit: BoxFit.cover,
+                  ),
           ),
+        ),
         if (userName != null)
           Expanded(
             child: Padding(

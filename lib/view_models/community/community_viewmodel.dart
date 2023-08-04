@@ -31,9 +31,9 @@ class CommunityViewModel extends ChangeNotifier {
   Future<void> loadMore() async {
     page++;
     ArticleModel article = await ArticleRequest.getArticle(page: page).whenComplete(() => refreshC.loadComplete());
-    if (article.data!.articles!.isNotEmpty) {
-      article.data?.articles?.forEach((Articles item) {
-        articleModel.data?.articles?.add(item);
+    if (article.data!.articles.isNotEmpty) {
+      article.data?.articles.forEach((Articles item) {
+        articleModel.data?.articles.add(item);
       });
       debugPrint("articleModel--------->${articleModel.data}");
     } else {

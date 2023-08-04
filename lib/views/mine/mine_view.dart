@@ -3,7 +3,6 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
@@ -66,16 +65,20 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                             onTap: () => context.read<MineViewModel>().backgroundOnTap(context),
                             child: Transform.scale(
                               scale: 1 + mvModelW.scale,
-                              child: CachedNetworkImage(
-                                imageUrl: context.watch<NavViewModel>().isLogin
-                                    ? context.watch<NavViewModel>().userInfoModel?.data?.background ??
-                                        ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"
-                                    : ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                                fit: BoxFit.cover,
-                                height: 400.w,
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    const CupertinoActivityIndicator(),
-                              ),
+                              child: context.watch<NavViewModel>().isLogin &&
+                                      context.watch<NavViewModel>().userInfoModel?.data?.background != null
+                                  ? CachedNetworkImage(
+                                      imageUrl: context.watch<NavViewModel>().userInfoModel!.data!.background!,
+                                      fit: BoxFit.cover,
+                                      height: 400.w,
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          const CupertinoActivityIndicator(),
+                                    )
+                                  : Image.asset(
+                                      "assets/images/backgrounds/pet_bg.png",
+                                      height: 400.w,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                         ),
@@ -205,19 +208,22 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                               child: Hero(
                                 tag: "avatar",
                                 child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: context.watch<NavViewModel>().isLogin
-                                        ? context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
-                                            ApiConfig.baseUrl +
-                                                "/images/pet${context.read<StartUpViewModel>().random}.jpg"
-                                        : ApiConfig.baseUrl +
-                                            "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                                    width: 70.w,
-                                    height: 70.w,
-                                    fit: BoxFit.cover,
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        const CupertinoActivityIndicator(),
-                                  ),
+                                  child: context.watch<NavViewModel>().isLogin &&
+                                          context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
+                                      ? CachedNetworkImage(
+                                          imageUrl: context.watch<NavViewModel>().userInfoModel!.data!.avatar!,
+                                          width: 70.w,
+                                          height: 70.w,
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                              const CupertinoActivityIndicator(),
+                                        )
+                                      : Image.asset(
+                                          "assets/images/ic_launcher.png",
+                                          width: 70.w,
+                                          height: 70.w,
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                               ),
                             ),

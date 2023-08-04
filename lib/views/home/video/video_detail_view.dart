@@ -120,7 +120,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                           child: ClipOval(
                             child: Consumer<VideoDetailViewModel>(
                               builder: (context, VideoDetailViewModel model, child) {
-                                return model.videoDetailModel != null
+                                return model.videoDetailModel?.data?.userInfo.avatar != null
                                     ? CachedNetworkImage(
                                         // cacheKey: "userAvatar:${widget.userId}",
                                         width: 50.w,
@@ -129,11 +129,13 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                                             const CupertinoActivityIndicator(),
                                         imageUrl: model.videoDetailModel?.data?.userInfo.avatar ?? "",
-                                        errorWidget: (context, url, error) {
-                                          return Container();
-                                        },
                                       )
-                                    : Container();
+                                    : Image.asset(
+                                        "assets/images/ic_launcher.png",
+                                        width: 40.w,
+                                        height: 40.w,
+                                        fit: BoxFit.cover,
+                                      );
                               },
                             ),
                           ),
@@ -190,7 +192,6 @@ class _VideoDetailViewState extends State<VideoDetailView> {
 
   Widget buildUserInfoWidget() {
     return UserInfoView(
-        userId: widget.userId,
-        avatar: context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.avatar ?? "");
+        userId: widget.userId, avatar: context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.avatar);
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
@@ -10,7 +9,7 @@ import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
 class UserInfoView extends StatefulWidget {
   final int userId;
-  final String avatar;
+  final String? avatar;
 
   const UserInfoView({
     Key? key,
@@ -75,21 +74,25 @@ class _UserInfoViewState extends State<UserInfoView>
                                         context.read<NavViewModel>().userInfoModel?.data?.userId
                                     ? false
                                     : true,
-                                background: context.read<UserInfoViewModel>().userInfoModel.data?.background ??
-                                    ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                                background: context.read<UserInfoViewModel>().userInfoModel.data?.background,
                               ),
                               animation: RouteAnimation.popDown);
                         },
                         child: Transform.scale(
                           scale: 1 + mvModelW.scale,
-                          child: CachedNetworkImage(
-                            imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data?.background ??
-                                ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                const CupertinoActivityIndicator(),
-                            fit: BoxFit.cover,
-                            height: 400.w,
-                          ),
+                          child: context.watch<UserInfoViewModel>().userInfoModel.data?.background != null
+                              ? CachedNetworkImage(
+                                  imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data!.background!,
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      const CupertinoActivityIndicator(),
+                                  fit: BoxFit.cover,
+                                  height: 400.w,
+                                )
+                              : Image.asset(
+                                  "assets/images/backgrounds/pet_bg.png",
+                                  fit: BoxFit.cover,
+                                  height: 400.w,
+                                ),
                         ),
                       ),
                     ),
@@ -217,15 +220,21 @@ class _UserInfoViewState extends State<UserInfoView>
                           child: Hero(
                             tag: "avatar",
                             child: ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    context.watch<UserInfoViewModel>().userInfoModel.data?.avatar ?? widget.avatar,
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    const CupertinoActivityIndicator(),
-                                width: 70.w,
-                                height: 70.w,
-                                fit: BoxFit.cover,
-                              ),
+                              child: context.watch<UserInfoViewModel>().userInfoModel.data?.avatar != null
+                                  ? CachedNetworkImage(
+                                      imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data!.avatar!,
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          const CupertinoActivityIndicator(),
+                                      width: 70.w,
+                                      height: 70.w,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/ic_launcher.png",
+                                      width: 70.w,
+                                      height: 70.w,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                         ),

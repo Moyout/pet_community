@@ -1,11 +1,10 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:photo_view/photo_view.dart';
 
 class SetBackgroundView extends StatefulWidget {
-  final String background;
+  final String? background;
   final bool isOther;
 
   const SetBackgroundView({
@@ -35,12 +34,11 @@ class _SetBackgroundViewState extends State<SetBackgroundView> {
               children: [
                 Hero(
                   tag: "background",
-                  child: PhotoView(
-                    imageProvider: NetworkImage(widget.isOther
-                        ? widget.background
-                        : context.watch<NavViewModel>().userInfoModel?.data?.background ??
-                            ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg"),
-                  ),
+                  child: widget.background != null
+                      ? PhotoView(
+                          imageProvider: NetworkImage(widget.background!),
+                        )
+                      : PhotoView(imageProvider: const AssetImage("assets/images/backgrounds/pet_bg.png")),
                 )
               ],
             ),

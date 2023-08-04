@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/community_detail_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -30,6 +31,8 @@ class CommunityDetailView extends StatefulWidget {
 }
 
 class _CommunityDetailViewState extends State<CommunityDetailView> {
+  UserInfoModel? userInfoModel;
+
   double textFiledHeight = 50.w;
   PageController pageC = PageController();
 
@@ -38,6 +41,15 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
     super.initState();
     context.read<CommunityDetailViewModel>().getComment(widget.articleId);
     context.read<CommunityDetailViewModel>().textC.clear();
+    getUserInfoModel();
+  }
+
+  void getUserInfoModel() async {
+    userInfoModel = await UserInfoRequest.getOtherUserInfo(widget.userId, false);
+    debugPrint("userInfoModel--------->${userInfoModel}");
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -73,14 +85,21 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                       duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                 },
                                 child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: "widget.avatar",
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        const CupertinoActivityIndicator(),
-                                    width: 40.w,
-                                    height: 40.w,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: userInfoModel?.data?.avatar != null
+                                      ? CachedNetworkImage(
+                                          width: 40.w,
+                                          height: 40.w,
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                              const CupertinoActivityIndicator(),
+                                          imageUrl: userInfoModel!.data!.avatar!,
+                                        )
+                                      : Image.asset(
+                                          "assets/images/ic_launcher.png",
+                                          width: 40.w,
+                                          height: 40.w,
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                               ),
                             )
@@ -319,7 +338,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
             ),
             UserInfoView(
               userId: widget.userId,
-              avatar: "widget.avatar",
+              avatar: userInfoModel?.data?.avatar,
             ),
           ],
         ),

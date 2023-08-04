@@ -2,7 +2,6 @@ import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/avatar/set_avatar_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/release_work_view.dart';
@@ -74,8 +73,7 @@ class MineViewModel extends ChangeNotifier {
       RouteUtil.push(
           context,
           SetAvatarView(
-            avatar: context.read<NavViewModel>().userInfoModel?.data?.avatar ??
-                ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+            avatar: context.read<NavViewModel>().userInfoModel?.data?.avatar,
           ),
           animation: RouteAnimation.popDown);
     } else {
@@ -89,8 +87,7 @@ class MineViewModel extends ChangeNotifier {
     RouteUtil.push(
         context,
         SetBackgroundView(
-          background: context.read<NavViewModel>().userInfoModel?.data?.background ??
-              ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+          background: context.read<NavViewModel>().userInfoModel?.data?.background,
         ),
         animation: RouteAnimation.popDown);
   }
