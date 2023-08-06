@@ -99,7 +99,7 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   ///发送
-  void sendMsg(BuildContext context, int userId, String addressee) {
+  void sendMsg(BuildContext context, int receiverId, String addressee) {
     NavViewModel nvm = context.read<NavViewModel>();
     int sendTime = DateTime.now().millisecondsSinceEpoch;
     ChatRecordModel? crm = ChatRecordModel(
@@ -108,20 +108,20 @@ class ChatViewModel extends ChangeNotifier {
       userId: nvm.userInfoModel!.data!.userId,
       data: textC.text,
       sendTime: sendTime,
-      receiverId: userId,
+      receiverId: receiverId,
     );
     debugPrint("crm--------->${crm}");
 
     String data = jsonEncode(crm);
     nvm.wsChannel?.sink.add(data);
-    // debugPrint("data--------->${data}");
-    // if (crm.data != null) {
-    //   if (nvm.contactList[userId] == null) {
-    //     nvm.contactList.addAll({userId: []});
-    //   }
-    //   nvm.contactList[userId]?.add(crm);
-    // }
-    // debugPrint("nvm--------------》》${nvm.contactList}");
+    debugPrint("data--------->${data}");
+    if (crm.data != null) {
+      if (nvm.contactList[receiverId] == null) {
+        nvm.contactList.addAll({receiverId: []});
+      }
+      nvm.contactList[receiverId]?.add(crm);
+    }
+    debugPrint("nvm.contactList--------------》》${nvm.contactList}");
     // nvm.contactList[userId]?.add(crm);
     nvm.notifyListeners();
     textC.clear();

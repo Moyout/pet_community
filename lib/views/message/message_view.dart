@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
@@ -13,6 +14,7 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   ScrollController sc = ScrollController();
+  Map<int, String?> userIdAvatarMap = {};
 
   @override
   void initState() {
@@ -24,6 +26,16 @@ class _MessageViewState extends State<MessageView> {
     // });
     // timeago.setDefaultLocale("zh_cn");
     super.initState();
+    getUserInfo();
+  }
+
+  getUserInfo() {
+    debugPrint("context.read<NavViewModel>().contactList--------->${context.read<NavViewModel>().contactList}");
+    context.read<NavViewModel>().contactList.forEach((key, value) async {
+      UserInfoModel userInfoModel = await UserInfoRequest.getOtherUserInfo(key, false);
+      userIdAvatarMap.addAll({key: userInfoModel.data?.avatar});
+      debugPrint("userIdAvatarMap--------->${userIdAvatarMap}");
+    });
   }
 
   @override
@@ -40,20 +52,17 @@ class _MessageViewState extends State<MessageView> {
               child: Column(
                 children: [
                   ...context.watch<NavViewModel>().contactList.entries.map((e) {
-                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime );
+                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime);
                     String dateTimeStr = DateFormat("HH:mm").format(dateTime);
+
                     return TextButton(
                       onPressed: () {
                         debugPrint("e--------------》》${e.value.first.userId}");
                         RouteUtil.pushByCupertino(
                           context,
                           ChatView(
-                            userId: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                ? e.value.last.userId
-                                : e.value.last.receiverId,
-                            name: e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                ? "name"
-                                : "name2",
+                            userId: e.key,
+                            name: e.key.toString(),
                           ),
                         );
                       },
@@ -63,26 +72,31 @@ class _MessageViewState extends State<MessageView> {
                             clipBehavior: Clip.antiAlias,
                             margin: EdgeInsets.only(right: 5.w, left: 5.w),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  ApiConfig.baseUrl + "/images/pet1.jpg",
-                              width: 40.w,
-                              height: 40.w,
-                              fit: BoxFit.cover,
-                            ),
+                            child: userIdAvatarMap[e.key] != null
+                                ? CachedNetworkImage(
+                                    imageUrl: userIdAvatarMap[e.key]!,
+                                    width: 40.w,
+                                    height: 40.w,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    "assets/images/ic_launcher.png",
+                                    width: 40.w,
+                                    height: 40.w,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           SizedBox(width: 5.w),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                e.value.last.userId != context.read<NavViewModel>().userInfoModel?.data?.userId
-                                    ? "${e.value.last.userId}"
-                                    :   "${e.value.last.receiverId}",
+                                e.key.toString(),
                                 style: TextStyle(fontSize: 14.sp, color: ThemeUtil.reversePrimaryColor(context)),
                               ),
                               Text(
                                 "${e.value.last.data}",
+                                maxLines: 2,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),

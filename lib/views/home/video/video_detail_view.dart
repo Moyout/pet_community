@@ -111,8 +111,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        debugPrint("asd---------> {asd}");
-                        pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                         pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
                       child: Center(
                         child: Hero(

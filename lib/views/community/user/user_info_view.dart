@@ -33,6 +33,8 @@ class _UserInfoViewState extends State<UserInfoView>
   @override
   void initState() {
     context.read<UserInfoViewModel>().initViewModel(widget.userId, this);
+    debugPrint("userId--------->${widget.userId}");
+    debugPrint(".userId2--------->${context.read<NavViewModel>().userInfoModel?.data?.userId}");
     super.initState();
   }
 
@@ -273,24 +275,26 @@ class _UserInfoViewState extends State<UserInfoView>
                                         ),
                                       ),
                                     ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: Colors.deepPurple,
-                                        shape: const StadiumBorder(),
-                                        primary: ThemeUtil.primaryColor(context),
-                                        padding: const EdgeInsets.all(0),
-                                      ),
-                                      onPressed: () {
-                                        RouteUtil.pushReplacement(
-                                          context,
-                                          ChatView(
-                                            userId: widget.userId,
-                                            name: context.read<UserInfoViewModel>().userInfoModel.data?.userName ?? "",
-                                          ),
-                                        );
-                                      },
-                                      child: Text("发信息", style: TextStyle(fontSize: 12.sp)),
-                                    )
+                                    if (widget.userId != context.watch<NavViewModel>().userInfoModel?.data?.userId)
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.deepPurple,
+                                          shape: const StadiumBorder(),
+                                          primary: ThemeUtil.primaryColor(context),
+                                          padding: const EdgeInsets.all(0),
+                                        ),
+                                        onPressed: () {
+                                          RouteUtil.pushReplacement(
+                                            context,
+                                            ChatView(
+                                              userId: widget.userId,
+                                              name:
+                                                  context.read<UserInfoViewModel>().userInfoModel.data?.userName ?? "",
+                                            ),
+                                          );
+                                        },
+                                        child: Text("发信息", style: TextStyle(fontSize: 12.sp)),
+                                      )
                                   ],
                                 ),
                               ),

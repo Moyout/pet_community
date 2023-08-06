@@ -1,3 +1,4 @@
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -5,6 +6,7 @@ import 'package:pet_community/view_models/startup_viewmodel.dart';
 
 class ChatRecordView extends StatefulWidget {
   final int userId;
+
   const ChatRecordView({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -12,6 +14,22 @@ class ChatRecordView extends StatefulWidget {
 }
 
 class _ChatRecordViewState extends State<ChatRecordView> {
+  UserInfoModel? userInfoModel;
+
+  void getUserAvatar() async {
+    debugPrint("widget.userId--------->${widget.userId}");
+    userInfoModel = await UserInfoRequest.getOtherUserInfo(widget.userId, false);
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return RawScrollbar(
@@ -38,21 +56,27 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                           clipBehavior: Clip.antiAlias,
                           margin: EdgeInsets.only(right: 5.w, left: 5.w),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                ApiConfig.baseUrl + "/images/pet1.jpg",
-                            width: 30.w,
-                            height: 30.w,
-                            fit: BoxFit.cover,
-                          ),
+                          child: userInfoModel?.data?.avatar != null
+                              ? CachedNetworkImage(
+                                  imageUrl: userInfoModel!.data!.avatar!,
+                                  width: 40.w,
+                                  height: 40.w,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  "assets/images/ic_launcher.png",
+                                  width: 40.w,
+                                  height: 40.w,
+                                  fit: BoxFit.cover,
+                                ),
                         )
                       : const SizedBox(),
                   context.read<NavViewModel>().contactList[widget.userId]?[index].userId !=
                           context.read<NavViewModel>().userInfoModel?.data?.userId
                       ? Container(
-                          width: 6.w,
+                          width: 5.w,
                           height: 0,
-                          margin: EdgeInsets.only(top: 14.w),
+                          margin: EdgeInsets.only(top: 18.w),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
@@ -67,8 +91,9 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                         )
                       : const SizedBox(),
                   Container(
+                    margin: EdgeInsets.symmetric(vertical: 5.w),
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.w),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.w),
                     decoration: BoxDecoration(
                       color: context.read<NavViewModel>().contactList[widget.userId]?[index].userId ==
                               context.read<NavViewModel>().userInfoModel?.data?.userId
@@ -83,9 +108,9 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                   context.read<NavViewModel>().contactList[widget.userId]?[index].userId ==
                           context.read<NavViewModel>().userInfoModel?.data?.userId
                       ? Container(
-                          width: 6.w,
+                          width: 5.w,
                           height: 0,
-                          margin: EdgeInsets.only(top: 14.w),
+                          margin: EdgeInsets.only(top: 18.w),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
@@ -95,19 +120,25 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                           ),
                         )
                       : const SizedBox(),
-                  context.read<NavViewModel>().contactList[widget.userId]?[index].userId ==
-                          context.read<NavViewModel>().userInfoModel?.data?.userId
+                  (context.read<NavViewModel>().contactList[widget.userId]?[index].userId ==
+                          context.read<NavViewModel>().userInfoModel?.data?.userId)
                       ? Container(
                           clipBehavior: Clip.antiAlias,
                           margin: EdgeInsets.only(right: 5.w, left: 5.w),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                ApiConfig.baseUrl + "/images/pet1.jpg",
-                            width: 30.w,
-                            height: 30.w,
-                            fit: BoxFit.cover,
-                          ),
+                          child: context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
+                              ? CachedNetworkImage(
+                                  imageUrl: context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
+                                  width: 40.w,
+                                  height: 40.w,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  "assets/images/ic_launcher.png",
+                                  width: 40.w,
+                                  height: 40.w,
+                                  fit: BoxFit.cover,
+                                ),
                         )
                       : const SizedBox(),
                 ],

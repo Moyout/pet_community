@@ -168,8 +168,10 @@ class NavViewModel extends ChangeNotifier {
     SpUtil.setBool(PublicKeys.isLogin, false);
     AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
     AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
+    contactList.clear();
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     RouteUtil.pop(context);
+
     ws?.close();
     ws = null;
     wsChannel?.sink.close();
@@ -208,8 +210,12 @@ class NavViewModel extends ChangeNotifier {
       if (token != null && userId != null) {
         try {
           if (ws == null) {
+            // ws = await WebSocket.connect(
+            //   'ws://www.urmbf.top:8081/chat?userId=$userId',
+            //   protocols: [token],
+            // );
             ws = await WebSocket.connect(
-              'ws://10.0.2.2:8081/chat/$userId',
+              '${ApiConfig.wsUrl}/chat?userId=$userId',
               protocols: [token],
             );
             // ws = await WebSocket.connect('ws://www.urmbf.top:8081/online/$userId');
@@ -228,11 +234,11 @@ class NavViewModel extends ChangeNotifier {
                   if (crm.data != null || crm.msg != null) {
                     //当前userId发送给receiverId
                     if (crm.userId == userId) {
+                      debugPrint("触发了crm.userId == userId--------->{触发了}");
                       if (contactList[crm.receiverId] == null) {
                         contactList.addAll({crm.receiverId: []});
                       }
                       contactList[crm.receiverId]?.add(crm);
-
                       //对方发送给当前userId
                     } else if (crm.receiverId == userId) {
                       if (contactList[crm.userId] == null) {
@@ -247,7 +253,7 @@ class NavViewModel extends ChangeNotifier {
                   //   }
                   //   contactList[crm.receiverId]?.add(crm);
                   // }
-                  if (crm.code == 1008 || crm.code == 1007) {
+                  if (crm.code == -2) {
                     LoginViewModel.tokenExpire(msg: crm.msg);
                   }
                   debugPrint("chatList--------------》》$contactList");
@@ -257,7 +263,7 @@ class NavViewModel extends ChangeNotifier {
                   ws = null;
                   wsChannel?.sink.close();
                   wsChannel = null;
-                  connectWebSocket();
+                  // connectWebSocket();
                   debugPrint("ws-onDone-onDone-------------》 ");
                 },
                 onError: (e) {
