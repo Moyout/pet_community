@@ -26,8 +26,8 @@ class _ChatRecordViewState extends State<ChatRecordView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    getUserAvatar();
   }
 
   @override

@@ -253,7 +253,7 @@ class NavViewModel extends ChangeNotifier {
                   //   }
                   //   contactList[crm.receiverId]?.add(crm);
                   // }
-                  if (crm.code == -2) {
+                  if (crm.code == -2 || crm.code == 1007 || crm.code == 1008) {
                     LoginViewModel.tokenExpire(msg: crm.msg);
                   }
                   debugPrint("chatList--------------》》$contactList");

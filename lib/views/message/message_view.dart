@@ -14,7 +14,7 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   ScrollController sc = ScrollController();
-  Map<int, String?> userIdAvatarMap = {};
+  Map<int, UserInfoModel?> userIdAvatarMap = {};
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _MessageViewState extends State<MessageView> {
     debugPrint("context.read<NavViewModel>().contactList--------->${context.read<NavViewModel>().contactList}");
     context.read<NavViewModel>().contactList.forEach((key, value) async {
       UserInfoModel userInfoModel = await UserInfoRequest.getOtherUserInfo(key, false);
-      userIdAvatarMap.addAll({key: userInfoModel.data?.avatar});
+      userIdAvatarMap.addAll({key: userInfoModel});
       debugPrint("userIdAvatarMap--------->${userIdAvatarMap}");
     });
   }
@@ -72,9 +72,9 @@ class _MessageViewState extends State<MessageView> {
                             clipBehavior: Clip.antiAlias,
                             margin: EdgeInsets.only(right: 5.w, left: 5.w),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                            child: userIdAvatarMap[e.key] != null
+                            child: userIdAvatarMap[e.key]?.data?.avatar != null
                                 ? CachedNetworkImage(
-                                    imageUrl: userIdAvatarMap[e.key]!,
+                                    imageUrl: userIdAvatarMap[e.key]!.data!.avatar!,
                                     width: 40.w,
                                     height: 40.w,
                                     fit: BoxFit.cover,
@@ -91,7 +91,9 @@ class _MessageViewState extends State<MessageView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                e.key.toString(),
+                                userIdAvatarMap[e.key]?.data?.userName != null
+                                    ? "${userIdAvatarMap[e.key]?.data?.userName}"
+                                    : e.key.toString(),
                                 style: TextStyle(fontSize: 14.sp, color: ThemeUtil.reversePrimaryColor(context)),
                               ),
                               Text(
