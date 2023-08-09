@@ -1,23 +1,34 @@
+import 'package:pet_community/config/notification_config.dart';
+import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_record_view.dart';
 import 'package:pet_community/views/message/chat/emoji_view.dart';
 
 class ChatView extends StatefulWidget {
-  final String name;
   final int userId;
 
-  const ChatView({Key? key, required this.userId, this.name = ""}) : super(key: key);
+  const ChatView({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<ChatView> createState() => _ChatViewState();
 }
 
 class _ChatViewState extends State<ChatView> {
+    UserInfoModel? userInfoModel;
+
   @override
   void initState() {
     super.initState();
+    NotificationConfig.closeNotification(widget.userId);
     context.read<ChatViewModel>().initViewModel(context);
+    getUserInfo();
+  }
+
+  Future<void> getUserInfo() async {
+    userInfoModel = await UserInfoRequest.getOtherUserInfo(widget.userId, false);
+    setState(() {
+    });
   }
 
   @override
@@ -28,7 +39,7 @@ class _ChatViewState extends State<ChatView> {
           onTap: () => RouteUtil.pop(context),
           child: Icon(Icons.arrow_back_ios_new, color: ThemeUtil.reversePrimaryColor(context), size: 20.w),
         ),
-        title: Text(widget.name, style: TextStyle(fontSize: 14.sp)),
+        title: Text(userInfoModel?.data?.userName??"", style: TextStyle(fontSize: 14.sp)),
       ),
       body: GestureDetector(
         onTap: () {
@@ -130,7 +141,7 @@ class _ChatViewState extends State<ChatView> {
                           backgroundColor: Colors.deepPurple,
                           padding: const EdgeInsets.all(0),
                         ),
-                        onPressed: () => context.read<ChatViewModel>().sendMsg(context, widget.userId, widget.name),
+                        onPressed: () => context.read<ChatViewModel>().sendMsg(context, widget.userId),
                         child: Text(
                           "发送",
                           style: TextStyle(color: ThemeUtil.primaryColor(context), fontSize: 10.sp),

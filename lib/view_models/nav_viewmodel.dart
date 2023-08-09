@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
@@ -222,7 +224,7 @@ class NavViewModel extends ChangeNotifier {
             if (ws != null) {
               wsChannel = IOWebSocketChannel(ws!);
               wsChannel?.stream.listen(
-                (dynamic msg) {
+                (dynamic msg) async {
                   debugPrint("msg--------->${msg}");
                   dynamic data = jsonDecode(msg);
                   debugPrint("data--------->${data}");
@@ -239,12 +241,23 @@ class NavViewModel extends ChangeNotifier {
                         contactList.addAll({crm.receiverId: []});
                       }
                       contactList[crm.receiverId]?.add(crm);
+                      if (await Permission.notification.request().isGranted) {
+                         debugPrint("data1--------->${data}");
+
+                        NotificationConfig.send("你有一条来自社区的信息", crm.data,
+                            notificationId: crm.receiverId, params: msg);
+                      }
                       //对方发送给当前userId
                     } else if (crm.receiverId == userId) {
                       if (contactList[crm.userId] == null) {
                         contactList.addAll({crm.userId: []});
                       }
                       contactList[crm.userId]?.add(crm);
+                      if (await Permission.notification.request().isGranted) {
+                         debugPrint("data1--------->${data}");
+                        NotificationConfig.send("你有一条来自社区的信息", crm.data,
+                            notificationId: crm.userId, params: msg);
+                      }
                     }
                   }
                   // if (crm.data != null) {

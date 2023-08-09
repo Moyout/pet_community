@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
@@ -8,6 +9,7 @@ import 'package:pet_community/widget/refresh/refresh_widget.dart';
 void main() {
   Provider.debugCheckInvalidValueType = null; //Provider 状态管理，同步数据
   WidgetsFlutterBinding.ensureInitialized(); //WidgetsFlutterBinding 承担各类的初始化以及功能配置
+  NotificationConfig.initNotification();
   ScreenUtil.initialize(); //初始化屏幕适配
   AppConfig.initSp(); //初始化SP
   AppConfig.startJPush(); //初始化jpush

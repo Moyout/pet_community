@@ -32,7 +32,7 @@ dependencies:
 
   flutter_localizations: # ????????
     sdk: flutter
-  intl: ^0.17.0
+  intl: ^0.18.0
 
   provider: ^6.0.3 #
 
@@ -42,8 +42,7 @@ dependencies:
 
   shared_preferences: ^2.0.6 #
 
-
-  permission_handler: ^8.1.4+2 # ??????
+  permission_handler: ^8.1.4+2 # ??????权限
 
      #flutter_http:
   #git: https://github.com/Moyout/flutter_http.git
@@ -88,7 +87,7 @@ dependencies:
 
   #jpush_flutter: ^2.3.5
 
-
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:

@@ -27,7 +27,8 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+//    compileSdkVersion flutter.compileSdkVersion
+    compileSdk 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -39,7 +40,7 @@ android {
         applicationId "com.moyou.pet_community"
         minSdkVersion 23
 //        targetSdkVersion flutter.targetSdkVersion
-        targetSdkVersion 30
+        targetSdk 33
 
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -105,5 +106,6 @@ dependencies{
 //    implementation 'cn.jiguang.sdk.plugin:fcm:4.7.2'
 //    implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
 }

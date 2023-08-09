@@ -286,11 +286,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                         onPressed: () {
                                           RouteUtil.pushReplacement(
                                             context,
-                                            ChatView(
-                                              userId: widget.userId,
-                                              name:
-                                                  context.read<UserInfoViewModel>().userInfoModel.data?.userName ?? "",
-                                            ),
+                                            ChatView(userId: widget.userId),
                                           );
                                         },
                                         child: Text("发信息", style: TextStyle(fontSize: 12.sp)),

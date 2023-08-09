@@ -99,7 +99,7 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   ///发送
-  void sendMsg(BuildContext context, int receiverId, String addressee) {
+  void sendMsg(BuildContext context, int receiverId ) {
     NavViewModel nvm = context.read<NavViewModel>();
     int sendTime = DateTime.now().millisecondsSinceEpoch;
     ChatRecordModel? crm = ChatRecordModel(

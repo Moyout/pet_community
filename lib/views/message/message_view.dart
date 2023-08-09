@@ -62,7 +62,7 @@ class _MessageViewState extends State<MessageView> {
                           context,
                           ChatView(
                             userId: e.key,
-                            name: e.key.toString(),
+                            // name: userIdAvatarMap[e.key]?.data?.userName??"",
                           ),
                         );
                       },
