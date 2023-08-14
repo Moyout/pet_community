@@ -21,3 +21,8 @@ export 'package:provider/provider.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:synchronized/synchronized.dart';
 export 'package:video_player/video_player.dart';
+export 'package:sqflite/sqflite.dart';
+export 'package:web_socket_channel/io.dart';
+export 'package:vibration/vibration.dart';
+export 'package:permission_handler/permission_handler.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';

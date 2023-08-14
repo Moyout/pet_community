@@ -6,6 +6,7 @@ import 'package:pet_community/view_models/home/home_viewmodel.dart';
 import 'package:pet_community/view_models/home/video_detail_viewmodel.dart';
 import 'package:pet_community/view_models/home/video_viewmodel.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
+import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_viewmodel.dart';
@@ -43,6 +44,7 @@ List<SingleChildWidget> independentServices = [
   ChangeNotifierProvider(create: (_) => VideoViewModel()),
   ChangeNotifierProvider(create: (_) => VideoDetailViewModel()),
   ChangeNotifierProvider(create: (_) => ChatViewModel()),
+  ChangeNotifierProvider(create: (_) => ChatRecordViewModel()),
 ];
 
 //这里使用ProxyProvider来定义需要依赖其他Provider的服务

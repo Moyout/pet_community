@@ -5,6 +5,7 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
+import 'package:pet_community/views/sign_login/login_view.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
 class UserInfoView extends StatefulWidget {
@@ -286,7 +287,9 @@ class _UserInfoViewState extends State<UserInfoView>
                                         onPressed: () {
                                           RouteUtil.pushReplacement(
                                             context,
-                                            ChatView(userId: widget.userId),
+                                            context.read<NavViewModel>().isLogin
+                                                ? ChatView(userId: widget.userId)
+                                                : const LoginView(),
                                           );
                                         },
                                         child: Text("发信息", style: TextStyle(fontSize: 12.sp)),

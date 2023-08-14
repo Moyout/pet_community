@@ -23,10 +23,10 @@ class NotificationConfig {
   }
 
   static onDidReceiveNotificationResponse(NotificationResponse details) {
-    debugPrint("actionId--------->${details.actionId}");
-    debugPrint("details--id------->${details.id}");
-    debugPrint("details--payload------->${details.payload}");
-    debugPrint("details--input------->${details.input}");
+    // debugPrint("actionId--------->${details.actionId}");
+    // debugPrint("details--id------->${details.id}");
+    // debugPrint("details--payload------->${details.payload}");
+    // debugPrint("details--input------->${details.input}");
     if (details.payload != null) {
       dynamic data = jsonDecode(details.payload!);
       debugPrint("data- 231--- ----->${data}");

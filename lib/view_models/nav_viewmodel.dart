@@ -2,22 +2,20 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/cache_util.dart';
+import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
+import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
-import 'package:vibration/vibration.dart';
-import 'package:web_socket_channel/io.dart';
 
 class NavViewModel extends ChangeNotifier {
   PageController pageController = PageController();
@@ -54,9 +52,10 @@ class NavViewModel extends ChangeNotifier {
   Future<void> initViewModel(TickerProvider tickerProvider) async {
     initAnimation(tickerProvider);
     getCacheSize();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getSpUserInfoModel();
     });
+
     connectWebSocket();
   }
 
@@ -68,6 +67,7 @@ class NavViewModel extends ChangeNotifier {
       try {
         Map? userInfoMap = SpUtil.getObj("UserInfoModel");
         if (userInfoMap != null) userInfoModel = UserInfoModel.fromJson(userInfoMap);
+        initDatabase(userInfoModel?.data?.userId);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -212,60 +212,50 @@ class NavViewModel extends ChangeNotifier {
       if (token != null && userId != null) {
         try {
           if (ws == null) {
-            // ws = await WebSocket.connect(
-            //   'ws://www.urmbf.top:8081/chat?userId=$userId',
-            //   protocols: [token],
-            // );
             ws = await WebSocket.connect(
               '${ApiConfig.wsUrl}/chat?userId=$userId',
               protocols: [token],
             );
-            // ws = await WebSocket.connect('ws://www.urmbf.top:8081/online/$userId');
             if (ws != null) {
               wsChannel = IOWebSocketChannel(ws!);
               wsChannel?.stream.listen(
                 (dynamic msg) async {
                   debugPrint("msg--------->${msg}");
                   dynamic data = jsonDecode(msg);
-                  debugPrint("data--------->${data}");
-                  ChatRecordModel? crm = ChatRecordModel.fromJson(data);
+                  ChatRecordModel crm = ChatRecordModel.fromJson(data);
                   debugPrint("code--------------》》${crm.code}");
                   debugPrint("data--------------》》${crm.data}");
                   debugPrint("userId--------------》》${crm.userId}");
                   debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
                   if (crm.data != null || crm.msg != null) {
                     //当前userId发送给receiverId
-                    if (crm.userId == userId) {
-                      debugPrint("触发了crm.userId == userId--------->{触发了}");
-                      if (contactList[crm.receiverId] == null) {
-                        contactList.addAll({crm.receiverId: []});
-                      }
-                      contactList[crm.receiverId]?.add(crm);
-                      if (await Permission.notification.request().isGranted) {
-                         debugPrint("data1--------->${data}");
-
-                        NotificationConfig.send("你有一条来自社区的信息", crm.data,
-                            notificationId: crm.receiverId, params: msg);
-                      }
-                      //对方发送给当前userId
-                    } else if (crm.receiverId == userId) {
+                    // if (crm.userId == userId) {
+                    //   debugPrint("触发了crm.userId == userId--------->{触发了}");
+                    //   if (contactList[crm.receiverId] == null) {
+                    //     contactList.addAll({crm.receiverId: []});
+                    //   }
+                    //   contactList[crm.receiverId]?.add(crm);
+                    //   if (await Permission.notification.request().isGranted) {
+                    //     NotificationConfig.send("你有一条来自社区的信息1", crm.data, notificationId: crm.receiverId, params: msg);
+                    //   }
+                    //   ChatRecordDB.insertData(userId, crm);
+                    //   //对方发送给当前userId
+                    // } else
+                    if (crm.receiverId == userId) {
                       if (contactList[crm.userId] == null) {
                         contactList.addAll({crm.userId: []});
                       }
                       contactList[crm.userId]?.add(crm);
+
                       if (await Permission.notification.request().isGranted) {
-                         debugPrint("data1--------->${data}");
-                        NotificationConfig.send("你有一条来自社区的信息", crm.data,
-                            notificationId: crm.userId, params: msg);
+                        NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
                       }
+                      ChatRecordDB.insertData(userId, crm, crm.userId);
+                      AppUtils.getContext().read<ChatRecordViewModel>().list.insert(0, crm);
+
                     }
                   }
-                  // if (crm.data != null) {
-                  //   if (contactList[crm.receiverId] == null) {
-                  //     contactList.addAll({crm.receiverId: []});
-                  //   }
-                  //   contactList[crm.receiverId]?.add(crm);
-                  // }
+
                   if (crm.code == -2 || crm.code == 1007 || crm.code == 1008) {
                     LoginViewModel.tokenExpire(msg: crm.msg);
                   }
@@ -291,5 +281,16 @@ class NavViewModel extends ChangeNotifier {
         }
       }
     }
+  }
+
+  Future<bool> initDatabase(int? userId) async {
+    Database? db;
+    if (isLogin) {
+      if (userId != null) {
+        db = await ChatRecordDB.initDatabase(userId);
+      }
+    }
+
+    return db != null ? true : false;
   }
 }

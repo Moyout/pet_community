@@ -1,12 +1,13 @@
 
+import '../../util/tools.dart';
 
 class ChatRecordModel {
   ChatRecordModel({
     int? code,
     required int type,
     required int userId, //发送者Id
-    required int receiverId,//接收者Id
-    dynamic  data,
+    required int receiverId, //接收者Id
+    dynamic data,
     String? msg,
     required int sendTime,
   }) {
@@ -88,4 +89,18 @@ class ChatRecordModel {
   String toString() {
     return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _data: $_data, _msg: $_msg, _sendTime: $_sendTime}';
   }
+
+  //解析数据库数据
+  ChatRecordModel.fromMap(dynamic map) {
+    _code = 0;
+    _type = map['type'];
+    _userId = map['sender_id'];
+    _receiverId = map["receiver_id"];
+    _data = map['message'];
+    // _msg = map['msg'];
+    _sendTime = map['timestamp'];
+
+  }
+
+
 }

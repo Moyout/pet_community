@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:pet_community/models/chat/chat_record_model.dart';
+import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class ChatViewModel extends ChangeNotifier {
@@ -99,7 +101,7 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   ///发送
-  void sendMsg(BuildContext context, int receiverId ) {
+  void sendMsg(BuildContext context, int receiverId) {
     NavViewModel nvm = context.read<NavViewModel>();
     int sendTime = DateTime.now().millisecondsSinceEpoch;
     ChatRecordModel? crm = ChatRecordModel(
@@ -113,7 +115,15 @@ class ChatViewModel extends ChangeNotifier {
     debugPrint("crm--------->${crm}");
 
     String data = jsonEncode(crm);
+
+    ///发送ws信息
     nvm.wsChannel?.sink.add(data);
+
+    ///存入数据库
+    ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
+    context.read<ChatRecordViewModel>().list.insert(0, crm);
+
+
     debugPrint("data--------->${data}");
     if (crm.data != null) {
       if (nvm.contactList[receiverId] == null) {
@@ -125,7 +135,7 @@ class ChatViewModel extends ChangeNotifier {
     // nvm.contactList[userId]?.add(crm);
     nvm.notifyListeners();
     textC.clear();
-    chatListC.animateTo(chatListC.position.maxScrollExtent,
+    chatListC.animateTo(0,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
     notifyListeners();
   }

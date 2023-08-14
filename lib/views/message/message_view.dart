@@ -60,10 +60,7 @@ class _MessageViewState extends State<MessageView> {
                         debugPrint("e--------------》》${e.value.first.userId}");
                         RouteUtil.pushByCupertino(
                           context,
-                          ChatView(
-                            userId: e.key,
-                            // name: userIdAvatarMap[e.key]?.data?.userName??"",
-                          ),
+                          ChatView(userId: e.key),
                         );
                       },
                       child: Row(

@@ -88,6 +88,7 @@ dependencies:
   #jpush_flutter: ^2.3.5
 
   flutter_local_notifications: ^15.1.0+1
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:
