@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 class ChatRecordDB {
   static Database? db;
 
+  ///初始化聊天记录数据库
   static Future<Database?> initDatabase(int userId) async {
     debugPrint("userId2--------->${userId}");
 
@@ -28,6 +29,7 @@ class ChatRecordDB {
     return db;
   }
 
+  ///保存聊天记录到db
   static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId) async {
     debugPrint("userId-----insertData---->${userId}");
     Map<String, Object?> map = {
@@ -43,8 +45,8 @@ class ChatRecordDB {
     return result;
   }
 
-  static Future<List<ChatRecordModel>> queryChatRecord(int? userId, int otherId,
-      {int page = 1, int count = 10}) async {
+  ///查询最近10条聊天记录
+  static Future<List<ChatRecordModel>> queryChatRecord(int? userId, int otherId, {int page = 1, int count = 10}) async {
     List<Map<String, Object?>>? data;
     List<ChatRecordModel> list = [];
     if (userId != null) {
@@ -63,4 +65,15 @@ class ChatRecordDB {
     debugPrint("data db--------->${data?.length}");
     return list;
   }
+
+  ///分组查询最近一条记录
+ static  groupByQueryRecentOneRecord(int? userId) async {
+    List<Map<String, Object?>>? data;
+
+    data = await db?.rawQuery(
+      'SELECT *, MAX(timestamp) FROM chat_record_$userId GROUP BY other_id ',
+    );
+    debugPrint("data--group by------->${data}");
+  }
+
 }

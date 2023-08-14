@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
+import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
@@ -18,15 +19,9 @@ class _MessageViewState extends State<MessageView> {
 
   @override
   void initState() {
-    // var channel = IOWebSocketChannel.connect("ws://localhost:8081/chat");
-    //
-    // channel.stream.listen((message) {
-    //   channel.sink.add('received!');
-    //   channel.sink.close(status.goingAway);
-    // });
-    // timeago.setDefaultLocale("zh_cn");
     super.initState();
     getUserInfo();
+    ChatRecordDB.groupByQueryRecentOneRecord(context.read<NavViewModel>().userInfoModel?.data?.userId);
   }
 
   getUserInfo() {

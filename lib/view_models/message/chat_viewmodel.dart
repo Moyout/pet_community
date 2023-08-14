@@ -18,7 +18,7 @@ class ChatViewModel extends ChangeNotifier {
   ///初始化viewModel
   void initViewModel(BuildContext context) {
     currentEmoji = false;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       textC.selection = TextSelection.fromPosition(
         TextPosition(offset: textC.text.length),
       );
@@ -123,7 +123,6 @@ class ChatViewModel extends ChangeNotifier {
     ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
     context.read<ChatRecordViewModel>().list.insert(0, crm);
 
-
     debugPrint("data--------->${data}");
     if (crm.data != null) {
       if (nvm.contactList[receiverId] == null) {
@@ -135,8 +134,7 @@ class ChatViewModel extends ChangeNotifier {
     // nvm.contactList[userId]?.add(crm);
     nvm.notifyListeners();
     textC.clear();
-    chatListC.animateTo(0,
-        duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    chatListC.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
     notifyListeners();
   }
 }
