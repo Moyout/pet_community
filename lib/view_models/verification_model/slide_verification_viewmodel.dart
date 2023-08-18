@@ -25,7 +25,7 @@ class SlideVerificationViewModel extends ChangeNotifier {
   }
 
   void refresh() {
-    randomIndex = Random().nextInt(AppUtils.getContext().read<StartUpViewModel>().jpgFileCount);
+    randomIndex = Random().nextInt(10);
     opacity = 0.8;
     sliderDistance = 0;
     isPass = false;

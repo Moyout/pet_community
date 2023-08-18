@@ -1,5 +1,4 @@
 
-import '../../util/tools.dart';
 
 class ChatRecordModel {
   ChatRecordModel({
@@ -7,6 +6,7 @@ class ChatRecordModel {
     required int type,
     required int userId, //发送者Id
     required int receiverId, //接收者Id
+    required int otherId, //接收者Id
     dynamic data,
     String? msg,
     required int sendTime,
@@ -14,6 +14,7 @@ class ChatRecordModel {
     _code = code;
     _type = type;
     _userId = userId;
+    _otherId = otherId;
     _data = data;
     _msg = msg;
     _receiverId = receiverId;
@@ -24,6 +25,7 @@ class ChatRecordModel {
     _code = json['code'];
     _type = json['type'];
     _userId = json['userId'];
+    // _otherId = json['otherId'];
     _receiverId = json["receiverId"];
     _data = json['data'];
     _msg = json['msg'];
@@ -35,6 +37,7 @@ class ChatRecordModel {
 
   late int _userId;
   late int _receiverId;
+  late int _otherId;
 
   dynamic _data;
   String? _msg;
@@ -45,6 +48,7 @@ class ChatRecordModel {
     required int type,
     required int userId,
     required int receiverId,
+    required int otherId,
     dynamic data,
     String? msg,
     required int sendTime,
@@ -53,6 +57,7 @@ class ChatRecordModel {
         code: code ?? _code,
         type: type,
         userId: userId,
+        otherId: otherId,
         receiverId: receiverId,
         data: data ?? _data,
         msg: msg ?? _msg,
@@ -66,6 +71,7 @@ class ChatRecordModel {
   int get userId => _userId;
 
   int get receiverId => _receiverId;
+  int get otherId => _otherId;
 
   dynamic get data => _data;
 
@@ -79,16 +85,14 @@ class ChatRecordModel {
     map['type'] = _type;
     map['userId'] = _userId;
     map['receiverId'] = _receiverId;
+    map['otherId'] = _otherId;
     map['data'] = _data;
     map['msg'] = _msg;
     map['sendTime'] = _sendTime;
     return map;
   }
 
-  @override
-  String toString() {
-    return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _data: $_data, _msg: $_msg, _sendTime: $_sendTime}';
-  }
+
 
   //解析数据库数据
   ChatRecordModel.fromMap(dynamic map) {
@@ -96,11 +100,15 @@ class ChatRecordModel {
     _type = map['type'];
     _userId = map['sender_id'];
     _receiverId = map["receiver_id"];
+    _otherId = map["other_id"];
     _data = map['message'];
     // _msg = map['msg'];
     _sendTime = map['timestamp'];
 
   }
 
-
+  @override
+  String toString() {
+    return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _otherId:  _otherId, _data: $_data, _msg: $_msg, _sendTime: $_sendTime}';
+  }
 }

@@ -67,13 +67,22 @@ class ChatRecordDB {
   }
 
   ///分组查询最近一条记录
- static  groupByQueryRecentOneRecord(int? userId) async {
+  static Future<List<ChatRecordModel>> groupByQueryRecentOneRecord(int? userId) async {
     List<Map<String, Object?>>? data;
+    List<ChatRecordModel> list = [];
 
     data = await db?.rawQuery(
       'SELECT *, MAX(timestamp) FROM chat_record_$userId GROUP BY other_id ',
     );
-    debugPrint("data--group by------->${data}");
-  }
 
+    if (data != null) {
+      for (var element in data) {
+        ChatRecordModel chatRecordModel = ChatRecordModel.fromMap(element);
+        list.add(chatRecordModel);
+      }
+      // ChatRecordModel chatRecordMode = ChatRecordModel.fromMap(data[0]);
+    }
+    // debugPrint("data--group by------->${data}");
+    return list;
+  }
 }

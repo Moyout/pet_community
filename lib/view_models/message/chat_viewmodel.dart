@@ -111,6 +111,7 @@ class ChatViewModel extends ChangeNotifier {
       data: textC.text,
       sendTime: sendTime,
       receiverId: receiverId,
+      otherId: receiverId,
     );
     debugPrint("crm--------->${crm}");
 

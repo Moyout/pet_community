@@ -7,7 +7,6 @@ import 'package:pet_community/views/navigation_view.dart';
 class StartUpViewModel extends ChangeNotifier {
   late Timer _timer;
   int seconds = 4; //秒数
-  late int jpgFileCount;
   late int random = 1; //随机
 
   // late Uint8List bytes; //启动图
@@ -41,14 +40,8 @@ class StartUpViewModel extends ChangeNotifier {
 
   ///启动图
   Future<void> getLaunchImageInfo() async {
-    var result = await BaseRequest().toGet("${ApiConfig.baseUrl}/open/petPicturesCount/");
-    if (result != null) {
-      jpgFileCount = result["data"]["jpgFileCount"] ?? 10;
-      // random = Random().nextInt(jpgFileCount);
-      random = Random().nextInt(jpgFileCount);
-      notifyListeners();
-    }
-    debugPrint("jpgFileCount      $jpgFileCount");
+    // random = Random().nextInt(jpgFileCount);
+    random = 1 + Random().nextInt(10);
     debugPrint("random--------->${random}");
     // bytes = BaseToUint8List().base64ToImage("");
   }

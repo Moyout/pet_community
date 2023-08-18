@@ -41,8 +41,8 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       height: context.read<SlideVerificationViewModel>().picHeight,
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
-                      child: Image.network(
-                        ApiConfig.baseUrl + "/images/pet${context.watch<SlideVerificationViewModel>().randomIndex}.jpg",
+                      child: Image.asset(
+                        "assets/images/launch_images/pet${context.watch<SlideVerificationViewModel>().randomIndex}.jpg",
                         height: context.read<SlideVerificationViewModel>().picHeight,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,

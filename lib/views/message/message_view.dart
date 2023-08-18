@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
@@ -15,22 +16,37 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   ScrollController sc = ScrollController();
+
+  // Map<int, List<ChatRecordModel>> contactList = {};
+  List<ChatRecordModel> list = [];
   Map<int, UserInfoModel?> userIdAvatarMap = {};
 
   @override
   void initState() {
     super.initState();
+    getDatabaseData();
     getUserInfo();
-    ChatRecordDB.groupByQueryRecentOneRecord(context.read<NavViewModel>().userInfoModel?.data?.userId);
   }
 
-  getUserInfo() {
-    debugPrint("context.read<NavViewModel>().contactList--------->${context.read<NavViewModel>().contactList}");
+  void getUserInfo() {
+    // debugPrint("context.read<NavViewModel>().contactList--------->${context.read<NavViewModel>().contactList}");
     context.read<NavViewModel>().contactList.forEach((key, value) async {
       UserInfoModel userInfoModel = await UserInfoRequest.getOtherUserInfo(key, false);
       userIdAvatarMap.addAll({key: userInfoModel});
       debugPrint("userIdAvatarMap--------->${userIdAvatarMap}");
     });
+  }
+
+  Future<void> getDatabaseData() async {
+    list = await ChatRecordDB.groupByQueryRecentOneRecord(context.read<NavViewModel>().userInfoModel?.data?.userId);
+    debugPrint("list--------->${list}");
+    list.forEach((element) {
+      if (context.read<NavViewModel>().contactList[element.otherId] == null) {
+        context.read<NavViewModel>().contactList.addAll({element.otherId: []});
+      }
+      context.read<NavViewModel>().contactList[element.otherId]?.add(element);
+    });
+
   }
 
   @override

@@ -35,16 +35,9 @@ class _StartUpViewState extends State<StartUpView> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Image.network(
-                // "https://bing.ioliu.cn/v1/rand",
-                ApiConfig.baseUrl + "/images/pet${state.random}.jpg",
+              child:Image.asset(
+                "assets/images/launch_images/pet${state.random}.jpg",
                 fit: BoxFit.cover,
-                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                  return Image.asset(
-                    "assets/images/launch_images/pet${(state.random / 10).ceil()}.jpg",
-                    fit: BoxFit.cover,
-                  );
-                },
               ),
             ),
             Container(
@@ -53,22 +46,11 @@ class _StartUpViewState extends State<StartUpView> {
               child: context.watch<StartUpViewModel>().seconds == 0
                   ? const SizedBox()
                   : RawChip(
-                      // padding: EdgeInsets.symmetric(horizontal: 10),
-                      // labelPadding: EdgeInsets.all(0),
                       backgroundColor: Colors.transparent,
                       label: Text(
                         "跳过${state.seconds}",
                         style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                       ),
-
-                      // Consumer<StartUpViewModel>(
-                      //   builder: (_, StartUpViewModel stModel, __) {
-                      //     return Text(
-                      //       "跳过${stModel.seconds}",
-                      //       style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                      //     );
-                      //   },
-                      // ),
                       onPressed: () => state.pushNewPage(context),
                     ),
             ),
