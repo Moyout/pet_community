@@ -1,3 +1,4 @@
+import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
@@ -9,17 +10,20 @@ class ChatRecordViewModel extends ChangeNotifier {
   int page = 1;
   List<ChatRecordModel> list = [];
   bool enablePullUp = true;
+  int? otherId;
 
   ///初始化
-  void initViewModel(BuildContext context, int otherId) {
+  void initViewModel(BuildContext context, int userId) {
+    otherId = userId;
     page = 1;
     enablePullUp = true;
     list.clear();
-    getUserChatRecord(context, otherId);
+    getUserChatRecord(context, userId);
   }
 
   ///加载聊天记录
   void getUserChatRecord(BuildContext context, int otherId) async {
+
     list = await ChatRecordDB.queryChatRecord(
       context.read<NavViewModel>().userInfoModel?.data?.userId,
       otherId,
@@ -42,5 +46,12 @@ class ChatRecordViewModel extends ChangeNotifier {
     }
     notifyListeners();
     debugPrint("list-w-------->${list}");
+  }
+
+  ///新信息添加到底部
+  wsInsertRecord(ChatRecordModel crm, int wsOtherId) {
+    if (otherId == wsOtherId) {
+      list.insert(0, crm);
+    }
   }
 }

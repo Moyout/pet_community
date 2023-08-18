@@ -36,7 +36,7 @@ class StartUpViewModel extends ChangeNotifier {
   ///进入主页
   void pushNewPage(BuildContext context) {
     _timer.cancel();
-    RouteUtil.pushReplacement(context, const NavigationView());
+    RouteUtil.pushReplacementNamed(context, NavigationView.routeName);
   }
 
   ///启动图
@@ -44,6 +44,7 @@ class StartUpViewModel extends ChangeNotifier {
     var result = await BaseRequest().toGet("${ApiConfig.baseUrl}/open/petPicturesCount/");
     if (result != null) {
       jpgFileCount = result["data"]["jpgFileCount"] ?? 10;
+      // random = Random().nextInt(jpgFileCount);
       random = Random().nextInt(jpgFileCount);
       notifyListeners();
     }

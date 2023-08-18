@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+ import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
@@ -13,7 +14,8 @@ import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
-import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
+import 'package:pet_community/views/message/chat/chat_view.dart';
+ import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 
@@ -152,9 +154,9 @@ class NavViewModel extends ChangeNotifier {
       String? token = SpUtil.getString(PublicKeys.token);
       int? userId = SpUtil.getInt(PublicKeys.userId);
       userInfoModel = await UserInfoRequest.getUserInfo(userId!, token!);
-      if (userInfoModel?.code == 0) RouteUtil.push(context, const EditDataView());
+      if (userInfoModel?.code == 0) RouteUtil.pushNamed(context, EditDataView.routeName);
     } else {
-      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+      RouteUtil.pushNamed(context, SignLoginView.routeName);
     }
   }
 
@@ -228,19 +230,6 @@ class NavViewModel extends ChangeNotifier {
                   debugPrint("userId--------------》》${crm.userId}");
                   debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
                   if (crm.data != null || crm.msg != null) {
-                    //当前userId发送给receiverId
-                    // if (crm.userId == userId) {
-                    //   debugPrint("触发了crm.userId == userId--------->{触发了}");
-                    //   if (contactList[crm.receiverId] == null) {
-                    //     contactList.addAll({crm.receiverId: []});
-                    //   }
-                    //   contactList[crm.receiverId]?.add(crm);
-                    //   if (await Permission.notification.request().isGranted) {
-                    //     NotificationConfig.send("你有一条来自社区的信息1", crm.data, notificationId: crm.receiverId, params: msg);
-                    //   }
-                    //   ChatRecordDB.insertData(userId, crm);
-                    //   //对方发送给当前userId
-                    // } else
                     if (crm.receiverId == userId) {
                       if (contactList[crm.userId] == null) {
                         contactList.addAll({crm.userId: []});
@@ -248,10 +237,15 @@ class NavViewModel extends ChangeNotifier {
                       contactList[crm.userId]?.add(crm);
 
                       if (await Permission.notification.request().isGranted) {
-                        NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
+                        debugPrint("AppRoute.currRoute--------->${AppRoute.currRoute}");
+                        if (AppRoute.currRoute != ChatView.routeName) {
+                           NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
+                        }
+
                       }
                       ChatRecordDB.insertData(userId, crm, crm.userId);
-                      AppUtils.getContext().read<ChatRecordViewModel>().list.insert(0, crm);
+                      AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);
+                      notifyListeners();
 
                     }
                   }

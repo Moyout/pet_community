@@ -33,7 +33,10 @@ class CommunityDetailViewModel extends ChangeNotifier {
 
   ///push展示picture页
   void pushShowPicture(BuildContext context, List<String> list, int index) {
-    RouteUtil.push(context, ShowPictureView(picUrlList: list, index: index));
+    RouteUtil.pushNamed(context, ShowPictureView.routeName, arguments: {
+      "picUrlList": list,
+      "index": index,
+    });
   }
 
   ///页面改变时

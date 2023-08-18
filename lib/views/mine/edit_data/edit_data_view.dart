@@ -7,6 +7,8 @@ import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/mine/edit_data/edit_view.dart';
 
 class EditDataView extends StatefulWidget {
+  static const String routeName = 'EditDataView';
+
   const EditDataView({Key? key}) : super(key: key);
 
   @override
@@ -98,7 +100,11 @@ class _EditDataViewState extends State<EditDataView> {
                   style: valueText,
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
-                onTap: () => RouteUtil.push(context, const EditView(title: "修改名字")),
+                onTap: () => RouteUtil.pushNamed(
+                  context,
+                  EditView.routeName,
+                  arguments: {"title": "修改名字"},
+                ),
               ),
               ListTile(
                 leading: Text("性别", style: titleText),
@@ -149,7 +155,7 @@ class _EditDataViewState extends State<EditDataView> {
                   style: valueText,
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
-                onTap: () => RouteUtil.push(context, const EditView(title: "修改简介")),
+                onTap: () => RouteUtil.pushNamed(context, EditView.routeName, arguments: {"title": "修改简介"}),
               ),
               ListTile(
                 leading: Text("地区", style: titleText),

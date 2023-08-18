@@ -72,14 +72,15 @@ class UserInfoViewModel extends ChangeNotifier {
   ///点击头像
   void avatarOnTap(BuildContext context, String? avatar) {
     debugPrint("avatar---------> ${avatar}");
-    RouteUtil.push(
-        context,
-        SetAvatarView(
-          isOther:
-              userInfoModel.data?.userId == context.read<NavViewModel>().userInfoModel?.data?.userId ? false : true,
-          avatar: userInfoModel.data?.avatar ?? avatar,
-        ),
-        animation: RouteAnimation.popDown);
+    RouteUtil.pushNamed(
+      context,
+      SetAvatarView.routeName,
+      arguments: {
+        "isOther":
+            userInfoModel.data?.userId == context.read<NavViewModel>().userInfoModel?.data?.userId ? false : true,
+        "avatar": userInfoModel.data?.avatar ?? avatar,
+      },
+    );
   }
 
   Future<void> getUserInfoModel(int userId) async {

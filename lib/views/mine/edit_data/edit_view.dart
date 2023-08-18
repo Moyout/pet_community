@@ -2,9 +2,10 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/edit_data/edit_viewmodel.dart';
 
 class EditView extends StatefulWidget {
+  static const String routeName = 'EditView';
   final String title;
 
-  const EditView({Key? key, this.title = ""}) : super(key: key);
+  const EditView({Key? key, required this.title}) : super(key: key);
 
   @override
   State<EditView> createState() => _EditViewState();

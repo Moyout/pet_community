@@ -7,6 +7,8 @@ import 'package:pet_community/widget/video/video_widget.dart';
 import 'package:share_extend/share_extend.dart';
 
 class VideoDetailView extends StatefulWidget {
+  static const String routeName = 'VideoDetailView';
+
   final int? videoId;
   final String? content;
   final String videoUrl;
@@ -20,7 +22,7 @@ class VideoDetailView extends StatefulWidget {
     required this.videoUrl,
     required this.picUrl,
     required this.index,
-    this.content,
+    required this.content,
     required this.userId,
   }) : super(key: key);
 

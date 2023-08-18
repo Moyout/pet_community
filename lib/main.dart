@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
@@ -19,32 +20,39 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.initialize(); //初始化屏幕适配
     // AppConfig.initToast(context); //初始化SP
-
     return RefreshWidget(
       child: MaterialApp(
         title: '宠物社区',
         builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver()],
+        navigatorObservers: [
+          BotToastNavigatorObserver(),
+          AppRoute(),
+        ],
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           S.delegate,
         ],
+        routes:AppRoute.routes,
+        // onGenerateRoute: AppRoute.onGenerateRoute,
+        initialRoute: StartUpView.routeName,
         locale: const Locale("zh"),
         supportedLocales: S.delegate.supportedLocales,
         debugShowCheckedModeBanner: false,
         navigatorKey: AppUtils.navigatorKey,
-        themeMode: context.watch<InitAppViewModel>().isDark ? ThemeMode.dark : ThemeMode.light,
+        themeMode: context
+            .watch<InitAppViewModel>()
+            .isDark ? ThemeMode.dark : ThemeMode.light,
         theme: ThemeUtil.lightTheme(),
         darkTheme: ThemeUtil.darkTheme(),
-        home: const StartUpView(),
       ),
     );
   }

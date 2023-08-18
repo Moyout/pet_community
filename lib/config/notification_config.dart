@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
@@ -33,10 +34,7 @@ class NotificationConfig {
       ChatRecordModel? crm = ChatRecordModel.fromJson(data);
       debugPrint("crm- userId--- ----->${crm.userId}");
       if (crm.userId != 0) {
-        RouteUtil.pushByCupertino(
-          AppUtils.getContext(),
-          ChatView(userId: crm.userId),
-        );
+        RouteUtil.pushNamed(AppUtils.getContext(), ChatView.routeName, arguments: {"userId": crm.userId});
       }
     }
     debugPrint("details--notificationResponseType------->${details.notificationResponseType}");

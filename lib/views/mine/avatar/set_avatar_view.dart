@@ -3,6 +3,8 @@ import 'package:pet_community/view_models/mine/edit_data/edit_data_viewmodel.dar
 import 'package:photo_view/photo_view.dart';
 
 class SetAvatarView extends StatefulWidget {
+  static const String routeName = 'SetAvatarView';
+
   final bool isOther;
   final String? avatar;
 
@@ -17,12 +19,7 @@ class SetAvatarView extends StatefulWidget {
 }
 
 class _SetAvatarViewState extends State<SetAvatarView> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    debugPrint("widget--------->${widget.avatar}");
-  }
+
 
   @override
   Widget build(BuildContext context) {

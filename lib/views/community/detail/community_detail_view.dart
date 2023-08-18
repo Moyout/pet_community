@@ -9,6 +9,8 @@ import 'package:pet_community/widget/dialog/cupertino_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CommunityDetailView extends StatefulWidget {
+  static const String routeName = 'CommunityDetailView';
+  
   final int articleId;
   final int userId;
   final String title;

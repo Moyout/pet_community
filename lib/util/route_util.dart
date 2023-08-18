@@ -12,6 +12,10 @@ class RouteUtil {
     Navigator.push(context, CustomRoute(widget, routeAnimation: animation!, millisecond: millisecond));
   }
 
+  static void pushNamed(BuildContext context, String routeName, {Object? arguments}) {
+    Navigator.pushNamed(context, routeName, arguments: arguments);
+  }
+
   static void pushByMaterial(BuildContext context, Widget widget) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => widget));
   }
@@ -32,5 +36,9 @@ class RouteUtil {
   static void pushAndRemoveUntil(BuildContext context, Widget widget,
       {RouteAnimation? animation = RouteAnimation.gradient}) {
     Navigator.pushAndRemoveUntil(context, CustomRoute(widget, routeAnimation: animation!), (route) => false);
+  }
+
+  static void pushReplacementNamed(BuildContext context, String routeName, {Object? arguments}) {
+    Navigator.pushReplacementNamed(context, routeName, arguments: arguments);
   }
 }

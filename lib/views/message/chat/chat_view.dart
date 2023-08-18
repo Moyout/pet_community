@@ -9,6 +9,8 @@ import 'package:pet_community/views/message/chat/chat_record_view.dart';
 import 'package:pet_community/views/message/chat/emoji_view.dart';
 
 class ChatView extends StatefulWidget {
+  static const String routeName = 'ChatView';
+
   final int userId;
 
   const ChatView({Key? key, required this.userId}) : super(key: key);

@@ -47,19 +47,18 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                     itemBuilder: (context2, index) {
                       return GestureDetector(
                         onTap: () {
-                          RouteUtil.push(
+                          RouteUtil.pushNamed(
                             context,
-                            VideoDetailView(
-                              videoId: context.read<HomeViewModel>().videoModel.data?.videos[index].videoId,
-                              // avatar: context.read<HomeViewModel>().videoModel.data?[index].avatar ??
-                              //     ApiConfig.baseUrl + "/images/avatar/avatar$d.png",
-                              // userName: context.read<HomeViewModel>().videoModel.data?[index].userName,
-                              videoUrl: context.read<HomeViewModel>().videoModel.data!.videos[index].video!,
-                              picUrl: context.read<HomeViewModel>().videoModel.data!.videos[index].cover!,
-                              content: context.read<HomeViewModel>().videoModel.data?.videos[index].content,
-                              userId: context.read<HomeViewModel>().videoModel.data!.videos[index].userId,
-                              index: index,
-                            ),
+                              VideoDetailView.routeName,
+                            arguments: {
+                              "videoId": context.read<HomeViewModel>().videoModel.data?.videos[index].videoId,
+                              "videoUrl": context.read<HomeViewModel>().videoModel.data!.videos[index].video!,
+                              "picUrl": context.read<HomeViewModel>().videoModel.data!.videos[index].cover!,
+                              "content": context.read<HomeViewModel>().videoModel.data?.videos[index].content,
+                              "userId": context.read<HomeViewModel>().videoModel.data!.videos[index].userId,
+                              "index": index,
+                            },
+
                           );
                         },
                         child: Container(

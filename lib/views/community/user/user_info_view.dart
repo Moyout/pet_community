@@ -70,16 +70,17 @@ class _UserInfoViewState extends State<UserInfoView>
                       right: 0,
                       child: GestureDetector(
                         onTap: () {
-                          RouteUtil.push(
-                              context,
-                              SetBackgroundView(
-                                isOther: context.read<UserInfoViewModel>().userInfoModel.data?.userId ==
-                                        context.read<NavViewModel>().userInfoModel?.data?.userId
-                                    ? false
-                                    : true,
-                                background: context.read<UserInfoViewModel>().userInfoModel.data?.background,
-                              ),
-                              animation: RouteAnimation.popDown);
+                          RouteUtil.pushNamed(
+                            context,
+                            SetBackgroundView.routeName,
+                            arguments: {
+                              "isOther": context.read<UserInfoViewModel>().userInfoModel.data?.userId ==
+                                      context.read<NavViewModel>().userInfoModel?.data?.userId
+                                  ? false
+                                  : true,
+                              "background": context.read<UserInfoViewModel>().userInfoModel.data?.background
+                            },
+                          );
                         },
                         child: Transform.scale(
                           scale: 1 + mvModelW.scale,
@@ -285,11 +286,13 @@ class _UserInfoViewState extends State<UserInfoView>
                                           padding: const EdgeInsets.all(0),
                                         ),
                                         onPressed: () {
-                                          RouteUtil.pushReplacement(
+                                          RouteUtil.pushNamed(
                                             context,
                                             context.read<NavViewModel>().isLogin
-                                                ? ChatView(userId: widget.userId)
-                                                : const LoginView(),
+                                                ? ChatView.routeName
+                                                : LoginView.routeName,
+                                            arguments:
+                                                context.read<NavViewModel>().isLogin ? {"userId": widget.userId} : null,
                                           );
                                         },
                                         child: Text("发信息", style: TextStyle(fontSize: 12.sp)),

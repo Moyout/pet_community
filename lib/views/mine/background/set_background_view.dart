@@ -4,6 +4,7 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:photo_view/photo_view.dart';
 
 class SetBackgroundView extends StatefulWidget {
+  static const String routeName = "SetBackgroundView";
   final String? background;
   final bool isOther;
 
@@ -18,6 +19,8 @@ class SetBackgroundView extends StatefulWidget {
 }
 
 class _SetBackgroundViewState extends State<SetBackgroundView> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,7 @@ class _SetBackgroundViewState extends State<SetBackgroundView> {
               children: [
                 Hero(
                   tag: "background",
-                  child: widget.background != null
+                  child: widget.background != null && widget.background != "null"
                       ? PhotoView(
                           imageProvider: NetworkImage(widget.background!),
                         )
@@ -66,9 +69,9 @@ class _SetBackgroundViewState extends State<SetBackgroundView> {
                                   child: TextButton(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: const [
+                                        children: [
                                           Text("更换背景图"),
                                           Icon(Icons.edit_sharp, size: 18),
                                         ],

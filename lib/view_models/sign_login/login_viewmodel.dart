@@ -87,7 +87,7 @@ class LoginViewModel extends ChangeNotifier {
           .getContext()
           .read<SignLoginViewModel>()
           .initialPage = 1;
-      RouteUtil.push(AppUtils.getContext(), const SignLoginView(), animation: RouteAnimation.popDown);
+      RouteUtil.pushNamed(AppUtils.getContext(), SignLoginView.routeName);
     });
   }
 }

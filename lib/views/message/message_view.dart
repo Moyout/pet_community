@@ -53,10 +53,7 @@ class _MessageViewState extends State<MessageView> {
                     return TextButton(
                       onPressed: () {
                         debugPrint("e--------------》》${e.value.first.userId}");
-                        RouteUtil.pushByCupertino(
-                          context,
-                          ChatView(userId: e.key),
-                        );
+                        RouteUtil.pushNamed(context, ChatView.routeName, arguments: {"userId": e.key});
                       },
                       child: Row(
                         children: [

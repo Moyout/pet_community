@@ -4,6 +4,8 @@ import 'package:pet_community/views/sign_login/login_view.dart';
 import 'package:pet_community/views/sign_login/sign_view.dart';
 
 class SignLoginView extends StatefulWidget {
+  static const String routeName = 'SignLoginView';
+
   const SignLoginView({Key? key}) : super(key: key);
 
   @override

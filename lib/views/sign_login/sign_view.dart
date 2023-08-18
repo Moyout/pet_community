@@ -5,6 +5,8 @@ import 'package:pet_community/view_models/verification_model/slide_verification_
 import 'package:pet_community/widget/textFiled/textfiled_widget.dart';
 
 class SignView extends StatefulWidget {
+  static const String routeName = 'SignView';
+
   const SignView({Key? key}) : super(key: key);
 
   @override

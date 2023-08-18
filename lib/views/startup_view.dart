@@ -4,6 +4,8 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/startup_viewmodel.dart';
 
 class StartUpView extends StatefulWidget {
+  static const String routeName = 'StartUpView';
+
   const StartUpView({Key? key}) : super(key: key);
 
   @override

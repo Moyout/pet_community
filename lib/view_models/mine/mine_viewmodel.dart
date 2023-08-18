@@ -1,5 +1,6 @@
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/views/mine/avatar/set_avatar_view.dart';
@@ -70,39 +71,36 @@ class MineViewModel extends ChangeNotifier {
   void avatarOnTap(BuildContext context) {
     bool isLogin = context.read<NavViewModel>().isLogin;
     if (isLogin) {
-      RouteUtil.push(
-          context,
-          SetAvatarView(
-            avatar: context.read<NavViewModel>().userInfoModel?.data?.avatar,
-          ),
-          animation: RouteAnimation.popDown);
+      RouteUtil.pushNamed(
+        context,
+        SetAvatarView.routeName,
+        arguments: {
+          "avatar": context.read<NavViewModel>().userInfoModel?.data?.avatar,
+        },
+      );
     } else {
       context.read<SignLoginViewModel>().initialPage = 1;
-      RouteUtil.pushByCupertino(context, const SignLoginView());
+      RouteUtil.pushNamed(context, SignLoginView.routeName);
     }
   }
 
   ///点击背景
   void backgroundOnTap(BuildContext context) {
-    RouteUtil.push(
-        context,
-        SetBackgroundView(
-          background: context.read<NavViewModel>().userInfoModel?.data?.background,
-        ),
-        animation: RouteAnimation.popDown);
+    Navigator.pushNamed(
+      context,
+      SetBackgroundView.routeName,
+      arguments: {
+        "background": context.read<NavViewModel>().userInfoModel?.data?.background,
+      },
+    );
   }
 
   ///发作品
   void releaseWork(BuildContext context) {
     if (context.read<NavViewModel>().isLogin) {
-      RouteUtil.push(
-        context,
-        const ReleaseWorkView(),
-        animation: RouteAnimation.popDown,
-        millisecond: 200,
-      );
+      RouteUtil.pushNamed(context, ReleaseWorkView.routeName);
     } else {
-      RouteUtil.push(context, const SignLoginView(), animation: RouteAnimation.popDown);
+      RouteUtil.pushNamed(context, SignLoginView.routeName);
     }
   }
 

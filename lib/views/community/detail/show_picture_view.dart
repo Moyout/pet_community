@@ -3,10 +3,16 @@ import 'package:pet_community/view_models/community/community_detail_viewmodel.d
 import 'package:photo_view/photo_view.dart';
 
 class ShowPictureView extends StatefulWidget {
+  static const String routeName = 'ShowPictureView';
+
   final List<String> picUrlList;
   final int index;
 
-  const ShowPictureView({Key? key, required this.picUrlList, required this.index}) : super(key: key);
+  const ShowPictureView({
+    Key? key,
+    required this.picUrlList,
+    required this.index,
+  }) : super(key: key);
 
   @override
   State<ShowPictureView> createState() => _ShowPictureViewState();

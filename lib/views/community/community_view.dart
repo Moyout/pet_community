@@ -47,21 +47,23 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              RouteUtil.pushByCupertino(
+                              RouteUtil.pushNamed(
                                 context,
-                                CommunityDetailView(
-                                  title:
+                                CommunityDetailView.routeName,
+                                arguments: {
+                                  "title":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].title ?? "",
-                                  content:
+                                  "content":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].content ??
                                           "",
-                                  articleId:
+                                  "articleId":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].articleId,
-                                  pictures:
+                                  "pictures":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].pictures!,
-                                  userId: context.read<CommunityViewModel>().articleModel.data!.articles[index].userId,
-                                  isShowUserInfoView: true,
-                                ),
+                                  "userId":
+                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].userId,
+                                  "isShowUserInfoView": true,
+                                },
                               );
                             },
                             child: Container(

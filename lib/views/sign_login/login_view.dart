@@ -4,6 +4,8 @@ import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/widget/textFiled/textfiled_widget.dart';
 
 class LoginView extends StatefulWidget {
+  static const String routeName = 'LoginView';
+
   const LoginView({Key? key}) : super(key: key);
 
   @override

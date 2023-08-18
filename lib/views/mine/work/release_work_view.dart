@@ -2,6 +2,8 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/work/release_work_viewmodel.dart';
 
 class ReleaseWorkView extends StatefulWidget {
+  static const String routeName = 'ReleaseWorkView';
+
   const ReleaseWorkView({Key? key}) : super(key: key);
 
   @override
