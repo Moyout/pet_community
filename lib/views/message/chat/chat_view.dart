@@ -56,7 +56,7 @@ class _ChatViewState extends State<ChatView> {
               Expanded(
                 child: ChatRecordView(userId: widget.userId, avatar: userInfoModel?.data?.avatar),
               ),
-               Column(
+              Column(
                 children: [
                   Divider(
                     thickness: 1.w,

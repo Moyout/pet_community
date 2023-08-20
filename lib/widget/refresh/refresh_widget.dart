@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/physics.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -14,14 +13,14 @@ class RefreshWidget extends StatelessWidget {
         builder: (BuildContext context, RefreshStatus? mode) {
           Widget body;
           if (mode == RefreshStatus.idle) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [Icon(Icons.arrow_downward_outlined), Text("下拉刷新")],
+              children: [Icon(Icons.arrow_downward_outlined), Text("下拉刷新")],
             );
           } else if (mode == RefreshStatus.refreshing) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [RefreshProgressIndicator()],
+              children: [RefreshProgressIndicator()],
             );
             // body = Image.asset(
             //   "assets/images/logo.webp",
@@ -31,17 +30,17 @@ class RefreshWidget extends StatelessWidget {
             //   fit: BoxFit.cover,
             // );
           } else if (mode == RefreshStatus.failed) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.report_rounded),
                 Text("请稍后再试"),
               ],
             );
           } else if (mode == RefreshStatus.canRefresh) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_upward_outlined),
                 Text("释放刷新"),
               ],
@@ -60,9 +59,9 @@ class RefreshWidget extends StatelessWidget {
         builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_upward_rounded),
                 Text("上滑加载更多"),
               ],
@@ -72,9 +71,9 @@ class RefreshWidget extends StatelessWidget {
           } else if (mode == LoadStatus.failed) {
             body = const Text("加载失败");
           } else if (mode == LoadStatus.canLoading) {
-            body = Row(
+            body = const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_downward_rounded),
                 Text("释放加载"),
               ],

@@ -1,6 +1,5 @@
 import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
-import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -19,11 +18,12 @@ class ChatRecordViewModel extends ChangeNotifier {
     enablePullUp = true;
     list.clear();
     getUserChatRecord(context, userId);
+    // notifyListeners();
+
   }
 
   ///加载聊天记录
   void getUserChatRecord(BuildContext context, int otherId) async {
-
     list = await ChatRecordDB.queryChatRecord(
       context.read<NavViewModel>().userInfoModel?.data?.userId,
       otherId,

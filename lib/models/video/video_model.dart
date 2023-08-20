@@ -13,7 +13,8 @@ class VideoRequest {
       parameters: {"page": page, "count": count},
       isShowLoading: isShowLoading,
     );
-    VideoModel scModel = VideoModel.fromJson(response);
+    VideoModel scModel = VideoModel();
+    if (response != null) scModel = VideoModel.fromJson(response);
 
     // print(userInfoModel.data);
     return scModel;

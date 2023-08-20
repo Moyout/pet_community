@@ -2,22 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
- import 'package:pet_community/common/app_route.dart';
+import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
-import 'package:pet_community/util/cache_util.dart';
-import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
- import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
+import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
+import 'package:pet_community/views/startup_view.dart';
 
 class NavViewModel extends ChangeNotifier {
   PageController pageController = PageController();
@@ -27,15 +27,8 @@ class NavViewModel extends ChangeNotifier {
   bool isLogin = false;
   var scaffoldKey = GlobalKey<ScaffoldState>(); //将Scaffold设置为全局变量
   int cacheSize = 0;
-  IOWebSocketChannel? wsChannel; //webSocket
-  // ChatRecordModel? crm;
-  WebSocket? ws;
 
-  // List<ChatRecordModel> chatList = [];//聊天记录列表
-
-  Map<int, List<ChatRecordModel>> contactList = {};
-
-  // bool isDark = false; //夜间模式
+  Map<int, List<ChatRecordModel>> contactList = {}; //聊天记录列表
 
   ///页面控制器
   late AnimationController animationController;
@@ -57,9 +50,8 @@ class NavViewModel extends ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getSpUserInfoModel();
     });
-
-    connectWebSocket();
-  }
+    WebSocketUtils().initSocket(); //websocket
+   }
 
   ///初始化登录信息
   void getSpUserInfoModel() {
@@ -130,21 +122,24 @@ class NavViewModel extends ChangeNotifier {
       onClickBottom(index);
       pageTo(index);
     }
-    connectWebSocket();
-  }
+   }
 
   ///检查网络状态
   void checkNet() async {
     netMode = await Connectivity().checkConnectivity();
     subscription ??= Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result == ConnectivityResult.mobile) {
-        // Toast.showBottomToast("当前为流量连接,请注意使用");
+        ToastUtil.showBottomToast(PublicKeys.netMobile);
       } else if (result == ConnectivityResult.wifi) {
       } else if (result == ConnectivityResult.none) {
-        // Toast.showBottomToast("网络错误");
+        WebSocketUtils().dispose();
+        ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
       }
       netMode = result;
+      // if (AppRoute.currRoute != StartUpView.routeName) connectWebSocket();
+      if (AppRoute.currRoute != StartUpView.routeName) WebSocketUtils().initSocket();
       notifyListeners();
+      debugPrint("netMode--------->${netMode}");
     });
   }
 
@@ -160,10 +155,6 @@ class NavViewModel extends ChangeNotifier {
     }
   }
 
-  // void appInitSetting() {
-  //   isDark = SpUtil.getBool(PublicKeys.darkTheme) ?? false;
-  // }
-
   ///退出登录
   void loginOut(BuildContext context) {
     SpUtil.remove("UserInfoModel");
@@ -173,13 +164,11 @@ class NavViewModel extends ChangeNotifier {
     AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
     AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
     contactList.clear();
+
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     RouteUtil.pop(context);
+    WebSocketUtils().dispose();
 
-    ws?.close();
-    ws = null;
-    wsChannel?.sink.close();
-    wsChannel = null;
     notifyListeners();
   }
 
@@ -205,78 +194,78 @@ class NavViewModel extends ChangeNotifier {
   }
 
   ///链接webSocket服务
-  Future<void> connectWebSocket() async {
-    isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+  // Future<void> connectWebSocket() async {
+  //   isLogin = SpUtil.getBool(PublicKeys.isLogin) ?? false;
+  //
+  //   if (isLogin) {
+  //     String? token = SpUtil.getString(PublicKeys.token);
+  //     int? userId = SpUtil.getInt(PublicKeys.userId);
+  //     // if (token != null && userId != null) {
+  //     //   try {
+  //     //     if (ws == null) {
+  //     //       ws = await WebSocket.connect(
+  //     //         '${ApiConfig.wsUrl}/chat?userId=$userId',
+  //     //         protocols: [token],
+  //     //       );
+  //     //       if (ws != null) {
+  //     //         wsChannel = IOWebSocketChannel(ws!);
+  //     //         wsChannel?.stream.listen(
+  //     //           (dynamic msg) async {
+  //     //             debugPrint("msg--------->${msg}");
+  //     //             dynamic data = jsonDecode(msg);
+  //     //             ChatRecordModel crm = ChatRecordModel.fromJson(data);
+  //     //             debugPrint("code--------------》》${crm.code}");
+  //     //             debugPrint("data--------------》》${crm.data}");
+  //     //             debugPrint("userId--------------》》${crm.userId}");
+  //     //             debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
+  //     //             if (crm.data != null || crm.msg != null) {
+  //     //               if (crm.receiverId == userId) {
+  //     //                 if (contactList[crm.userId] == null) {
+  //     //                   contactList.addAll({crm.userId: []});
+  //     //                 }
+  //     //                 contactList[crm.userId]?.add(crm);
+  //     //
+  //     //                 if (await Permission.notification.request().isGranted) {
+  //     //                   debugPrint("AppRoute.currRoute--------->${AppRoute.currRoute}");
+  //     //                   if (AppRoute.currRoute != ChatView.routeName) {
+  //     //                     NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
+  //     //                   }
+  //     //                 }
+  //     //                 ChatRecordDB.insertData(userId, crm, crm.userId);
+  //     //                 AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);
+  //     //                 sortChatList();
+  //     //                 notifyListeners();
+  //     //               }
+  //     //             }
+  //     //
+  //     //             if (crm.code == -2 || crm.code == 1007 || crm.code == 1008) {
+  //     //               LoginViewModel.tokenExpire(msg: crm.msg);
+  //     //             }
+  //     //             debugPrint("chatList--------------》》$contactList");
+  //     //           },
+  //     //           onDone: () {
+  //     //             ws?.close();
+  //     //             ws = null;
+  //     //             wsChannel?.sink.close();
+  //     //             wsChannel = null;
+  //     //             // connectWebSocket();
+  //     //             debugPrint("ws-onDone-onDone-------------》 ");
+  //     //           },
+  //     //           onError: (e) {
+  //     //             debugPrint("ws 出错  --------------》》$e");
+  //     //           },
+  //     //         );
+  //     //       }
+  //     //     }
+  //     //   } on SocketException catch (e) {
+  //     //     debugPrint("SocketException--------------》》$e");
+  //     //     connectWebSocket();
+  //     //   }
+  //     // }
+  //   }
+  // }
 
-    if (isLogin) {
-      String? token = SpUtil.getString(PublicKeys.token);
-      int? userId = SpUtil.getInt(PublicKeys.userId);
-      if (token != null && userId != null) {
-        try {
-          if (ws == null) {
-            ws = await WebSocket.connect(
-              '${ApiConfig.wsUrl}/chat?userId=$userId',
-              protocols: [token],
-            );
-            if (ws != null) {
-              wsChannel = IOWebSocketChannel(ws!);
-              wsChannel?.stream.listen(
-                (dynamic msg) async {
-                  debugPrint("msg--------->${msg}");
-                  dynamic data = jsonDecode(msg);
-                  ChatRecordModel crm = ChatRecordModel.fromJson(data);
-                  debugPrint("code--------------》》${crm.code}");
-                  debugPrint("data--------------》》${crm.data}");
-                  debugPrint("userId--------------》》${crm.userId}");
-                  debugPrint("userInfoModel.id--------------》》${userInfoModel?.data?.userId}");
-                  if (crm.data != null || crm.msg != null) {
-                    if (crm.receiverId == userId) {
-                      if (contactList[crm.userId] == null) {
-                        contactList.addAll({crm.userId: []});
-                      }
-                      contactList[crm.userId]?.add(crm);
-
-                      if (await Permission.notification.request().isGranted) {
-                        debugPrint("AppRoute.currRoute--------->${AppRoute.currRoute}");
-                        if (AppRoute.currRoute != ChatView.routeName) {
-                           NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
-                        }
-
-                      }
-                      ChatRecordDB.insertData(userId, crm, crm.userId);
-                      AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);
-                      notifyListeners();
-
-                    }
-                  }
-
-                  if (crm.code == -2 || crm.code == 1007 || crm.code == 1008) {
-                    LoginViewModel.tokenExpire(msg: crm.msg);
-                  }
-                  debugPrint("chatList--------------》》$contactList");
-                },
-                onDone: () {
-                  ws?.close();
-                  ws = null;
-                  wsChannel?.sink.close();
-                  wsChannel = null;
-                  // connectWebSocket();
-                  debugPrint("ws-onDone-onDone-------------》 ");
-                },
-                onError: (e) {
-                  debugPrint("e--------------》》$e");
-                },
-              );
-            }
-          }
-        } on SocketException catch (e) {
-          debugPrint("e--------------》》$e");
-          connectWebSocket();
-        }
-      }
-    }
-  }
-
+  ///初始化数据库
   Future<bool> initDatabase(int? userId) async {
     Database? db;
     if (isLogin) {
@@ -286,5 +275,14 @@ class NavViewModel extends ChangeNotifier {
     }
 
     return db != null ? true : false;
+  }
+
+  ///聊天降序
+  void sortChatList() {
+    contactList = Map.fromEntries(contactList.entries.toList()
+      ..sort((a1, a2) {
+        return a2.value.last.sendTime.compareTo(a1.value.last.sendTime);
+      }));
+    notifyListeners();
   }
 }

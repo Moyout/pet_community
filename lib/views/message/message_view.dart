@@ -24,12 +24,12 @@ class _MessageViewState extends State<MessageView> {
   @override
   void initState() {
     super.initState();
-    getDatabaseData();
+
+    getDatabaseData() ;
     getUserInfo();
   }
 
   void getUserInfo() {
-    // debugPrint("context.read<NavViewModel>().contactList--------->${context.read<NavViewModel>().contactList}");
     context.read<NavViewModel>().contactList.forEach((key, value) async {
       UserInfoModel userInfoModel = await UserInfoRequest.getOtherUserInfo(key, false);
       userIdAvatarMap.addAll({key: userInfoModel});
@@ -37,6 +37,7 @@ class _MessageViewState extends State<MessageView> {
     });
   }
 
+  ///查询聊天列表分组查询
   Future<void> getDatabaseData() async {
     list = await ChatRecordDB.groupByQueryRecentOneRecord(context.read<NavViewModel>().userInfoModel?.data?.userId);
     debugPrint("list--------->${list}");
@@ -46,7 +47,8 @@ class _MessageViewState extends State<MessageView> {
       }
       context.read<NavViewModel>().contactList[element.otherId]?.add(element);
     });
-
+    ///聊天列表进行排序
+    context.read<NavViewModel>().sortChatList();
   }
 
   @override
@@ -126,42 +128,6 @@ class _MessageViewState extends State<MessageView> {
                 ],
               ),
             ),
-
-            // Container(
-            //   clipBehavior: Clip.antiAlias,
-            //   margin: EdgeInsets.only(right: 5.w, left: 5.w),
-            //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-            //   child: CachedNetworkImage(
-            //     imageUrl: e.value[0].userAvatar ??
-            //         ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-            //     width: 30.w,
-            //     height: 30.w,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            // Text(e.value[0].data!),
-            // child: ListView.builder(
-            //   itemCount: context.watch<NavViewModel>().contactList.length,
-            //   itemBuilder: (context, index) {
-            //     return Row(
-            //       children: [
-            //         // Container(
-            //         //   clipBehavior: Clip.antiAlias,
-            //         //   margin: EdgeInsets.only(right: 5.w, left: 5.w),
-            //         //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-            //         //   child: CachedNetworkImage(
-            //         //     imageUrl: context.read<NavViewModel>().contactList[widget.userId]?[index].userAvatar ??
-            //         //         ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-            //         //     width: 30.w,
-            //         //     height: 30.w,
-            //         //     fit: BoxFit.cover,
-            //         //   ),
-            //         // ),
-            //         Text("${context.watch<NavViewModel>().contactList[index]?[0].data}"),
-            //       ],
-            //     );
-            //   },
-            // ),
           ),
         ),
       ),

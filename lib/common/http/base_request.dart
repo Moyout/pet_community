@@ -93,7 +93,7 @@ class BaseRequest {
 
     dynamic result;
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
-      // Toast.showBotToast("请检查网络");
+      ToastUtil.showBotToast(PublicKeys.netError,bgColor: PublicKeys.errorColor);
     } else {
       response = await dio.get(
         url, queryParameters: parameters, options: options,
@@ -119,15 +119,14 @@ class BaseRequest {
     bool isShowLoading = false,
   }) async {
     this.isShowLoading = isShowLoading;
-    // if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
-    //   Toast.showBotToast("请检查网络");
-    // } else {
-
-    response = await dio.post(url, queryParameters: parameters, options: options, data: data).catchError((e) {
-      debugPrint("=======post错误========================>$e");
-    });
-    // print("################${response.data}");
-    // }
+    if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
+      ToastUtil.showBotToast(PublicKeys.netError,bgColor: PublicKeys.errorColor);
+    } else {
+      response = await dio.post(url, queryParameters: parameters, options: options, data: data).catchError((e) {
+        debugPrint("=======post错误========================>$e");
+      });
+      // print("################${response.data}");
+    }
     return response?.data;
   }
 
@@ -174,7 +173,7 @@ class BaseRequest {
       sendTimeout: 0,
     );
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
-      // Toast.showBotToast("请检查网络");
+      ToastUtil.showBotToast(PublicKeys.netError);
     } else {
       response = await dio
           .post(
@@ -184,9 +183,11 @@ class BaseRequest {
         options: options,
         onSendProgress: onSendProgress,
       )
-          .catchError((e) {
-        // Toast.showBotToast("Failed: $e");
-      });
+          .catchError(
+        (e) {
+          debugPrint("e--------->${e}");
+        },
+      );
     }
     return response;
   }

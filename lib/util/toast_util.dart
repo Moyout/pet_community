@@ -30,10 +30,12 @@ class ToastUtil {
   }
 
   ///通知toast
-  static showBotToast(String text, {int seconds = 3}) {
+  static showBotToast(String text, {int seconds = 3, Color? textColor, Color? bgColor}) {
     return BotToast.showSimpleNotification(
       title: text,
+      titleStyle: TextStyle(color: textColor ?? Colors.white),
       hideCloseButton: true,
+      backgroundColor: bgColor,
       duration: Duration(seconds: seconds),
     );
   }

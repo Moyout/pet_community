@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 
@@ -102,40 +103,46 @@ class ChatViewModel extends ChangeNotifier {
 
   ///发送
   void sendMsg(BuildContext context, int receiverId) {
-    NavViewModel nvm = context.read<NavViewModel>();
-    int sendTime = DateTime.now().millisecondsSinceEpoch;
-    ChatRecordModel? crm = ChatRecordModel(
-      code: 0,
-      type: 0,
-      userId: nvm.userInfoModel!.data!.userId,
-      data: textC.text,
-      sendTime: sendTime,
-      receiverId: receiverId,
-      otherId: receiverId,
-    );
-    debugPrint("crm--------->${crm}");
+    if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
+      ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
+    } else {
+      NavViewModel nvm = context.read<NavViewModel>();
+      int sendTime = DateTime.now().millisecondsSinceEpoch;
+      ChatRecordModel? crm = ChatRecordModel(
+        code: 0,
+        type: 0,
+        userId: nvm.userInfoModel!.data!.userId,
+        data: textC.text,
+        sendTime: sendTime,
+        receiverId: receiverId,
+        otherId: receiverId,
+      );
+      debugPrint("crm--------->${crm}");
 
-    String data = jsonEncode(crm);
+      String data = jsonEncode(crm);
 
-    ///发送ws信息
-    nvm.wsChannel?.sink.add(data);
+      ///发送ws信息
+      WebSocketUtils().send(data);
 
-    ///存入数据库
-    ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
-    context.read<ChatRecordViewModel>().list.insert(0, crm);
+      ///存入数据库
+      ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
+      context.read<ChatRecordViewModel>().list.insert(0, crm);
 
-    debugPrint("data--------->${data}");
-    if (crm.data != null) {
-      if (nvm.contactList[receiverId] == null) {
-        nvm.contactList.addAll({receiverId: []});
+      ///聊天列表进行排序
+      context.read<NavViewModel>().sortChatList();
+
+      ///添加到 聊天记录列表中
+      if (crm.data != null) {
+        if (nvm.contactList[receiverId] == null) {
+          nvm.contactList.addAll({receiverId: []});
+        }
+        nvm.contactList[receiverId]?.add(crm);
       }
-      nvm.contactList[receiverId]?.add(crm);
+      debugPrint("nvm.contactList--------------》》${nvm.contactList}");
+      nvm.notifyListeners();
+      textC.clear();
+      chatListC.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+      notifyListeners();
     }
-    debugPrint("nvm.contactList--------------》》${nvm.contactList}");
-    // nvm.contactList[userId]?.add(crm);
-    nvm.notifyListeners();
-    textC.clear();
-    chatListC.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
-    notifyListeners();
   }
 }
