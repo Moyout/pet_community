@@ -33,6 +33,8 @@ class _ChatRecordViewState extends State<ChatRecordView> {
         reverse: true,
         onLoading: () => context.read<ChatRecordViewModel>().onLoad(context, widget.userId),
         child: Container(
+          color: context.read<ChatViewModel>().onLongPress ? Colors.grey  : null,
+
           alignment: context.watch<ChatRecordViewModel>().list.length < 10 ? Alignment.topCenter : null, //需判断是否能滑动
           child: ListView.builder(
             reverse: true,

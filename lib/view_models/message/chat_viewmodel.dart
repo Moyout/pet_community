@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
-import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
@@ -12,6 +14,11 @@ class ChatViewModel extends ChangeNotifier {
   bool isVoice = false; //是否语音输入
   int numLines = 1; //文字行数
   bool currentEmoji = false; //表情库
+  bool onLongPress = false;
+  bool isPermission = false; //录音权限
+  String? recordPath;
+  FlutterSoundPlayer playerModule = FlutterSoundPlayer();
+
   FocusNode focusNode = FocusNode();
   ScrollController sc = ScrollController(); //滚动控制器
   ScrollController chatListC = ScrollController(); //滚动控制器
@@ -19,17 +26,33 @@ class ChatViewModel extends ChangeNotifier {
   ///初始化viewModel
   void initViewModel(BuildContext context) {
     currentEmoji = false;
+    isVoice = false;
+    onLongPress = false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       textC.selection = TextSelection.fromPosition(
         TextPosition(offset: textC.text.length),
       );
       FocusScope.of(context).requestFocus(focusNode); // 获取焦点
     });
+    playerModule.openPlayer();
   }
 
   ///语音文字切换
-  void setIsVoice() {
+  Future<void> setIsVoice(BuildContext context) async {
     isVoice = !isVoice;
+    await SystemChannels.textInput
+        .invokeMethod(isVoice ? 'TextInput.hide' : 'TextInput.show')
+        .then((v) => notifyListeners());
+    if (isVoice) {
+      focusNode.unfocus();
+      currentEmoji = false;
+    } else {
+      // debugPrint("focusNode--------->${focusNode}");
+      Future.delayed(const Duration(milliseconds: 200), () {
+        FocusScope.of(context).requestFocus(focusNode);
+      });
+    }
+    startPlay(context);
     notifyListeners();
   }
 
@@ -43,7 +66,7 @@ class ChatViewModel extends ChangeNotifier {
   Future<void> showEmoji(BuildContext context) async {
     currentEmoji = !currentEmoji;
     if (!currentEmoji) FocusScope.of(context).requestFocus(focusNode); // 获取焦点
-
+    if (currentEmoji) isVoice = false;
     await SystemChannels.textInput
         .invokeMethod(currentEmoji ? 'TextInput.hide' : 'TextInput.show')
         .then((v) => notifyListeners());
@@ -66,22 +89,7 @@ class ChatViewModel extends ChangeNotifier {
   void backspace() {
     final text = textC.text;
     final textSelection = textC.selection;
-    // final selectionLength = textSelection.end - textSelection.start;
-    // There is a selection.
-    // if (selectionLength > 0) {
-    //   debugPrint("执行了--------------》》 {执行了}");
-    //   final newText = text.replaceRange(
-    //     textSelection.start,
-    //     textSelection.end,
-    //     '',
-    //   );
-    //   textC.text = newText;
-    //   textC.selection = textSelection.copyWith(
-    //     baseOffset: textSelection.start,
-    //     extentOffset: textSelection.start,
-    //   );
-    //   return;
-    // }
+
     // The cursor is at the beginning.
     if (textSelection.start == 0) {
       return;
@@ -101,8 +109,31 @@ class ChatViewModel extends ChangeNotifier {
     return value & 0xF800 == 0xD800;
   }
 
-  ///发送
-  void sendMsg(BuildContext context, int receiverId) {
+  ///长按状态
+  Future<void> setOnLongPressState(bool state) async {
+    isPermission = await Permission.microphone.request().isGranted;
+    if (isPermission) onLongPress = state;
+    notifyListeners();
+  }
+
+  Future<void> startPlay(BuildContext context) async {
+    debugPrint("recordPath--------->${recordPath}");
+    if (recordPath != null) {
+      if (await File(recordPath!).exists()) {
+        await playerModule.startPlayer(
+          fromURI: recordPath,
+          codec: Platform.isAndroid ? Codec.aacADTS : Codec.pcm16WAV,
+          sampleRate: 44100,
+          whenFinished: () {
+            if (playerModule.isPlaying) playerModule.stopPlayer();
+          },
+        );
+      }
+    }
+  }
+
+  ///发送文本信息
+  void sendTextMsg(BuildContext context, int receiverId) {
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
       ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
@@ -144,5 +175,41 @@ class ChatViewModel extends ChangeNotifier {
       chatListC.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
       notifyListeners();
     }
+  }
+
+  Future<void> sendVoiceMsg(BuildContext context, int receiverId) async {
+    if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
+      ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
+    } else {
+      if (recordPath != null) {
+        if (await File(recordPath!).exists()) {
+          File file = File(recordPath!);
+
+          NavViewModel nvm = context.read<NavViewModel>();
+          int sendTime = DateTime.now().millisecondsSinceEpoch;
+          ChatRecordModel? crm = ChatRecordModel(
+            code: 0,
+            type: 2,
+            userId: nvm.userInfoModel!.data!.userId,
+            data: [],
+            //todo
+            sendTime: sendTime,
+            receiverId: receiverId,
+            otherId: receiverId,
+          );
+          debugPrint("crm--------->${crm}");
+
+          String data = jsonEncode(crm);
+
+          ///发送ws信息
+          WebSocketUtils().send(data);
+        }
+      }
+    }
+  }
+
+  Future<String> fetchData() async {
+    await Future.delayed(Duration(seconds: 2));
+    return "我是Stream中的数据";
   }
 }

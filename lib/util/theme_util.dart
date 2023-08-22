@@ -14,7 +14,7 @@ class ThemeUtil {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     return ThemeData(
       primaryColor: Colors.white,
-      scaffoldBackgroundColor: Colors.grey[300],
+      scaffoldBackgroundColor: Colors.grey[300] ,
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,

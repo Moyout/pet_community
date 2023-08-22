@@ -1,6 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:pet_community/common/app_route.dart';
-import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/provider/provider_list.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
