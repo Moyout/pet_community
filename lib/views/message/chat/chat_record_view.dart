@@ -1,3 +1,6 @@
+import 'package:pet_community/enums/chat_record_enum.dart';
+import 'package:pet_community/models/chat/chat_record_model.dart';
+import 'package:pet_community/util/time_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
@@ -33,10 +36,9 @@ class _ChatRecordViewState extends State<ChatRecordView> {
         reverse: true,
         onLoading: () => context.read<ChatRecordViewModel>().onLoad(context, widget.userId),
         child: Container(
-          color: context.read<ChatViewModel>().onLongPress ? Colors.grey  : null,
-
+          color: context.read<ChatViewModel>().onLongPress ? Colors.grey : null,
           alignment: context.watch<ChatRecordViewModel>().list.length < 10 ? Alignment.topCenter : null, //需判断是否能滑动
-          child: ListView.builder(
+          child: ListView.separated(
             reverse: true,
             shrinkWrap: true,
             controller: context.watch<ChatViewModel>().chatListC,
@@ -111,7 +113,9 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                       : Colors.white10,
                               borderRadius: BorderRadius.circular(4.w),
                             ),
-                            child: Text("${context.watch<ChatRecordViewModel>().list[index].data}"),
+                            child: context.watch<ChatRecordViewModel>().list[index].type == ChatRecordEnum.voice.number
+                                ? Icon(Icons.multitrack_audio)
+                                : Text("${context.watch<ChatRecordViewModel>().list[index].data}"),
                           ),
                           context.watch<ChatRecordViewModel>().list[index].userId ==
                                   context.read<NavViewModel>().userInfoModel?.data?.userId
@@ -153,6 +157,17 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                         ],
                       ),
                     );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              List<ChatRecordModel> list = context.watch<ChatRecordViewModel>().list;
+              // String previousTime = TimeUtils.formatDateTime(list[index].sendTime);
+
+              // String currTime = TimeUtils.formatDateTime(list[index + 1 != list.length ? index + 1 : index].sendTime);
+              // String time = TimeUtils.compareTime(
+              //     list[index].sendTime, list[index + 1 != list.length ? index + 1 : index].sendTime);
+              return Center(
+                child: Text("  time"),
+              );
             },
           ),
         ),

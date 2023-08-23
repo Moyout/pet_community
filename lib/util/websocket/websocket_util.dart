@@ -98,8 +98,9 @@ class WebSocketUtils {
       initSocket();
     }
     channel?.sink.add(data);
+  }
 
-   }
+
 
   void dispose() {
     subscription?.cancel();

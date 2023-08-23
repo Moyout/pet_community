@@ -65,11 +65,11 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
       setState(() {
         _dbLevel = e.decibels!;
       });
-      print("当前振幅：$_dbLevel");
+      // print("当前振幅：$_dbLevel");
     });
     _path = path;
     context.read<ChatViewModel>().recordPath = _path;
-    debugPrint("path-----we---->${_path}");
+    // debugPrint("path-----we---->${_path}");
 
   }
 

@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:pet_community/enums/chat_record_enum.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/database/chat_record_db.dart';
@@ -25,7 +26,7 @@ class _MessageViewState extends State<MessageView> {
   void initState() {
     super.initState();
 
-    getDatabaseData() ;
+    getDatabaseData();
     getUserInfo();
   }
 
@@ -47,6 +48,7 @@ class _MessageViewState extends State<MessageView> {
       }
       context.read<NavViewModel>().contactList[element.otherId]?.add(element);
     });
+
     ///聊天列表进行排序
     context.read<NavViewModel>().sortChatList();
   }
@@ -103,13 +105,19 @@ class _MessageViewState extends State<MessageView> {
                                     : e.key.toString(),
                                 style: TextStyle(fontSize: 14.sp, color: ThemeUtil.reversePrimaryColor(context)),
                               ),
-                              Text(
-                                "${e.value.last.data}",
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),
-                                ),
+                              SizedBox(
+                                width: 250.w,
+                                child: e.value.last.type == ChatRecordEnum.voice.number
+                                    ? const Text("[语音]")
+                                    : Text(
+                                        "${e.value.last.data}",
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 14.sp,
+                                          color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),
+                                        ),
+                                      ),
                               ),
                             ],
                           ),

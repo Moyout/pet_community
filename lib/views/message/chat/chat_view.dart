@@ -126,7 +126,6 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                                 },
                                 onLongPressCancel: () {
                                   context.read<ChatViewModel>().setOnLongPressState(false);
-
                                   debugPrint("onLongPressCancel---------> {onLongPressCancel}");
                                 },
                               ),
@@ -183,7 +182,6 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                           context.watch<ChatViewModel>().textC.text.isEmpty
                               ? GestureDetector(
                                   onTap: () {
-                                    debugPrint("发送语音测试---------> {发送语音测试}");
                                     context.read<ChatViewModel>().sendVoiceMsg(context, widget.userId );
                                   },
                                   child: Container(

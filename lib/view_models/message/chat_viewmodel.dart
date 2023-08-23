@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
+import 'package:pet_community/models/upload/voice_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
@@ -178,38 +179,57 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   Future<void> sendVoiceMsg(BuildContext context, int receiverId) async {
+    debugPrint("发送语音测试---------> {发送语音测试}");
+
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
       ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
       if (recordPath != null) {
         if (await File(recordPath!).exists()) {
+          String? token = SpUtil.getString(PublicKeys.token);
+          int? userId = SpUtil.getInt(PublicKeys.userId);
           File file = File(recordPath!);
+          VoiceRecordModel vrModel = await VoiceRecordRequest.uploadVoiceRecord(userId!, receiverId, token!, file.path);
+          debugPrint("vrModel--------->${vrModel.data?.voicePath}");
+          if (vrModel.data != null) {
+            NavViewModel nvm = context.read<NavViewModel>();
+            int sendTime = DateTime.now().millisecondsSinceEpoch;
+            ChatRecordModel? crm = ChatRecordModel(
+              code: 0,
+              type: 2,
+              userId: nvm.userInfoModel!.data!.userId,
+              data: vrModel.data?.voicePath,
+               sendTime: sendTime,
+              receiverId: receiverId,
+              otherId: receiverId,
+            );
+            debugPrint("crm--------->${crm}");
 
-          NavViewModel nvm = context.read<NavViewModel>();
-          int sendTime = DateTime.now().millisecondsSinceEpoch;
-          ChatRecordModel? crm = ChatRecordModel(
-            code: 0,
-            type: 2,
-            userId: nvm.userInfoModel!.data!.userId,
-            data: [],
-            //todo
-            sendTime: sendTime,
-            receiverId: receiverId,
-            otherId: receiverId,
-          );
-          debugPrint("crm--------->${crm}");
+            String data = jsonEncode(crm);
 
-          String data = jsonEncode(crm);
 
-          ///发送ws信息
-          WebSocketUtils().send(data);
+            ///发送ws信息
+            WebSocketUtils().send(data);
+
+
+            ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
+            context.read<ChatRecordViewModel>().list.insert(0, crm);
+
+            ///聊天列表进行排序
+            context.read<NavViewModel>().sortChatList();
+
+            ///添加到 聊天记录列表中
+            if (crm.data != null) {
+              if (nvm.contactList[receiverId] == null) {
+                nvm.contactList.addAll({receiverId: []});
+              }
+              nvm.contactList[receiverId]?.add(crm);
+            }
+          }
         }
       }
     }
   }
 
-  Future<String> fetchData() async {
-    await Future.delayed(Duration(seconds: 2));
-    return "我是Stream中的数据";
-  }
+
 }
