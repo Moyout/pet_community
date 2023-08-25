@@ -9,6 +9,6 @@ A pet_community project.
 ## 安卓app下载
 - (https://moyout.github.io/static_pet/)
 
-![图片]([https://moyout.github.io/static_pet/cr_code.png])  
+![图片](https://moyout.github.io/static_pet/cr_code.png)
 
 ## flutter build apk   --split-per-abi --no-sound-null-safety
