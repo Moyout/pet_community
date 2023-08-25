@@ -7,7 +7,7 @@ A pet_community project.
  
 
 ##安卓app下载
-- ([https://st](https://moyout.github.io/static_pet/))
+- (https://moyout.github.io/static_pet/)
   
 
 ## flutter build apk   --split-per-abi --no-sound-null-safety
