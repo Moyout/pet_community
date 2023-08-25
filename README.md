@@ -7,8 +7,7 @@ A pet_community project.
  
 
 ##安卓app下载
-- (https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
- 
+- ([https://st](https://moyout.github.io/static_pet/))
+  
 
 ## flutter build apk   --split-per-abi --no-sound-null-safety
