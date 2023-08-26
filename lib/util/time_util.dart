@@ -8,15 +8,33 @@ class TimeUtils {
     return formatter.format(date);
   }
 
-  static String compareTime(int previousTime, int currTime) {
+  static String? timeDifference(int previousTime, int currTime) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(previousTime);
     DateTime date2 = DateTime.fromMillisecondsSinceEpoch(currTime);
-    debugPrint("date--------->${date}");
-    debugPrint("date2--------->${date}");
-    if (date2.year == date.year && date2.month == date.month && date2.day == date.day) {
-      DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm');
+    Duration duration = date.difference(date2);
+    if (duration.inMinutes >= 5 && duration.inDays < 1) {
+      DateFormat formatter = DateFormat('HH:mm');
       return formatter.format(date);
     }
-    return "";
+  }
+
+  static String? timeDifferenceCurrTime(int sendTime) {
+    DateTime currTime = DateTime.now();
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(sendTime);
+    Duration duration = currTime.difference(date);
+    DateFormat formatter;
+    if (duration.inDays < 1) {
+      formatter = DateFormat.Hm();
+    } else if (duration.inDays < 2) {
+      formatter = DateFormat('昨天 HH:mm');
+    } else if (duration.inDays < 7) {
+      formatter = DateFormat.E().add_Hm();
+    } else if (duration.inDays < 365) {
+      formatter = DateFormat.MMMEd().add_Hm();
+      return formatter.format(date);
+    } else {
+      formatter = DateFormat.yMMMd().add_E().add_Hm();
+    }
+    return formatter.format(date);
   }
 }

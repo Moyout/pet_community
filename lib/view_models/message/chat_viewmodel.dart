@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/upload/voice_record_model.dart';
+import 'package:pet_community/util/time_util.dart';
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 
@@ -134,20 +134,37 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   ///发送文本信息
-  void sendTextMsg(BuildContext context, int receiverId) {
+  Future<void> sendTextMsg(BuildContext context, int receiverId) async {
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
       ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
       NavViewModel nvm = context.read<NavViewModel>();
       int sendTime = DateTime.now().millisecondsSinceEpoch;
+      List<ChatRecordModel> list =
+          await ChatRecordDB.queryRecentlyOneChatRecordTime(nvm.userInfoModel?.data?.userId, receiverId);
+      bool showTime = false;
+
+      if (list.isNotEmpty) {
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(sendTime);
+        DateTime date2 = DateTime.fromMillisecondsSinceEpoch(list.first.sendTime);
+        Duration diff = date.difference(date2);
+        debugPrint("diff--------->${diff.inMinutes}");
+        if (diff.inMinutes > 5) {
+          showTime = true;
+        }
+      } else {
+        showTime = true;
+      }
+      debugPrint("showTime--------->${showTime}");
       ChatRecordModel? crm = ChatRecordModel(
         code: 0,
-        type: 0,
+        type: ChatRecordEnum.txt.number,
         userId: nvm.userInfoModel!.data!.userId,
         data: textC.text,
         sendTime: sendTime,
         receiverId: receiverId,
         otherId: receiverId,
+        showTime: showTime,
       );
       debugPrint("crm--------->${crm}");
 
@@ -199,18 +216,17 @@ class ChatViewModel extends ChangeNotifier {
               type: 2,
               userId: nvm.userInfoModel!.data!.userId,
               data: vrModel.data?.voicePath,
-               sendTime: sendTime,
+              sendTime: sendTime,
               receiverId: receiverId,
               otherId: receiverId,
+              showTime: false,
             );
             debugPrint("crm--------->${crm}");
 
             String data = jsonEncode(crm);
 
-
             ///发送ws信息
             WebSocketUtils().send(data);
-
 
             ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
             context.read<ChatRecordViewModel>().list.insert(0, crm);
@@ -230,6 +246,4 @@ class ChatViewModel extends ChangeNotifier {
       }
     }
   }
-
-
 }

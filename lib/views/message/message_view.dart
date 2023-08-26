@@ -41,7 +41,7 @@ class _MessageViewState extends State<MessageView> {
   ///查询聊天列表分组查询
   Future<void> getDatabaseData() async {
     list = await ChatRecordDB.groupByQueryRecentOneRecord(context.read<NavViewModel>().userInfoModel?.data?.userId);
-    debugPrint("list--------->${list}");
+    debugPrint("分组查询--------->${list}");
     list.forEach((element) {
       if (context.read<NavViewModel>().contactList[element.otherId] == null) {
         context.read<NavViewModel>().contactList.addAll({element.otherId: []});

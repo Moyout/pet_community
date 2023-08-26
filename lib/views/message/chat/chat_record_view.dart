@@ -114,7 +114,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: context.watch<ChatRecordViewModel>().list[index].type == ChatRecordEnum.voice.number
-                                ? Icon(Icons.multitrack_audio)
+                                ? const Icon(Icons.multitrack_audio)
                                 : Text("${context.watch<ChatRecordViewModel>().list[index].data}"),
                           ),
                           context.watch<ChatRecordViewModel>().list[index].userId ==
@@ -160,14 +160,16 @@ class _ChatRecordViewState extends State<ChatRecordView> {
             },
             separatorBuilder: (BuildContext context, int index) {
               List<ChatRecordModel> list = context.watch<ChatRecordViewModel>().list;
-              // String previousTime = TimeUtils.formatDateTime(list[index].sendTime);
+              String? time;
+              if (list[index].showTime) {
+                time = TimeUtils.timeDifferenceCurrTime(list[index].sendTime);
+              }
 
-              // String currTime = TimeUtils.formatDateTime(list[index + 1 != list.length ? index + 1 : index].sendTime);
-              // String time = TimeUtils.compareTime(
-              //     list[index].sendTime, list[index + 1 != list.length ? index + 1 : index].sendTime);
-              return Center(
-                child: Text("  time"),
-              );
+              return time != null
+                  ? Center(
+                      child: Text(time),
+                    )
+                  : SizedBox();
             },
           ),
         ),

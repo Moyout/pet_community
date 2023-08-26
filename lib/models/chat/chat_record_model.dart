@@ -1,5 +1,3 @@
-
-
 class ChatRecordModel {
   ChatRecordModel({
     int? code,
@@ -9,6 +7,7 @@ class ChatRecordModel {
     required int otherId, //接收者Id
     dynamic data,
     String? msg,
+    required bool showTime,
     required int sendTime,
   }) {
     _code = code;
@@ -19,6 +18,7 @@ class ChatRecordModel {
     _msg = msg;
     _receiverId = receiverId;
     _sendTime = sendTime;
+    _showTime = showTime;
   }
 
   ChatRecordModel.fromJson(dynamic json) {
@@ -42,6 +42,7 @@ class ChatRecordModel {
   dynamic _data;
   String? _msg;
   late int _sendTime;
+  late bool _showTime;
 
   ChatRecordModel copyWith({
     int? code,
@@ -52,6 +53,7 @@ class ChatRecordModel {
     dynamic data,
     String? msg,
     required int sendTime,
+    required bool showTime,
   }) =>
       ChatRecordModel(
         code: code ?? _code,
@@ -62,6 +64,7 @@ class ChatRecordModel {
         data: data ?? _data,
         msg: msg ?? _msg,
         sendTime: sendTime,
+        showTime: showTime,
       );
 
   int? get code => _code;
@@ -71,6 +74,7 @@ class ChatRecordModel {
   int get userId => _userId;
 
   int get receiverId => _receiverId;
+
   int get otherId => _otherId;
 
   dynamic get data => _data;
@@ -78,6 +82,8 @@ class ChatRecordModel {
   String? get msg => _msg;
 
   int get sendTime => _sendTime;
+
+  bool get showTime => _showTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -89,10 +95,9 @@ class ChatRecordModel {
     map['data'] = _data;
     map['msg'] = _msg;
     map['sendTime'] = _sendTime;
+    map["showTime"] = _showTime;
     return map;
   }
-
-
 
   //解析数据库数据
   ChatRecordModel.fromMap(dynamic map) {
@@ -104,11 +109,12 @@ class ChatRecordModel {
     _data = map['message'];
     // _msg = map['msg'];
     _sendTime = map['timestamp'];
-
+    _showTime = map["show_timestamp"] == 0 ? false : true;
   }
 
   @override
   String toString() {
-    return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _otherId:  _otherId, _data: $_data, _msg: $_msg, _sendTime: $_sendTime}';
+    return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _otherId:  _otherId,'
+        ' _data: $_data, _msg: $_msg, _sendTime: $_sendTime, _showTime: $_showTime} ';
   }
 }

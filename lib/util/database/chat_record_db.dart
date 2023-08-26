@@ -20,7 +20,7 @@ class ChatRecordDB {
         // When creating the db, create the table
         await db.execute(
           'CREATE TABLE chat_record_$userId (chat_id INTEGER PRIMARY KEY AUTOINCREMENT, sender_id INTEGER, receiver_id INTEGER, '
-          'message TEXT, type INTEGER,  timestamp INTEGER, other_id INTEGER)',
+          'message TEXT, type INTEGER,  timestamp INTEGER, other_id INTEGER, show_timestamp INTEGER)',
         );
       },
     );
@@ -30,8 +30,8 @@ class ChatRecordDB {
   }
 
   ///保存聊天记录到db
-  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId) async {
-    debugPrint("userId-----insertData---->${userId}");
+  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId ) async {
+    debugPrint("crm-----insertData---->${crm}");
     Map<String, Object?> map = {
       "sender_id": crm.userId,
       "receiver_id": crm.receiverId,
@@ -39,9 +39,11 @@ class ChatRecordDB {
       "type": crm.type,
       "timestamp": crm.sendTime,
       "other_id": otherId,
+      "show_timestamp": crm.showTime ? 1 : 0
     };
+    debugPrint("map--------->${map}");
+
     int? result = await db?.insert("chat_record_$userId", map);
-    debugPrint("result--------->${result}");
     return result;
   }
 
@@ -63,6 +65,25 @@ class ChatRecordDB {
       }
     }
     debugPrint("data db--------->${data?.length}");
+    return list;
+  }
+
+  ///查询最近一条的时间记录
+  static Future<List<ChatRecordModel>> queryRecentlyOneChatRecordTime(int? userId, int otherId) async {
+    List<Map<String, Object?>>? data;
+    List<ChatRecordModel> list = [];
+    if (userId != null) {
+      data = await db?.rawQuery('SELECT * FROM chat_record_$userId WHERE timestamp=  '
+          '(SELECT   MAX(timestamp)   FROM chat_record_$userId WHERE show_timestamp = 1 AND other_id = $otherId)');
+      if (data != null && data.isNotEmpty) {
+        for (var element in data) {
+          ChatRecordModel chatRecordModel = ChatRecordModel.fromMap(element);
+          list.add(chatRecordModel);
+        }
+        // ChatRecordModel chatRecordMode = ChatRecordModel.fromMap(data[0]);
+      }
+    }
+    debugPrint("list----32----->${list}");
     return list;
   }
 

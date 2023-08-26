@@ -31,3 +31,5 @@ export 'package:pet_community/util/cache_util.dart';
 export 'package:pet_community/util/database/chat_record_db.dart';
 export 'package:pet_community/common/app_route.dart';
 export 'package:pet_community/config/notification_config.dart';
+export 'package:pet_community/util/websocket/websocket_util.dart';
+export 'package:pet_community/enums/chat_record_enum.dart';
