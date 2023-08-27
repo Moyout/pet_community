@@ -10,6 +10,7 @@ import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:synchronized/extension.dart';
 
 class WebSocketUtils {
   WebSocketUtils._internal();
@@ -17,6 +18,7 @@ class WebSocketUtils {
   static final WebSocketUtils _socketUtils = WebSocketUtils._internal();
   IOWebSocketChannel? channel;
   StreamSubscription? subscription;
+  static final Lock lock = Lock();
 
   factory WebSocketUtils() {
     return _socketUtils;
@@ -54,10 +56,7 @@ class WebSocketUtils {
     debugPrint("msg--------->${msg}");
     dynamic data = jsonDecode(msg);
     ChatRecordModel crm = ChatRecordModel.fromJson(data);
-    debugPrint("code--------------》》${crm.code}");
     debugPrint("data--------------》》${crm.data}");
-    debugPrint("userId--------------》》${crm.userId}");
-    debugPrint("userInfoModel.id--------------》》${nvm.userInfoModel?.data?.userId}");
     if (crm.data != null || crm.msg != null) {
       if (crm.receiverId == userId) {
         if (nvm.contactList[crm.userId] == null) {
@@ -71,7 +70,17 @@ class WebSocketUtils {
             NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
           }
         }
-        ChatRecordDB.insertData(userId!, crm, crm.userId);
+        bool showTime = false;
+        lock.synchronized(() async {
+          showTime = await ChatRecordDB.isShowTimeByRecentlyRecord(userId, crm.userId, crm.sendTime);
+        });
+        debugPrint("lock--1------->${lock.inLock}");
+        lock.synchronized(() async {
+          await ChatRecordDB.insertData(userId!, crm, crm.userId, showTime);
+        });
+        lock.inLock;
+        debugPrint("lock--2------->${lock.inLock}");
+
         AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);
         nvm.sortChatList();
       }
@@ -99,8 +108,6 @@ class WebSocketUtils {
     }
     channel?.sink.add(data);
   }
-
-
 
   void dispose() {
     subscription?.cancel();

@@ -164,12 +164,16 @@ class _ChatRecordViewState extends State<ChatRecordView> {
               if (list[index].showTime) {
                 time = TimeUtils.timeDifferenceCurrTime(list[index].sendTime);
               }
-
               return time != null
-                  ? Center(
-                      child: Text(time),
+                  ? Container(
+                      margin: EdgeInsets.only(top: 5.w),
+                      alignment: Alignment.center,
+                      child: Text(
+                        time,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      ),
                     )
-                  : SizedBox();
+                  : const SizedBox();
             },
           ),
         ),

@@ -30,6 +30,7 @@ class ChatRecordModel {
     _data = json['data'];
     _msg = json['msg'];
     _sendTime = json['sendTime'];
+    // _showTime = json['showTime'];
   }
 
   int? _code;
@@ -115,6 +116,6 @@ class ChatRecordModel {
   @override
   String toString() {
     return 'ChatRecordModel{_code: $_code, _type: $_type, _userId: $_userId, _receiverId: $_receiverId, _otherId:  _otherId,'
-        ' _data: $_data, _msg: $_msg, _sendTime: $_sendTime, _showTime: $_showTime} ';
+        ' _data: $_data, _msg: $_msg, _sendTime: $_sendTime, _showTime:   showTime  } ';
   }
 }

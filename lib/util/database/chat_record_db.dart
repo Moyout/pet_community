@@ -30,7 +30,7 @@ class ChatRecordDB {
   }
 
   ///保存聊天记录到db
-  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId ) async {
+  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId, bool showTime) async {
     debugPrint("crm-----insertData---->${crm}");
     Map<String, Object?> map = {
       "sender_id": crm.userId,
@@ -39,11 +39,12 @@ class ChatRecordDB {
       "type": crm.type,
       "timestamp": crm.sendTime,
       "other_id": otherId,
-      "show_timestamp": crm.showTime ? 1 : 0
+      "show_timestamp": showTime ? 1 : 0
     };
     debugPrint("map--------->${map}");
+    int? result;
+    result = await db?.insert("chat_record_$userId", map);
 
-    int? result = await db?.insert("chat_record_$userId", map);
     return result;
   }
 
@@ -76,13 +77,14 @@ class ChatRecordDB {
       data = await db?.rawQuery('SELECT * FROM chat_record_$userId WHERE timestamp=  '
           '(SELECT   MAX(timestamp)   FROM chat_record_$userId WHERE show_timestamp = 1 AND other_id = $otherId)');
       if (data != null && data.isNotEmpty) {
-        for (var element in data) {
+        for (var element in data ) {
           ChatRecordModel chatRecordModel = ChatRecordModel.fromMap(element);
           list.add(chatRecordModel);
         }
         // ChatRecordModel chatRecordMode = ChatRecordModel.fromMap(data[0]);
       }
     }
+
     debugPrint("list----32----->${list}");
     return list;
   }
@@ -105,5 +107,26 @@ class ChatRecordDB {
     }
     // debugPrint("data--group by------->${data}");
     return list;
+  }
+
+  static Future<bool> isShowTimeByRecentlyRecord(int? userId, int receiverId, int sendTime) async {
+    List<ChatRecordModel> list = await queryRecentlyOneChatRecordTime(userId, receiverId);
+    bool showTime = false;
+
+    if (list.isNotEmpty) {
+      DateTime date = DateTime.fromMillisecondsSinceEpoch(sendTime);
+      DateTime date2 = DateTime.fromMillisecondsSinceEpoch(list.first.sendTime);
+      Duration diff = date.difference(date2);
+      if (diff.inMinutes > 5) {
+        showTime = true;
+        return showTime;
+      }
+    } else {
+      showTime = true;
+      return showTime;
+    }
+    debugPrint("showTime--------->${showTime}");
+
+    return showTime;
   }
 }

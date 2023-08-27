@@ -140,22 +140,8 @@ class ChatViewModel extends ChangeNotifier {
     } else {
       NavViewModel nvm = context.read<NavViewModel>();
       int sendTime = DateTime.now().millisecondsSinceEpoch;
-      List<ChatRecordModel> list =
-          await ChatRecordDB.queryRecentlyOneChatRecordTime(nvm.userInfoModel?.data?.userId, receiverId);
-      bool showTime = false;
-
-      if (list.isNotEmpty) {
-        DateTime date = DateTime.fromMillisecondsSinceEpoch(sendTime);
-        DateTime date2 = DateTime.fromMillisecondsSinceEpoch(list.first.sendTime);
-        Duration diff = date.difference(date2);
-        debugPrint("diff--------->${diff.inMinutes}");
-        if (diff.inMinutes > 5) {
-          showTime = true;
-        }
-      } else {
-        showTime = true;
-      }
-      debugPrint("showTime--------->${showTime}");
+      bool showTime =
+          await ChatRecordDB.isShowTimeByRecentlyRecord(nvm.userInfoModel?.data?.userId, receiverId, sendTime);
       ChatRecordModel? crm = ChatRecordModel(
         code: 0,
         type: ChatRecordEnum.txt.number,
@@ -167,14 +153,13 @@ class ChatViewModel extends ChangeNotifier {
         showTime: showTime,
       );
       debugPrint("crm--------->${crm}");
-
       String data = jsonEncode(crm);
 
       ///发送ws信息
       WebSocketUtils().send(data);
 
       ///存入数据库
-      ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
+      ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId, showTime);
       context.read<ChatRecordViewModel>().list.insert(0, crm);
 
       ///聊天列表进行排序
@@ -187,11 +172,11 @@ class ChatViewModel extends ChangeNotifier {
         }
         nvm.contactList[receiverId]?.add(crm);
       }
-      debugPrint("nvm.contactList--------------》》${nvm.contactList}");
       nvm.notifyListeners();
       textC.clear();
       chatListC.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
       notifyListeners();
+      debugPrint("nvm.contactList--------------》》${nvm.contactList}");
     }
   }
 
@@ -211,15 +196,17 @@ class ChatViewModel extends ChangeNotifier {
           if (vrModel.data != null) {
             NavViewModel nvm = context.read<NavViewModel>();
             int sendTime = DateTime.now().millisecondsSinceEpoch;
+            bool showTime =
+                await ChatRecordDB.isShowTimeByRecentlyRecord(nvm.userInfoModel?.data?.userId, receiverId, sendTime);
             ChatRecordModel? crm = ChatRecordModel(
               code: 0,
-              type: 2,
+              type: ChatRecordEnum.voice.number,
               userId: nvm.userInfoModel!.data!.userId,
               data: vrModel.data?.voicePath,
               sendTime: sendTime,
               receiverId: receiverId,
               otherId: receiverId,
-              showTime: false,
+              showTime: showTime,
             );
             debugPrint("crm--------->${crm}");
 
@@ -228,7 +215,7 @@ class ChatViewModel extends ChangeNotifier {
             ///发送ws信息
             WebSocketUtils().send(data);
 
-            ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
+            ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId, showTime);
             context.read<ChatRecordViewModel>().list.insert(0, crm);
 
             ///聊天列表进行排序
