@@ -30,16 +30,15 @@ class ChatRecordDB {
   }
 
   ///保存聊天记录到db
-  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId, bool showTime) async {
-    debugPrint("crm-----insertData---->${crm}");
-    Map<String, Object?> map = {
+  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId ) async {
+     Map<String, Object?> map = {
       "sender_id": crm.userId,
       "receiver_id": crm.receiverId,
       "message": crm.data.toString(),
       "type": crm.type,
       "timestamp": crm.sendTime,
       "other_id": otherId,
-      "show_timestamp": showTime ? 1 : 0
+      "show_timestamp": crm.showTime ? 1 : 0
     };
     debugPrint("map--------->${map}");
     int? result;

@@ -33,7 +33,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   }
 
   void initSetting() async {
-    context.read<ChatViewModel>().recordPath = null;
+    // context.read<ChatViewModel>().recordPath = null;
     recorderModule = FlutterSoundRecorder();
     recorderModule?.openRecorder();
     await recorderModule?.setSubscriptionDuration(const Duration(milliseconds: 30));

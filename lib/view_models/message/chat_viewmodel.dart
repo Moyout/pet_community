@@ -8,6 +8,7 @@ import 'package:pet_community/models/upload/voice_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:logger/logger.dart' show Level, Logger;
 
 class ChatViewModel extends ChangeNotifier {
   TextEditingController textC = TextEditingController();
@@ -161,7 +162,7 @@ class ChatViewModel extends ChangeNotifier {
       WebSocketUtils().send(data);
 
       ///存入数据库
-      ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId, showTime);
+      ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
       context.read<ChatRecordViewModel>().list.insert(0, crm);
 
       ///聊天列表进行排序
@@ -211,14 +212,14 @@ class ChatViewModel extends ChangeNotifier {
               otherId: receiverId,
               showTime: showTime,
             );
-            debugPrint("crm--------->${crm}");
+            debugPrint("sendVoiceMsg crm--------->$crm");
 
             String data = jsonEncode(crm);
 
             ///发送ws信息
             WebSocketUtils().send(data);
 
-            ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId, showTime);
+            ChatRecordDB.insertData(nvm.userInfoModel!.data!.userId, crm, crm.receiverId);
             context.read<ChatRecordViewModel>().list.insert(0, crm);
 
             ///聊天列表进行排序

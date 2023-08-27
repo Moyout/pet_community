@@ -53,10 +53,10 @@ class WebSocketUtils {
     NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
     int? userId = SpUtil.getInt(PublicKeys.userId);
 
-    debugPrint("msg--------->${msg}");
+    debugPrint("msg--------->$msg");
     dynamic data = jsonDecode(msg);
     ChatRecordModel crm = ChatRecordModel.fromJson(data);
-    debugPrint("data--------------》》${crm.data}");
+    debugPrint("msg--fromJson----crm--------》》${crm.data}");
     if (crm.data != null || crm.msg != null) {
       if (crm.receiverId == userId) {
         if (nvm.contactList[crm.userId] == null) {
@@ -65,21 +65,18 @@ class WebSocketUtils {
         nvm.contactList[crm.userId]?.add(crm);
 
         if (await Permission.notification.request().isGranted) {
-          debugPrint("AppRoute.currRoute--------->${AppRoute.currRoute}");
-          if (AppRoute.currRoute != ChatView.routeName) {
+           if (AppRoute.currRoute != ChatView.routeName) {
             NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
           }
         }
-        bool showTime = false;
-        lock.synchronized(() async {
-          showTime = await ChatRecordDB.isShowTimeByRecentlyRecord(userId, crm.userId, crm.sendTime);
-        });
-        debugPrint("lock--1------->${lock.inLock}");
-        lock.synchronized(() async {
-          await ChatRecordDB.insertData(userId!, crm, crm.userId, showTime);
-        });
-        lock.inLock;
-        debugPrint("lock--2------->${lock.inLock}");
+        // bool showTime = false;
+        // lock.synchronized(() async {
+        //   showTime = await ChatRecordDB.isShowTimeByRecentlyRecord(userId, crm.userId, crm.sendTime);
+        // });
+        // debugPrint("lock--1------->${lock.inLock}");
+        // lock.synchronized(() async {
+          await ChatRecordDB.insertData(userId!, crm, crm.userId );
+        // });
 
         AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);
         nvm.sortChatList();
@@ -98,7 +95,7 @@ class WebSocketUtils {
   }
 
   _onError(err) {
-    debugPrint("消息错误${err}");
+    debugPrint("消息错误$err");
     dispose();
   }
 
