@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/upload/voice_record_model.dart';
-import 'package:pet_community/util/time_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -44,14 +43,17 @@ class ChatViewModel extends ChangeNotifier {
     await SystemChannels.textInput
         .invokeMethod(isVoice ? 'TextInput.hide' : 'TextInput.show')
         .then((v) => notifyListeners());
-    if (isVoice) {
-      focusNode.unfocus();
-      currentEmoji = false;
-    } else {
-      // debugPrint("focusNode--------->${focusNode}");
+    if (!isVoice) {
       Future.delayed(const Duration(milliseconds: 200), () {
         FocusScope.of(context).requestFocus(focusNode);
       });
+      return;
+    }
+    if (isVoice) {
+      isPermission = await Permission.microphone.request().isGranted;
+      if (!isPermission) isVoice = false;
+      focusNode.unfocus();
+      currentEmoji = false;
     }
     startPlay(context);
     notifyListeners();
@@ -112,11 +114,11 @@ class ChatViewModel extends ChangeNotifier {
 
   ///长按状态
   Future<void> setOnLongPressState(bool state) async {
-    isPermission = await Permission.microphone.request().isGranted;
     if (isPermission) onLongPress = state;
     notifyListeners();
   }
 
+  ///播放录音记录
   Future<void> startPlay(BuildContext context) async {
     debugPrint("recordPath--------->${recordPath}");
     if (recordPath != null) {
@@ -180,6 +182,7 @@ class ChatViewModel extends ChangeNotifier {
     }
   }
 
+  ///发送语音信息
   Future<void> sendVoiceMsg(BuildContext context, int receiverId) async {
     debugPrint("发送语音测试---------> {发送语音测试}");
 
