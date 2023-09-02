@@ -66,7 +66,7 @@ class WebSocketUtils {
 
         if (await Permission.notification.request().isGranted) {
            if (AppRoute.currRoute != ChatView.routeName) {
-            NotificationConfig.send("你有一条来自社区的信息2", crm.data, notificationId: crm.userId, params: msg);
+            NotificationConfig.send("你有一条来自社区的信息", crm.data, notificationId: crm.userId, params: msg);
           }
         }
         // bool showTime = false;

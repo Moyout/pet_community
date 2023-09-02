@@ -52,7 +52,10 @@ class ChatViewModel extends ChangeNotifier {
     }
     if (isVoice) {
       isPermission = await Permission.microphone.request().isGranted;
-      if (!isPermission) isVoice = false;
+      if (!isPermission) {
+        isVoice = false;
+        ToastUtil.showBottomToast("请允许录音权限");
+      }
       focusNode.unfocus();
       currentEmoji = false;
     }
@@ -114,8 +117,11 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   ///长按状态
-  Future<void> setOnLongPressState(bool state) async {
+  Future<void> setOnLongPressState(BuildContext context, bool state, {int? receiverId}) async {
     if (isPermission) onLongPress = state;
+    if (recordPath != null && !state && receiverId != null) {
+      sendVoiceMsg(context, receiverId);
+    }
     notifyListeners();
   }
 
@@ -191,12 +197,13 @@ class ChatViewModel extends ChangeNotifier {
       ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
       if (recordPath != null) {
-        if (await File(recordPath!).exists()) {
+        bool isExists = await File(recordPath!).exists();
+        if (isExists) {
           String? token = SpUtil.getString(PublicKeys.token);
           int? userId = SpUtil.getInt(PublicKeys.userId);
-          File file = File(recordPath!);
-          VoiceRecordModel vrModel = await VoiceRecordRequest.uploadVoiceRecord(userId!, receiverId, token!, file.path);
-          debugPrint("vrModel--------->${vrModel.data?.voicePath}");
+
+          VoiceRecordModel vrModel =
+              await VoiceRecordRequest.uploadVoiceRecord(userId!, receiverId, token!, recordPath!);
           if (vrModel.data != null) {
             NavViewModel nvm = context.read<NavViewModel>();
             int sendTime = DateTime.now().millisecondsSinceEpoch;

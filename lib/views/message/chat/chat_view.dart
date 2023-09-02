@@ -65,7 +65,7 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                   color: Colors.grey,
                   child: Visibility(
                     visible: context.read<ChatViewModel>().onLongPress,
-                    child: const RecordAudioWidget(),
+                    child: const RecordAudioWidget(),//录音
                   ),
                 ),
                 Column(
@@ -112,20 +112,20 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                                     context.read<ChatViewModel>().onLongPress ? "松开发送" : "按住 说话",
                                   ),
                                 ),
-                                // onLongPress: () {
-                                //   context.read<ChatViewModel>().setOnLongPressState(true);
-                                //   debugPrint("长按中---------> {长按中}");
-                                // },
+
                                 onLongPressDown: (d) {
-                                  context.read<ChatViewModel>().setOnLongPressState(true);
+                                  context.read<ChatViewModel>().setOnLongPressState(context, true);
                                   debugPrint("d--------->${d}");
                                 },
                                 onLongPressUp: () {
-                                  context.read<ChatViewModel>().setOnLongPressState(false);
+                                  context
+                                      .read<ChatViewModel>()
+                                      .setOnLongPressState(context, false, receiverId: widget.userId);
                                   debugPrint("长按结束---------> {长按结束}");
                                 },
                                 onLongPressCancel: () {
-                                  context.read<ChatViewModel>().setOnLongPressState(false);
+                                  context.read<ChatViewModel>().setOnLongPressState(context, false);
+                                  ToastUtil.showBottomToast("长按时间太短");
                                   debugPrint("onLongPressCancel---------> {onLongPressCancel}");
                                 },
                               ),
@@ -182,7 +182,7 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                           context.watch<ChatViewModel>().textC.text.isEmpty
                               ? GestureDetector(
                                   onTap: () {
-                                    context.read<ChatViewModel>().sendVoiceMsg(context, widget.userId );
+                                    context.read<ChatViewModel>().sendVoiceMsg(context, widget.userId);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(right: 10.w, top: 10.w, bottom: 10.w),

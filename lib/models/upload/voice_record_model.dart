@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
 
 import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
@@ -8,17 +9,21 @@ class VoiceRecordRequest {
   static Future<VoiceRecordModel> uploadVoiceRecord(int userId, int otherUserId, String token, String filePath) async {
     String url = ApiConfig.baseUrl + "/upload/voiceRecord";
 
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(
-        filePath,
-        // contentType: MediaType("image", "jpeg"),
-      ),
-    });
+    final bytes = await File(filePath).readAsBytes();
 
+    final filename = filePath.split("/").last;
+
+    final file = MultipartFile.fromBytes(bytes, filename: filename);
+    FormData formData = FormData.fromMap(
+      {
+        "file": file,
+      },
+    );
     var response = await BaseRequest().toPost(
       url,
       parameters: {"userId": userId, "otherUserId": otherUserId},
       options: Options(
+        method: "post",
         headers: {PublicKeys.token: token},
         contentType: "multipart/form-data",
       ),

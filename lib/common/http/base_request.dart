@@ -93,7 +93,7 @@ class BaseRequest {
 
     dynamic result;
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
-      ToastUtil.showBotToast(PublicKeys.netError,bgColor: PublicKeys.errorColor);
+      ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
       response = await dio.get(
         url, queryParameters: parameters, options: options,
@@ -118,16 +118,21 @@ class BaseRequest {
     Options? options,
     bool isShowLoading = false,
   }) async {
+    dynamic result;
+
     this.isShowLoading = isShowLoading;
     if (AppUtils.getContext().read<NavViewModel>().netMode == ConnectivityResult.none) {
-      ToastUtil.showBotToast(PublicKeys.netError,bgColor: PublicKeys.errorColor);
+      ToastUtil.showBotToast(PublicKeys.netError, bgColor: PublicKeys.errorColor);
     } else {
-      response = await dio.post(url, queryParameters: parameters, options: options, data: data).catchError((e) {
-        debugPrint("=======post错误========================>$e");
-      });
-      // print("################${response.data}");
+      try {
+        response = await dio.post(url, queryParameters: parameters, options: options, data: data);
+        result = await jsonDecode(response?.data);
+      } catch (e) {
+        debugPrint("=========jsonDecode 错误" + e.toString());
+        result = response?.data;
+      }
     }
-    return response?.data;
+    return result;
   }
 
   /*

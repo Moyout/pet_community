@@ -33,7 +33,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   }
 
   void initSetting() async {
-    // context.read<ChatViewModel>().recordPath = null;
+    context.read<ChatViewModel>().recordPath = null;
     recorderModule = FlutterSoundRecorder();
     recorderModule?.openRecorder();
     await recorderModule?.setSubscriptionDuration(const Duration(milliseconds: 30));
@@ -46,15 +46,16 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     String path = Platform.isAndroid
         ? '${tempDir.path}/$timestamp${ext[Codec.aacADTS.index]}'
+        // ? '${tempDir.path}/$timestamp.jpg}'
         : "${tempDir.path}/$timestamp${ext[Codec.pcm16WAV.index]}";
-    print('===>  准备开始录音');
+    debugPrint('===>  准备开始录音');
     await recorderModule?.startRecorder(
       toFile: path,
       codec: Platform.isAndroid ? Codec.aacADTS : Codec.pcm16WAV,
       bitRate: 1411200,
       sampleRate: 44100,
     );
-    print('===>  开始录音');
+    debugPrint('===>  开始录音');
     _recorderSubscription = recorderModule?.onProgress?.listen((e) {
       DateTime date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
       String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
@@ -62,27 +63,31 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
         _stopRecorder();
       }
       _recorderTxt = txt.substring(0, 8);
-      setState(() {
-        _dbLevel = e.decibels!;
-      });
+      if (mounted) {
+        setState(() {
+          _dbLevel = e.decibels!;
+        });
+      }
       // print("当前振幅：$_dbLevel");
     });
     _path = path;
     context.read<ChatViewModel>().recordPath = _path;
-    // debugPrint("path-----we---->${_path}");
-
+    debugPrint("path-----we---->${_path}");
   }
 
   /// 结束录音
   _stopRecorder() async {
     try {
       await recorderModule?.stopRecorder();
-      print('stopRecorder');
+      await recorderModule?.closeRecorder();
+      recorderModule?.dispositionStream();
+      recorderModule = null;
+      debugPrint('stopRecorder');
       _cancelRecorderSubscriptions();
 
       // _getDuration();
     } catch (err) {
-      print('stopRecorder error: $err');
+      debugPrint('stopRecorder error: $err');
     }
 
     _dbLevel = 0.0;
@@ -91,6 +96,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   /// 取消录音监听
   void _cancelRecorderSubscriptions() {
     _recorderSubscription?.cancel();
+
     _recorderSubscription = null;
   }
 
@@ -121,6 +127,5 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   void dispose() {
     _stopRecorder();
     super.dispose();
-
   }
 }
