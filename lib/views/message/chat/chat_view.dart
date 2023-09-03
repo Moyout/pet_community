@@ -61,11 +61,18 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                 Expanded(
                   child: ChatRecordView(userId: widget.userId, avatar: userInfoModel?.data?.avatar),
                 ),
+                // Container(
+                //   color: Colors.transparent,
+                //   child: Visibility(
+                //     visible: context.read<ChatViewModel>().onLongPress,
+                //     child: const RecordAudioWidget(),//录音
+                //   ),
+                // ),
                 Container(
-                  color: Colors.grey,
+                  color: Colors.transparent,
                   child: Visibility(
                     visible: context.read<ChatViewModel>().onLongPress,
-                    child: const RecordAudioWidget(),//录音
+                    child: const RecordAudioWidget(), //录音
                   ),
                 ),
                 Column(
@@ -112,7 +119,6 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                                     context.read<ChatViewModel>().onLongPress ? "松开发送" : "按住 说话",
                                   ),
                                 ),
-
                                 onLongPressDown: (d) {
                                   context.read<ChatViewModel>().setOnLongPressState(context, true);
                                   debugPrint("d--------->${d}");
@@ -181,9 +187,7 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                           ),
                           context.watch<ChatViewModel>().textC.text.isEmpty
                               ? GestureDetector(
-                                  onTap: () {
-                                    context.read<ChatViewModel>().sendVoiceMsg(context, widget.userId);
-                                  },
+                                  onTap: () {},
                                   child: Container(
                                     padding: EdgeInsets.only(right: 10.w, top: 10.w, bottom: 10.w),
                                     child: Icon(Icons.add_circle_outline, size: 20.w),
@@ -208,7 +212,7 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                               onPressed: () => context.read<ChatViewModel>().sendTextMsg(context, widget.userId),
                               child: Text(
                                 "发送",
-                                style: TextStyle(color: ThemeUtil.primaryColor(context), fontSize: 10.sp),
+                                style: TextStyle( fontSize: 10.sp),
                               ),
                             ),
                           ),

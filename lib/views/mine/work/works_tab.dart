@@ -40,15 +40,16 @@ class _WorksTabState extends State<WorksTab> {
             child: TextButton(
               onPressed: () => context.read<MineViewModel>().releaseWork(context),
               style: TextButton.styleFrom(primary: ThemeUtil.reversePrimaryColor(context)),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.camera_alt), Text("发作品")],
+                children: [Icon(Icons.camera_alt), Text("发作品")],
               ),
             ),
           ),
         ...List.generate(widget.userArticleModel.data?.length ?? 0, (index) {
           int d = (index % 10) + 1;
-          return SizedBox(
+          return Container(
+            color: ThemeUtil.scaffoldColor(context),
             width: (MediaQuery.of(context).size.width - 3.w) / 3,
             height: 149.w,
             child: Stack(

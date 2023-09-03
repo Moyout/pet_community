@@ -18,6 +18,7 @@ class ChatViewModel extends ChangeNotifier {
   bool onLongPress = false;
   bool isPermission = false; //录音权限
   String? recordPath;
+  String? durationStr;
   FlutterSoundPlayer playerModule = FlutterSoundPlayer();
 
   FocusNode focusNode = FocusNode();
@@ -209,11 +210,12 @@ class ChatViewModel extends ChangeNotifier {
             int sendTime = DateTime.now().millisecondsSinceEpoch;
             bool showTime =
                 await ChatRecordDB.isShowTimeByRecentlyRecord(nvm.userInfoModel?.data?.userId, receiverId, sendTime);
+
             ChatRecordModel? crm = ChatRecordModel(
               code: 0,
               type: ChatRecordEnum.voice.number,
               userId: nvm.userInfoModel!.data!.userId,
-              data: vrModel.data?.voicePath,
+              data: jsonEncode({"voiceUrl": vrModel.data?.voicePath, "duration": durationStr}),
               sendTime: sendTime,
               receiverId: receiverId,
               otherId: receiverId,

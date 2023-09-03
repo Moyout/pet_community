@@ -21,7 +21,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   StreamSubscription? _recorderSubscription;
   String _recorderTxt = '00:00:00';
   double _dbLevel = 0.0;
-  var _duration = 0.0;
+  String _duration = "";
   String? _path;
 
   final _maxLength = 59.0;
@@ -34,6 +34,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
 
   void initSetting() async {
     context.read<ChatViewModel>().recordPath = null;
+    context.read<ChatViewModel>().durationStr = "";
     recorderModule = FlutterSoundRecorder();
     recorderModule?.openRecorder();
     await recorderModule?.setSubscriptionDuration(const Duration(milliseconds: 30));
@@ -46,7 +47,6 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     String path = Platform.isAndroid
         ? '${tempDir.path}/$timestamp${ext[Codec.aacADTS.index]}'
-        // ? '${tempDir.path}/$timestamp.jpg}'
         : "${tempDir.path}/$timestamp${ext[Codec.pcm16WAV.index]}";
     debugPrint('===>  准备开始录音');
     await recorderModule?.startRecorder(
@@ -59,20 +59,22 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
     _recorderSubscription = recorderModule?.onProgress?.listen((e) {
       DateTime date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
       String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+      _duration = DateFormat.s().format(date);
       if (date.second >= _maxLength) {
         _stopRecorder();
       }
       _recorderTxt = txt.substring(0, 8);
+
       if (mounted) {
         setState(() {
           _dbLevel = e.decibels!;
+          context.read<ChatViewModel>().durationStr = _duration;
         });
       }
       // print("当前振幅：$_dbLevel");
     });
     _path = path;
     context.read<ChatViewModel>().recordPath = _path;
-    debugPrint("path-----we---->${_path}");
   }
 
   /// 结束录音
@@ -107,16 +109,17 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
       decoration: BoxDecoration(
-        color: ThemeUtil.reversePrimaryColor(context),
+        // color: ThemeUtil.primaryColor(context),
+        color: ThemeUtil.primaryColor(context),
         borderRadius: BorderRadius.circular(5.w),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomPaint(
-            size: Size(ScreenUtil.screenWidth / 2.5, 120.w / 2),
-            foregroundPainter: LCPainter(amplitude: _dbLevel / 2, number: 30 - _dbLevel ~/ 20),
-          ),
+            size: Size(MediaQuery.of(context).size.width / 2.5, 120.w / 2),
+            painter: LCPainter(amplitude: _dbLevel / 2, number: 30 - _dbLevel ~/ 20),
+           ),
           Text(_recorderTxt)
         ],
       ),

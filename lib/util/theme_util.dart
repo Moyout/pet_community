@@ -14,7 +14,7 @@ class ThemeUtil {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     return ThemeData(
       primaryColor: Colors.white,
-      scaffoldBackgroundColor: Colors.grey[300] ,
+      scaffoldBackgroundColor: Colors.grey[300],
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
@@ -35,9 +35,9 @@ class ThemeUtil {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
+           // overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
           // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
-          // foregroundColor: MaterialStateProperty.all(Colors.black87),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
         ),
       ),
       // scrollbarTheme: ScrollbarThemeData(
@@ -57,32 +57,34 @@ class ThemeUtil {
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     return ThemeData(
-      primaryColor: Colors.blueGrey,
-      scaffoldBackgroundColor: Colors.blueGrey,
+      primaryColor: const Color(0xff1c1c1c),
+      scaffoldBackgroundColor: Colors.black54,
       textTheme: TextTheme(
-        bodyText2: TextStyle(fontSize: 14.sp, color: Colors.white),
+        bodyMedium: TextStyle(fontSize: 14.sp, color: const Color(0xffeeeeee)),
       ),
-      iconTheme: const IconThemeData(color: Colors.white),
-      dividerColor: Colors.white,
+      iconTheme: const IconThemeData(color: Color(0xffb9b9b9)),
+      dividerColor: Colors.grey,
       brightness: Brightness.dark,
-      dialogTheme: const DialogTheme(),
+      dialogTheme:   DialogTheme(
+        // backgroundColor: Colors.red
+      ),
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        color: Colors.black54,
+        color: const Color(0xff1c1c1c),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
       tabBarTheme: TabBarTheme(
         labelColor: Colors.white,
         labelPadding: EdgeInsets.all(2.w),
         indicatorSize: TabBarIndicatorSize.label,
-        unselectedLabelColor: Colors.black54,
+        unselectedLabelColor: Colors.grey,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),
-          // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
-          // foregroundColor: MaterialStateProperty.all(Colors.black87),
+          // overlayColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),
+          backgroundColor: MaterialStateProperty.all(Colors.black87),
+          foregroundColor: MaterialStateProperty.all(Color(0xffeeeeee)),
         ),
       ),
     );

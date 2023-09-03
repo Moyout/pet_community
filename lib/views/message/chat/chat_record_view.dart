@@ -5,6 +5,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/widget/audio/voice_record_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ChatRecordView extends StatefulWidget {
@@ -36,7 +37,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
         reverse: true,
         onLoading: () => context.read<ChatRecordViewModel>().onLoad(context, widget.userId),
         child: Container(
-          color: context.read<ChatViewModel>().onLongPress ? Colors.grey : null,
+          // color: context.read<ChatViewModel>().onLongPress ? ThemeUtil.scaffoldColor(context)  : null,
           alignment: context.watch<ChatRecordViewModel>().list.length < 10 ? Alignment.topCenter : null, //需判断是否能滑动
           child: ListView.separated(
             reverse: true,
@@ -48,14 +49,15 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                   ? const SizedBox()
                   : Container(
                       // alignment: Alignment.topCenter,
-                      // color: Colors.red,
-                      margin: EdgeInsets.only(bottom: 20.w),
+                      // color: Colors.grey,
+                      margin: EdgeInsets.only(bottom: 10.w),
                       child: Row(
                         mainAxisAlignment: context.watch<ChatRecordViewModel>().list[index].userId !=
                                 context.read<NavViewModel>().userInfoModel?.data?.userId
                             ? MainAxisAlignment.start
                             : MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           context.watch<ChatRecordViewModel>().list[index].userId !=
                                   context.read<NavViewModel>().userInfoModel?.data?.userId
@@ -89,9 +91,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                       bottom:
                                           BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                       left: BorderSide(
-                                        color: Theme.of(context).brightness == Brightness.light
-                                            ? Colors.white
-                                            : Colors.white10,
+                                        color: ThemeUtil.primaryColor(context),
                                         width: 8.w,
                                         style: BorderStyle.solid,
                                       ),
@@ -101,21 +101,27 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                 )
                               : const SizedBox(),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 5.w),
-                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.w),
+                            // margin: EdgeInsets.symmetric(vertical: 5.w),
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.7,
+                              minHeight: 40.w,
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.w),
                             decoration: BoxDecoration(
-                              color: context.watch<ChatRecordViewModel>().list[index].userId ==
-                                      context.read<NavViewModel>().userInfoModel?.data?.userId
-                                  ? Colors.green
-                                  : Theme.of(context).brightness == Brightness.light
-                                      ? Colors.white
-                                      : Colors.white10,
-                              borderRadius: BorderRadius.circular(4.w),
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? ThemeUtil.primaryColor(context)
+                                  : context.watch<ChatRecordViewModel>().list[index].userId ==
+                                          context.read<NavViewModel>().userInfoModel?.data?.userId
+                                      ? ThemeUtil.reversePrimaryColor(context)
+                                      : Colors.white,
+                              borderRadius: BorderRadius.circular(5.w),
                             ),
                             child: context.watch<ChatRecordViewModel>().list[index].type == ChatRecordEnum.voice.number
-                                ? const Icon(Icons.multitrack_audio)
-                                : Text("${context.watch<ChatRecordViewModel>().list[index].data}"),
+                                ? VoiceRecordWidget(crm: context.watch<ChatRecordViewModel>().list[index])
+                                : SelectableText(
+                                    "${context.watch<ChatRecordViewModel>().list[index].data}",
+                                    style: TextStyle(fontSize: 16.sp),
+                                  ),
                           ),
                           context.watch<ChatRecordViewModel>().list[index].userId ==
                                   context.read<NavViewModel>().userInfoModel?.data?.userId
@@ -127,7 +133,13 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                     border: Border(
                                       bottom:
                                           BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
-                                      right: BorderSide(color: Colors.green, width: 8.w, style: BorderStyle.solid),
+                                      right: BorderSide(
+                                        color: Theme.of(context).brightness == Brightness.dark
+                                            ? ThemeUtil.primaryColor(context)
+                                            : ThemeUtil.reversePrimaryColor(context),
+                                        width: 8.w,
+                                        style: BorderStyle.solid,
+                                      ),
                                       top: BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                     ),
                                   ),

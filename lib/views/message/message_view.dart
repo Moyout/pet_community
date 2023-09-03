@@ -25,7 +25,6 @@ class _MessageViewState extends State<MessageView> {
   @override
   void initState() {
     super.initState();
-
     getDatabaseData();
     getUserInfo();
   }
@@ -56,21 +55,21 @@ class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
-        body: GestureDetector(
-          onTap: () {
-            // RouteUtil.pushByCupertino(context, const ChatView());
-          },
-          child: Scrollbar(
-            controller: sc,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ...context.watch<NavViewModel>().contactList.entries.map((e) {
-                    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime);
-                    String dateTimeStr = DateFormat("HH:mm").format(dateTime);
-
-                    return TextButton(
+        appBar: AppBar(title: Text("信息", style: TextStyle(fontSize: 15.sp))),
+        body: Scrollbar(
+          controller: sc,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ...context.watch<NavViewModel>().contactList.entries.map((e) {
+                  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime);
+                  String dateTimeStr = DateFormat.Hm().format(dateTime);
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 1.w),
+                    child: TextButton(
+                      style: TextButton.styleFrom(backgroundColor: ThemeUtil.primaryColor(context)),
                       onPressed: () {
                         debugPrint("e--------------》》${e.value.first.userId}");
                         RouteUtil.pushNamed(context, ChatView.routeName, arguments: {"userId": e.key});
@@ -125,16 +124,16 @@ class _MessageViewState extends State<MessageView> {
                           Text(dateTimeStr, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                         ],
                       ),
-                    );
-                    // return ListTile(
-                    //   onTap: () {},
-                    //   leading: ,
-                    //   title: Text(e.value.last.userName ?? ""),
-                    //   subtitle: Text(e.value.last.data ?? ""),
-                    // );
-                  }).toList()
-                ],
-              ),
+                    ),
+                  );
+                  // return ListTile(
+                  //   onTap: () {},
+                  //   leading: ,
+                  //   title: Text(e.value.last.userName ?? ""),
+                  //   subtitle: Text(e.value.last.data ?? ""),
+                  // );
+                }).toList()
+              ],
             ),
           ),
         ),

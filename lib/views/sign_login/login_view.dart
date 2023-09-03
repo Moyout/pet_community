@@ -116,7 +116,7 @@ class _LoginViewState extends State<LoginView> {
                     // margin: EdgeInsets.symmetric(vertical: 10.w),
                     child: TextButton(
                       onPressed: () => context.read<LoginViewModel>().loginAccount(context),
-                      style: TextButton.styleFrom(backgroundColor: Colors.greenAccent),
+                      style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
                       child: Text(
                         "登录",
                         style: TextStyle(color: ThemeUtil.reversePrimaryColor(context)),

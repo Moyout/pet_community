@@ -280,9 +280,8 @@ class _UserInfoViewState extends State<UserInfoView>
                                     if (widget.userId != context.watch<NavViewModel>().userInfoModel?.data?.userId)
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          backgroundColor: Colors.deepPurple,
                                           shape: const StadiumBorder(),
-                                          primary: ThemeUtil.primaryColor(context),
+                                          backgroundColor: Colors.deepPurple,
                                           padding: const EdgeInsets.all(0),
                                         ),
                                         onPressed: () {

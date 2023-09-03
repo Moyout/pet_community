@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ChatRecordModel {
   ChatRecordModel({
     int? code,
@@ -107,7 +109,7 @@ class ChatRecordModel {
     _userId = map['sender_id'];
     _receiverId = map["receiver_id"];
     _otherId = map["other_id"];
-    _data = map['message'];
+    _data = jsonDecode(map['message']);
     // _msg = map['msg'];
     _sendTime = map['timestamp'];
     _showTime = map["show_timestamp"] == 0 ? false : true;

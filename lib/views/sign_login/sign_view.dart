@@ -179,7 +179,7 @@ class _SignViewState extends State<SignView> {
                   // margin: EdgeInsets.symmetric(vertical: 10.w),
                   child: TextButton(
                     onPressed: () => context.read<SignViewModel>().sign(context, checkboxKey),
-                    style: TextButton.styleFrom(backgroundColor: Colors.greenAccent),
+                    style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
                     child: Text(
                       "注册",
                       style: TextStyle(color: ThemeUtil.reversePrimaryColor(context)),

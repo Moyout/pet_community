@@ -104,7 +104,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Column(),
+                                const SizedBox(),
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {

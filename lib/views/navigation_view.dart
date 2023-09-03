@@ -78,10 +78,8 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                                 width: 34.w,
                                 height: 34.w,
                                 color: context.watch<NavViewModel>().bottomList[index].isActive
-                                    ? Colors.blue
-                                    : ThemeUtil.brightness(context) == Brightness.dark
-                                        ? ThemeUtil.lightTheme().primaryColor
-                                        : ThemeUtil.darkTheme().primaryColor,
+                                    ? Colors.blueAccent
+                                    : ThemeUtil.reversePrimaryColor(context),
                               ),
                             ),
                           ),

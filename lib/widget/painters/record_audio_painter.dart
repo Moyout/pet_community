@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+
+import 'package:pet_community/util/tools.dart';
 
 class LCPainter extends CustomPainter {
   final double amplitude;
@@ -20,13 +21,13 @@ class LCPainter extends CustomPainter {
             centerY + amplitude - a * (30), (width * (i + 2)).clamp(0, size.width).toDouble(), centerY);
         path.cubicTo((width * (i + 2)).clamp(0, size.width), centerY, (width * (i + 3)).clamp(0, size.width),
             centerY - amplitude + a * (30), (width * (i + 4)).clamp(0, size.width), centerY);
-
         i = i + 4;
       }
+      // canvas.drawColor(ThemeUtil.scaffoldColor(AppUtils.getContext()), BlendMode.color);
       canvas.drawPath(
         path,
         Paint()
-          ..color = a == 0 ? Colors.blueAccent : Colors.blueGrey.withOpacity(0.1)
+          ..color = a == 0 ? Colors.blueAccent : Colors.transparent
           ..strokeWidth = a == 0 ? 3.0 : 2.0
           ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 5)
           ..style = PaintingStyle.stroke,

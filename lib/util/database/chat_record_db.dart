@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 
@@ -34,7 +36,7 @@ class ChatRecordDB {
      Map<String, Object?> map = {
       "sender_id": crm.userId,
       "receiver_id": crm.receiverId,
-      "message": crm.data.toString(),
+      "message": jsonEncode(crm.data),
       "type": crm.type,
       "timestamp": crm.sendTime,
       "other_id": otherId,
