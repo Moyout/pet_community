@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: S.delegate.supportedLocales,
         debugShowCheckedModeBanner: false,
         navigatorKey: AppUtils.navigatorKey,
-        themeMode: context
+        themeMode:   context
             .watch<InitAppViewModel>()
             .isDark ? ThemeMode.dark : ThemeMode.light,
         theme: ThemeUtil.lightTheme(),

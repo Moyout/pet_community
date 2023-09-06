@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class VoiceRecordWidget extends StatefulWidget {
   final ChatRecordModel crm;
@@ -57,8 +58,12 @@ class _VoiceRecordWidgetState extends State<VoiceRecordWidget> {
                       child: CircularProgressIndicator(
                         strokeWidth: 2.w,
                         value: 0.5,
-                        color: ThemeUtil.reversePrimaryColor(context),
-                        backgroundColor: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),
+                        color: ThemeUtil.brightness(context) == Brightness.dark
+                            ? Colors.white
+                            : widget.crm.userId == context.read<NavViewModel>().userInfoModel?.data?.userId
+                                ? Colors.white
+                                : Colors.black,
+                        backgroundColor: Colors.grey,
                         // valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
                       ),
                     ),
@@ -72,6 +77,11 @@ class _VoiceRecordWidgetState extends State<VoiceRecordWidget> {
                     child: Icon(
                       playStatus ? Icons.pause_outlined : Icons.play_arrow_outlined,
                       size: 12.w,
+                      color: ThemeUtil.brightness(context) == Brightness.dark
+                          ? Colors.white
+                          : widget.crm.userId == context.read<NavViewModel>().userInfoModel?.data?.userId
+                              ? Colors.white
+                              : Colors.black54,
                     ),
                   ),
                 ],
@@ -81,6 +91,11 @@ class _VoiceRecordWidgetState extends State<VoiceRecordWidget> {
               "${dataMap["duration"]}''",
               style: TextStyle(
                 fontSize: 10.sp,
+                color: ThemeUtil.brightness(context) == Brightness.dark
+                    ? Colors.white
+                    : widget.crm.userId == context.read<NavViewModel>().userInfoModel?.data?.userId
+                        ? Colors.white
+                        : Colors.black,
               ),
             ),
           ],

@@ -89,7 +89,6 @@ class ChatViewModel extends ChangeNotifier {
     textC.selection = TextSelection.fromPosition(
       TextPosition(offset: endIndex + emoji.length),
     );
-
     notifyListeners();
   }
 

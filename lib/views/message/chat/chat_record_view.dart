@@ -120,7 +120,15 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                 ? VoiceRecordWidget(crm: context.watch<ChatRecordViewModel>().list[index])
                                 : SelectableText(
                                     "${context.watch<ChatRecordViewModel>().list[index].data}",
-                                    style: TextStyle(fontSize: 16.sp),
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: ThemeUtil.brightness(context) == Brightness.dark
+                                          ? null
+                                          : context.watch<ChatRecordViewModel>().list[index].userId ==
+                                                  context.read<NavViewModel>().userInfoModel?.data?.userId
+                                              ? Colors.white
+                                              : null,
+                                    ),
                                   ),
                           ),
                           context.watch<ChatRecordViewModel>().list[index].userId ==
