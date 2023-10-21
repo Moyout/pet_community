@@ -59,7 +59,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
     _recorderSubscription = recorderModule?.onProgress?.listen((e) {
       DateTime date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
       String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-      _duration = DateFormat.s().format(date);
+      _duration = DateFormat("s.S").format(date);
       if (date.second >= _maxLength) {
         _stopRecorder();
       }

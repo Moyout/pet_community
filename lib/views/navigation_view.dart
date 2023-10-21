@@ -45,13 +45,13 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             ],
           ),
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+            bottom: MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom,
+            left: 20.w,
+            right: 20.w,
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 10.w, 0, 15.w),
+              padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
               decoration: BoxDecoration(
-                // borderRadius: BorderRadius.vertical(top: Radius.circular(20.w)),
+                borderRadius: BorderRadius.circular(10.w),
                 color: ThemeUtil.primaryColor(context),
                 // color: Colors.red,
               ),
@@ -72,29 +72,30 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                             child: AnimatedScale(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.bounceOut,
-                              scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.2 : 1,
+                              scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
                               child: Image.asset(
                                 context.watch<NavViewModel>().bottomList[index].icon,
-                                width: 34.w,
-                                height: 34.w,
+                                width: 30.w,
+                                height: 30.w,
+                                fit: BoxFit.cover,
                                 color: context.watch<NavViewModel>().bottomList[index].isActive
                                     ? Colors.blueAccent
                                     : ThemeUtil.reversePrimaryColor(context),
                               ),
                             ),
                           ),
-                          Text(
-                            context.watch<NavViewModel>().bottomList[index].name,
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              color: context.watch<NavViewModel>().bottomList[index].isActive
-                                  ? Colors.blue
-                                  : ThemeUtil.brightness(context) == Brightness.dark
-                                      ? ThemeUtil.lightTheme().primaryColor.withOpacity(0.5)
-                                      : ThemeUtil.darkTheme().primaryColor.withOpacity(0.5),
-                              // height: 0.8.w,
-                            ),
-                          ),
+                          // Text(
+                          //   context.watch<NavViewModel>().bottomList[index].name,
+                          //   style: TextStyle(
+                          //     fontSize: 10.sp,
+                          //     color: context.watch<NavViewModel>().bottomList[index].isActive
+                          //         ? Colors.blue
+                          //         : ThemeUtil.brightness(context) == Brightness.dark
+                          //             ? ThemeUtil.lightTheme().primaryColor.withOpacity(0.5)
+                          //             : ThemeUtil.darkTheme().primaryColor.withOpacity(0.5),
+                          //     // height: 0.8.w,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

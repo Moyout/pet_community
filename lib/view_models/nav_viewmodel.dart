@@ -76,10 +76,10 @@ class NavViewModel extends ChangeNotifier {
   void initAnimation(TickerProvider tickerProvider) {
     animationController = AnimationController(vsync: tickerProvider, duration: const Duration(milliseconds: 300));
     animation = TweenSequence<double>([
-      TweenSequenceItem<double>(tween: Tween(begin: 0, end: -0.3), weight: 1),
-      TweenSequenceItem<double>(tween: Tween(begin: -0.3, end: 0), weight: 1),
-      TweenSequenceItem<double>(tween: Tween(begin: 0, end: 0.3), weight: 1),
-      TweenSequenceItem<double>(tween: Tween(begin: 0.3, end: 0), weight: 1),
+      TweenSequenceItem<double>(tween: Tween(begin: 0, end: -0.4), weight: 1),
+      TweenSequenceItem<double>(tween: Tween(begin: -0.4, end: 0), weight: 1),
+      TweenSequenceItem<double>(tween: Tween(begin: 0, end: 0.4), weight: 1),
+      TweenSequenceItem<double>(tween: Tween(begin: 0.4, end: 0), weight: 1),
     ]).animate(animationController);
     animationController.addListener(() {
       notifyListeners();
@@ -116,7 +116,7 @@ class NavViewModel extends ChangeNotifier {
       animationController.reset();
       animationController.forward();
       if (await Vibration.hasVibrator() == true) {
-        Vibration.vibrate(duration: 60);
+        Vibration.vibrate(duration: 50);
       }
     } else {
       onClickBottom(index);
