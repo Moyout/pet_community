@@ -51,8 +51,19 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 
-    <key NSMicrophoneUsageDescription</key >
-    <string microphone</string >
+    <key>NSMicrophoneUsageDescription</key>
+    <string>microphone</string>
+
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>App need Photo</string>
+    <key>NSCameraUsageDescription</key>
+    <string>App need Camera</string>
+
 
 </dict>
 </plist>
