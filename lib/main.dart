@@ -7,7 +7,8 @@ import 'package:pet_community/widget/refresh/refresh_widget.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null; //Provider 状态管理，同步数据
-  WidgetsFlutterBinding.ensureInitialized(); //WidgetsFlutterBinding 承担各类的初始化以及功能配置
+  WidgetsFlutterBinding
+      .ensureInitialized(); //WidgetsFlutterBinding 承担各类的初始化以及功能配置
   NotificationConfig.initNotification();
   ScreenUtil.initialize(); //初始化屏幕适配
   AppConfig.initSp(); //初始化SP
@@ -18,12 +19,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.initialize(); //初始化屏幕适配
+    // ScreenUtil.initialize(); //初始化屏幕适配
     // AppConfig.initToast(context); //初始化SP
     return RefreshWidget(
       child: MaterialApp(
@@ -39,16 +39,16 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
           S.delegate,
         ],
-        routes:AppRoute.routes,
+        routes: AppRoute.routes,
         // onGenerateRoute: AppRoute.onGenerateRoute,
         initialRoute: StartUpView.routeName,
         locale: const Locale("zh"),
         supportedLocales: S.delegate.supportedLocales,
         debugShowCheckedModeBanner: false,
         navigatorKey: AppUtils.navigatorKey,
-        themeMode:    context
-            .watch<InitAppViewModel>()
-            .isDark ? ThemeMode.dark : ThemeMode.light,
+        themeMode: context.watch<InitAppViewModel>().isDark
+            ? ThemeMode.dark
+            : ThemeMode.light,
         theme: ThemeUtil.lightTheme(),
         darkTheme: ThemeUtil.darkTheme(),
       ),

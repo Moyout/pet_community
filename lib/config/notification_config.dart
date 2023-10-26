@@ -18,6 +18,7 @@ class NotificationConfig {
     await np.initialize(
         InitializationSettings(
           android: android,
+          iOS: const DarwinInitializationSettings(),
         ),
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse);

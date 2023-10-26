@@ -39,6 +39,7 @@ class NavViewModel extends ChangeNotifier {
     ///导航栏
     NavBottomModel(name: "首页", icon: "assets/icons/home.png", isActive: true),
     NavBottomModel(name: "发现", icon: "assets/icons/community.png"),
+    NavBottomModel(name: "直播", icon: "assets/icons/paw.png"),
     NavBottomModel(name: "信息", icon: "assets/icons/chat.png"),
     NavBottomModel(name: "我的", icon: "assets/icons/mine.png"),
   ];
@@ -51,7 +52,7 @@ class NavViewModel extends ChangeNotifier {
       getSpUserInfoModel();
     });
     WebSocketUtils().initSocket(); //websocket
-   }
+  }
 
   ///初始化登录信息
   void getSpUserInfoModel() {
@@ -68,7 +69,6 @@ class NavViewModel extends ChangeNotifier {
     } else {
       userInfoModel = null;
     }
-
     notifyListeners();
   }
 
@@ -122,7 +122,7 @@ class NavViewModel extends ChangeNotifier {
       onClickBottom(index);
       pageTo(index);
     }
-   }
+  }
 
   ///检查网络状态
   void checkNet() async {

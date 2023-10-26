@@ -1,9 +1,11 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/views/Live/live_view.dart';
 import 'package:pet_community/views/community/community_view.dart';
 import 'package:pet_community/views/home/home_view.dart';
 import 'package:pet_community/views/mine/mine_view.dart';
+import 'package:pet_community/widget/painters/live_button_painter.dart';
 
 import 'message/message_view.dart';
 
@@ -20,6 +22,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
   @override
   void initState() {
     context.read<NavViewModel>().initViewModel(this);
+
     super.initState();
   }
 
@@ -37,18 +40,21 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             physics: const NeverScrollableScrollPhysics(),
             controller: context.watch<NavViewModel>().pageController,
             // onPageChanged: (i) => context.read<NavViewModel>().pageTo(i),///有冲突
-            children: const [
+            children: [
               HomeView(),
               CommunityView(),
+              LiveView(),
               MessageView(),
               MineView(),
             ],
           ),
           Positioned(
-            bottom: MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom,
+            bottom: MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom / 2,
             left: 20.w,
+            // height: 70.w,
             right: 20.w,
             child: Container(
+              alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.w),
@@ -56,51 +62,41 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                 // color: Colors.red,
               ),
               child: Row(
-                children: List.generate(context.watch<NavViewModel>().bottomList.length, (int index) {
-                  return Expanded(
-                    child: GestureDetector(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(
+                  context.watch<NavViewModel>().bottomList.length,
+                  (int index) {
+                    return GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onPanDown: (v) => context.read<NavViewModel>().onClickBottom(index),
                       onDoubleTap: () => context.read<NavViewModel>().onDoubleTap(index),
-                      child: Column(
-                        children: [
-                          Transform.rotate(
-                            alignment: Alignment.bottomCenter,
-                            angle: context.watch<NavViewModel>().bottomList[index].isActive
-                                ? context.watch<NavViewModel>().animation.value
-                                : 0,
-                            child: AnimatedScale(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.bounceOut,
-                              scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
-                              child: Image.asset(
-                                context.watch<NavViewModel>().bottomList[index].icon,
-                                width: 30.w,
-                                height: 30.w,
-                                fit: BoxFit.cover,
-                                color: context.watch<NavViewModel>().bottomList[index].isActive
-                                    ? Colors.blueAccent
-                                    : ThemeUtil.reversePrimaryColor(context),
-                              ),
-                            ),
+                      child: Transform.rotate(
+                        alignment: Alignment.bottomCenter,
+                        angle: context.watch<NavViewModel>().bottomList[index].isActive
+                            ? context.watch<NavViewModel>().animation.value
+                            : 0,
+                        child: AnimatedScale(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.bounceOut,
+                          scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
+                          child:
+                              // index == 2
+                              //     ? buildLiveButton()
+                              //     :
+                              Image.asset(
+                            context.watch<NavViewModel>().bottomList[index].icon,
+                            width: 30.w,
+                            height: 30.w,
+                            fit: BoxFit.cover,
+                            color: context.watch<NavViewModel>().bottomList[index].isActive
+                                ? Colors.blueAccent
+                                : ThemeUtil.reversePrimaryColor(context),
                           ),
-                          // Text(
-                          //   context.watch<NavViewModel>().bottomList[index].name,
-                          //   style: TextStyle(
-                          //     fontSize: 10.sp,
-                          //     color: context.watch<NavViewModel>().bottomList[index].isActive
-                          //         ? Colors.blue
-                          //         : ThemeUtil.brightness(context) == Brightness.dark
-                          //             ? ThemeUtil.lightTheme().primaryColor.withOpacity(0.5)
-                          //             : ThemeUtil.darkTheme().primaryColor.withOpacity(0.5),
-                          //     // height: 0.8.w,
-                          //   ),
-                          // ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -139,6 +135,13 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             ),
         ],
       ),
+    );
+  }
+
+  Widget buildLiveButton() {
+    return CustomPaint(
+      foregroundPainter: LiveButtonPainter(),
+      size: Size(40.w, 40.w),
     );
   }
 }

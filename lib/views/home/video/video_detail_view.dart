@@ -43,34 +43,21 @@ class _VideoDetailViewState extends State<VideoDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (context.read<VideoDetailViewModel>().showComment) {
-          context.read<VideoDetailViewModel>().closeComment();
-          return false;
-        }
-        if (currentPage == 1) {
-          pageC.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
-          return false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        body: ScrollConfiguration(
-          behavior: OverScrollBehavior(),
-          child: PageView(
-            physics: context.watch<VideoDetailViewModel>().showComment ? const NeverScrollableScrollPhysics() : null,
-            onPageChanged: (int index) {
-              currentPage = index;
-            },
-            controller: pageC,
-            children: [
-              buildVideoWidget(),
-              buildUserInfoWidget(),
-            ],
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: ScrollConfiguration(
+        behavior: OverScrollBehavior(),
+        child: PageView(
+          physics: context.watch<VideoDetailViewModel>().showComment ? const NeverScrollableScrollPhysics() : null,
+          onPageChanged: (int index) {
+            currentPage = index;
+          },
+          controller: pageC,
+          children: [
+            buildVideoWidget(),
+            buildUserInfoWidget(),
+          ],
         ),
       ),
     );

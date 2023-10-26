@@ -32,7 +32,7 @@ class ChatRecordModel {
     _data = json['data'];
     _msg = json['msg'];
     _sendTime = json['sendTime'];
-    _showTime = json['showTime'];
+    _showTime = json['showTime'] ?? false;
   }
 
   int? _code;

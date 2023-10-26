@@ -51,7 +51,9 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                       ),
                       Text(
                         "暂无评论",
-                        style: TextStyle(color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5)),
+                        style: TextStyle(
+                            color: ThemeUtil.reversePrimaryColor(context)
+                                .withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -76,12 +78,14 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
                       margin: EdgeInsets.symmetric(vertical: 5.w),
                       child: RawScrollbar(
-                        isAlwaysShown: true,
+                        // isAlwaysShown: true,
                         controller: context.watch<VideoDetailViewModel>().sc,
                         child: TextField(
-                          controller: context.read<VideoDetailViewModel>().textC,
+                          controller:
+                              context.read<VideoDetailViewModel>().textC,
                           readOnly: true,
-                          scrollController: context.watch<VideoDetailViewModel>().sc,
+                          scrollController:
+                              context.watch<VideoDetailViewModel>().sc,
                           onTap: () {
                             showModalBottomSheet(
                                 context: context,
@@ -110,7 +114,9 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                       onPressed: () {
                         ToastUtil.showBottomToast("该作品评论功能未开启");
                       },
-                      child: Text("发表", style: TextStyle(color: Colors.white, fontSize: 10.sp)),
+                      child: Text("发表",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 10.sp)),
                       style: TextButton.styleFrom(
                         shape: const StadiumBorder(),
                         backgroundColor: Colors.deepPurple,

@@ -19,8 +19,6 @@ class SetAvatarView extends StatefulWidget {
 }
 
 class _SetAvatarViewState extends State<SetAvatarView> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +76,7 @@ class _SetAvatarViewState extends State<SetAvatarView> {
                                 ),
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color(0xff252525),
-                                  primary: Colors.white,
+                                  foregroundColor: Colors.white,
                                   textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () => context.read<EditDataViewModel>().setAvatar(context),
