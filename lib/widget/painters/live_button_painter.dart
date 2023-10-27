@@ -1,14 +1,25 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pet_community/util/screen_util.dart';
 
 class LiveButtonPainter extends CustomPainter {
   final Color primaryColor;
+  final double paddingHeight;
+  final bool leftSemicircle;
+  final bool rightSemicircle;
 
-  LiveButtonPainter({super.repaint, required this.primaryColor});
+  LiveButtonPainter({
+    super.repaint,
+    required this.primaryColor,
+    required this.paddingHeight,
+    this.leftSemicircle = false,
+    this.rightSemicircle = false,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
-    // debugPrint("size-------------------->${size}");
+    debugPrint("size-------------------->${size}");
 
     Paint paint = Paint()
       ..color = primaryColor
@@ -16,67 +27,69 @@ class LiveButtonPainter extends CustomPainter {
       ..strokeWidth = 2;
 
     Paint circlePaint = Paint()
-      ..color = Colors.grey.withOpacity(0.5)
-      ..isAntiAlias = true
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
+          ..color = Colors.grey
+          ..isAntiAlias = true
+          ..strokeWidth = 2
+        // ..style = PaintingStyle.stroke
+        ;
 
-    double bezierRegionHeight = 25.w;
+    Rect rect =
+        Rect.fromCircle(center: Offset(size.width / 2, size.height / 2), radius: size.width / 2 - paddingHeight / 2);
+    Path semicirclePath = Path();
     Path path = Path();
 
-    ///画笔开始位置
-    path.moveTo(0, size.height / 2 - bezierRegionHeight);
-
     ///左上边四分之一贝塞尔曲线
+    ///画笔开始位置
+    path.moveTo(0, -paddingHeight);
     path.cubicTo(
       size.width / 4,
-      size.height / 2 - bezierRegionHeight,
+      -paddingHeight,
       size.width / 4,
-      size.height / 4 - bezierRegionHeight,
+      -size.height / 4 - paddingHeight,
       size.width / 2,
-      size.height / 4 - bezierRegionHeight,
+      -size.height / 4 - paddingHeight,
     );
 
     ///右上边四分之一贝塞尔曲线
     path.cubicTo(
       size.width * (3 / 4),
-      size.height / 4 - bezierRegionHeight,
+      -size.height / 4 - paddingHeight,
       size.width * (3 / 4),
-      size.height / 2 - bezierRegionHeight,
+      -paddingHeight,
       size.width,
-      size.height / 2 - bezierRegionHeight,
+      -paddingHeight,
     );
 
     ///右边竖线
-    path.lineTo(size.width, size.height / 2 + bezierRegionHeight);
+    path.lineTo(size.width, size.height + paddingHeight);
 
     ///右下边四分之一贝塞尔曲线
     path.cubicTo(
       size.width * (3 / 4),
-      size.height / 2 + bezierRegionHeight,
+      size.height + paddingHeight,
       size.width * (3 / 4),
-      size.height * (3 / 4) + bezierRegionHeight,
+      size.height + size.height / 4 + paddingHeight,
       size.width / 2,
-      size.height * (3 / 4) + bezierRegionHeight,
+      size.height + size.height / 4 + paddingHeight,
     );
 
     ///左下边四分之一贝塞尔曲线
     path.cubicTo(
       size.width / 4,
-      size.height * (3 / 4) + bezierRegionHeight,
+      size.height + size.height / 4 + paddingHeight,
       size.width / 4,
-      size.height / 2 + bezierRegionHeight,
+      size.height + paddingHeight,
       0,
-      size.height / 2 + bezierRegionHeight,
+      size.height + paddingHeight,
     );
 
     ///首尾相连
-    path.lineTo(0, size.height / 2 - bezierRegionHeight);
+    // path.lineTo(0, size.height / 2);
     // path.close();
 
     ///画布绘制路径
     canvas.drawPath(path, paint);
-    canvas.drawCircle(Offset(size.width / 2, size.height / 2), size.width / 2 - 5.w, circlePaint);
+    // canvas.drawArc(rect, 90 * (pi / 180), 180 * (pi / 180), false, circlePaint);
   }
 
   @override

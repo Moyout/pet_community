@@ -22,12 +22,15 @@ class _LiveViewState extends State<LiveView> {
         children: [
           Center(
             child: Container(
-              height: 300,
-              width: 600,
+              height: 200,
+              width: 300,
               padding: EdgeInsets.symmetric(vertical: 10),
               color: Colors.brown,
               child: CustomPaint(
-                painter: LiveButtonPainter(primaryColor: Colors.white),
+                painter: LiveButtonPainter(
+                  paddingHeight: 10,
+                  primaryColor: Colors.white,
+                ),
               ),
             ),
           )

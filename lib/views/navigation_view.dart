@@ -74,6 +74,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                         child: CustomPaint(
                           painter: context.watch<NavViewModel>().bottomList[index].isActive
                               ? LiveButtonPainter(
+                                  paddingHeight: 10.w,
                                   primaryColor: ThemeUtil.primaryColor(context),
                                 )
                               : null,
