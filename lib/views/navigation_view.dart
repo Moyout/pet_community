@@ -57,7 +57,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.w),
+                borderRadius: BorderRadius.circular(20.w),
                 color: ThemeUtil.primaryColor(context),
                 // color: Colors.red,
               ),
@@ -75,6 +75,8 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                           painter: context.watch<NavViewModel>().bottomList[index].isActive
                               ? LiveButtonPainter(
                                   paddingHeight: 10.w,
+                                  leftSemicircle: index == 0,
+                                  rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
                                   primaryColor: ThemeUtil.primaryColor(context),
                                 )
                               : null,
