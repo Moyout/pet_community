@@ -47,6 +47,7 @@ class SetAvatarModel extends ResponseModel {
   @override
   dynamic get data => _data;
 
+  @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['code'] = code;

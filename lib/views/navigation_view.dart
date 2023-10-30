@@ -50,14 +50,16 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
           ),
           Positioned(
             bottom: MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom / 2 + 5.w,
-            left: 20.w,
+            left: 30.w,
             // height: 70.w,
-            right: 20.w,
+            // height: 50.w,
+
+            right: 30.w,
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.w),
+                borderRadius: BorderRadius.circular(10.w),
                 color: ThemeUtil.primaryColor(context),
                 // color: Colors.red,
               ),
@@ -71,35 +73,39 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                         behavior: HitTestBehavior.opaque,
                         onPanDown: (v) => context.read<NavViewModel>().onClickBottom(index),
                         onDoubleTap: () => context.read<NavViewModel>().onDoubleTap(index),
-                        child: CustomPaint(
-                          painter: context.watch<NavViewModel>().bottomList[index].isActive
-                              ? LiveButtonPainter(
-                                  paddingHeight: 10.w,
-                                  leftSemicircle: index == 0,
-                                  rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
-                                  primaryColor: ThemeUtil.primaryColor(context),
-                                )
-                              : null,
-                          // size: Size(150, 150),
-                          child: Container(
-                            // padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
-                            child: Transform.rotate(
-                              alignment: Alignment.bottomCenter,
-                              angle: context.watch<NavViewModel>().bottomList[index].isActive
-                                  ? context.watch<NavViewModel>().animation.value
-                                  : 0,
-                              child: AnimatedScale(
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.bounceOut,
-                                scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
-                                child: Image.asset(
-                                  context.watch<NavViewModel>().bottomList[index].icon,
-                                  width: 30.w,
-                                  height: 30.w,
-                                  fit: BoxFit.contain,
-                                  color: context.watch<NavViewModel>().bottomList[index].isActive
-                                      ? Colors.blueAccent
-                                      : ThemeUtil.reversePrimaryColor(context),
+                        child: Container(
+                          // height: 50.w,
+                          child: CustomPaint(
+                            painter: index == 2
+                                ? LiveButtonPainter(
+                                    paddingHeight: 10.w,
+                                    leftSemicircle: index == 0,
+                                    isActive: context.watch<NavViewModel>().bottomList[index].isActive,
+                                    rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
+                                    primaryColor: ThemeUtil.primaryColor(context),
+                                  )
+                                : null,
+                            // size: Size(150, 150),
+                            child: Container(
+                              // padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
+                              child: Transform.rotate(
+                                alignment: Alignment.bottomCenter,
+                                angle: context.watch<NavViewModel>().bottomList[index].isActive
+                                    ? context.watch<NavViewModel>().animation.value
+                                    : 0,
+                                child: AnimatedScale(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.bounceOut,
+                                  scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
+                                  child: Image.asset(
+                                    context.watch<NavViewModel>().bottomList[index].icon,
+                                    width: 30.w,
+                                    height: 30.w,
+                                    fit: BoxFit.contain,
+                                    color: context.watch<NavViewModel>().bottomList[index].isActive
+                                        ? Colors.blueAccent
+                                        : ThemeUtil.reversePrimaryColor(context),
+                                  ),
                                 ),
                               ),
                             ),

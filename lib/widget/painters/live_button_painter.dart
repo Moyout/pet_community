@@ -1,18 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:pet_community/util/app_util.dart';
 import 'package:pet_community/util/screen_util.dart';
+import 'package:pet_community/util/theme_util.dart';
 
 class LiveButtonPainter extends CustomPainter {
   final Color primaryColor;
   final double paddingHeight;
   final bool leftSemicircle;
   final bool rightSemicircle;
+  final bool isActive;
 
   LiveButtonPainter({
     super.repaint,
     required this.primaryColor,
     required this.paddingHeight,
+    this.isActive = false,
     this.leftSemicircle = false,
     this.rightSemicircle = false,
   });
@@ -27,14 +31,26 @@ class LiveButtonPainter extends CustomPainter {
       ..strokeWidth = 2;
 
     Paint circlePaint = Paint()
-          ..color = Colors.grey
-          ..isAntiAlias = true
-          ..strokeWidth = 2
-        // ..style = PaintingStyle.stroke
-        ;
+      ..color = Colors.grey
+      ..isAntiAlias = true
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
 
-    Rect rect =
-        Rect.fromCircle(center: Offset(size.width / 2, size.height / 2), radius: size.width / 2 - paddingHeight / 2);
+    Paint ringPaint = Paint()
+      ..color = isActive ? Colors.blueAccent : Colors.grey
+      ..isAntiAlias = true
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    Rect rect = Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: size.height + paddingHeight / 4,
+    );
+    Rect ringRect = Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: size.height - 2.w,
+    );
+
     Path semicirclePath = Path();
     Path path = Path();
 
@@ -65,7 +81,7 @@ class LiveButtonPainter extends CustomPainter {
 
     if (rightSemicircle) {
       semicirclePath.addArc(rect, 270 * (pi / 180), 180 * (pi / 180));
-      canvas.drawPath(semicirclePath, circlePaint);
+      canvas.drawPath(semicirclePath, paint);
     } else {
       //右贝塞尔曲线
       path.moveTo(size.width / 2, -size.height / 4 - paddingHeight);
@@ -99,6 +115,9 @@ class LiveButtonPainter extends CustomPainter {
     }
 
     canvas.drawPath(path, paint);
+    canvas.drawArc(ringRect, 0 * (pi / 180), 360 * (pi / 180), false, ringPaint);
+
+    // canvas.drawPath(path, paint);
     // ///左上边四分之一贝塞尔曲线
     // ///画笔开始位置
     // path.moveTo(0, -paddingHeight);
