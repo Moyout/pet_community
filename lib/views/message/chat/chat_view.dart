@@ -1,10 +1,6 @@
-import 'package:pet_community/config/notification_config.dart';
-import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
-import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_viewmodel.dart';
-import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_record_view.dart';
 import 'package:pet_community/views/message/chat/emoji_view.dart';
 import 'package:pet_community/widget/audio/recorded_audio_widget.dart';
@@ -212,7 +208,7 @@ class _ChatViewState extends State<ChatView> with AutomaticKeepAliveClientMixin 
                               onPressed: () => context.read<ChatViewModel>().sendTextMsg(context, widget.userId),
                               child: Text(
                                 "发送",
-                                style: TextStyle( fontSize: 10.sp),
+                                style: TextStyle(fontSize: 10.sp),
                               ),
                             ),
                           ),

@@ -10,7 +10,7 @@ class ChatRecordDB {
 
   ///初始化聊天记录数据库
   static Future<Database?> initDatabase(int userId) async {
-    debugPrint("userId2--------->${userId}");
+    debugPrint("userId2--------->$userId");
 
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'ChatRecord$userId.db');
@@ -32,8 +32,8 @@ class ChatRecordDB {
   }
 
   ///保存聊天记录到db
-  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId ) async {
-     Map<String, Object?> map = {
+  static Future<int?> insertData(int userId, ChatRecordModel crm, int otherId) async {
+    Map<String, Object?> map = {
       "sender_id": crm.userId,
       "receiver_id": crm.receiverId,
       "message": jsonEncode(crm.data),
@@ -42,7 +42,7 @@ class ChatRecordDB {
       "other_id": otherId,
       "show_timestamp": crm.showTime ? 1 : 0
     };
-    debugPrint("map--------->${map}");
+    debugPrint("map--------->$map");
     int? result;
     result = await db?.insert("chat_record_$userId", map);
 
@@ -78,7 +78,7 @@ class ChatRecordDB {
       data = await db?.rawQuery('SELECT * FROM chat_record_$userId WHERE timestamp=  '
           '(SELECT   MAX(timestamp)   FROM chat_record_$userId WHERE show_timestamp = 1 AND other_id = $otherId)');
       if (data != null && data.isNotEmpty) {
-        for (var element in data ) {
+        for (var element in data) {
           ChatRecordModel chatRecordModel = ChatRecordModel.fromMap(element);
           list.add(chatRecordModel);
         }
@@ -86,7 +86,7 @@ class ChatRecordDB {
       }
     }
 
-    debugPrint("list----32----->${list}");
+    debugPrint("list----32----->$list");
     return list;
   }
 
@@ -126,7 +126,7 @@ class ChatRecordDB {
       showTime = true;
       return showTime;
     }
-    debugPrint("showTime--------->${showTime}");
+    debugPrint("showTime--------->$showTime");
 
     return showTime;
   }

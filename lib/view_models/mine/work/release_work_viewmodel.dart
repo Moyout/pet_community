@@ -32,14 +32,12 @@ class ReleaseWorkViewModel extends ChangeNotifier {
   Future<void> selectPicture() async {
     List<XFile>? images2 = await picker.pickMultiImage(maxHeight: 4000, maxWidth: 2500, imageQuality: 90);
 
-    if (images2 != null) {
-      if (fileList.length + images2.length <= 9) {
-        for (XFile item in images2) {
-          fileList.add(File(item.path));
-        }
-      } else {
-        ToastUtil.showBottomToast("最多可选择9张图片");
+    if (fileList.length + images2.length <= 9) {
+      for (XFile item in images2) {
+        fileList.add(File(item.path));
       }
+    } else {
+      ToastUtil.showBottomToast("最多可选择9张图片");
     }
     notifyListeners();
   }

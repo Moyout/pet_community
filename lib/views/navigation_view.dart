@@ -53,7 +53,6 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
             left: 30.w,
             // height: 70.w,
             // height: 50.w,
-
             right: 30.w,
             child: Container(
               alignment: Alignment.center,
@@ -152,23 +151,6 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               ),
             ),
         ],
-      ),
-    );
-  }
-
-  Widget buildLiveButton(int index) {
-    return Container(
-      // width: 70.w,
-      // height: 30.w,
-      // color: Colors.brown,
-      child: Image.asset(
-        context.watch<NavViewModel>().bottomList[index].icon,
-        width: 30.w,
-        height: 30.w,
-        fit: BoxFit.contain,
-        color: context.watch<NavViewModel>().bottomList[index].isActive
-            ? Colors.blueAccent
-            : ThemeUtil.reversePrimaryColor(context),
       ),
     );
   }

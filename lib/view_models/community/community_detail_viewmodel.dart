@@ -163,7 +163,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
           .articleModel
           .data
           ?.articles
-          ?.removeWhere((element) => articleId == element.articleId);
+          .removeWhere((element) => articleId == element.articleId);
       AppUtils.getContext().read<MineViewModel>().notifyListeners();
       AppUtils.getContext().read<CommunityViewModel>().notifyListeners();
     } else if (model.code == 1007) {

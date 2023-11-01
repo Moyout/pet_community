@@ -8,7 +8,6 @@ import 'package:pet_community/models/upload/voice_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:logger/logger.dart' show Level, Logger;
 
 class ChatViewModel extends ChangeNotifier {
   TextEditingController textC = TextEditingController();
@@ -127,7 +126,7 @@ class ChatViewModel extends ChangeNotifier {
 
   ///播放录音记录
   Future<void> startPlay(BuildContext context) async {
-    debugPrint("recordPath--------->${recordPath}");
+    debugPrint("recordPath--------->$recordPath");
     if (recordPath != null) {
       if (await File(recordPath!).exists()) {
         await playerModule.startPlayer(
@@ -161,7 +160,7 @@ class ChatViewModel extends ChangeNotifier {
         otherId: receiverId,
         showTime: showTime,
       );
-      debugPrint("crm--------->${crm}");
+      debugPrint("crm--------->$crm");
       String data = jsonEncode(crm);
 
       ///发送ws信息

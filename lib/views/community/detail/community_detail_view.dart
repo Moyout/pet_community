@@ -10,7 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CommunityDetailView extends StatefulWidget {
   static const String routeName = 'CommunityDetailView';
-  
+
   final int articleId;
   final int userId;
   final String title;
@@ -48,7 +48,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
 
   void getUserInfoModel() async {
     userInfoModel = await UserInfoRequest.getOtherUserInfo(widget.userId, false);
-    debugPrint("userInfoModel--------->${userInfoModel}");
+    debugPrint("userInfoModel--------->$userInfoModel");
     if (mounted) {
       setState(() {});
     }
@@ -128,7 +128,7 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                                   style: TextStyle(color: e == "删除" ? Colors.red : Colors.grey),
                                                 ),
                                                 style: TextButton.styleFrom(
-                                                  primary: Colors.black,
+                                                  foregroundColor: Colors.black,
                                                   backgroundColor: Colors.white,
                                                 ),
                                                 onPressed: e == "取消"

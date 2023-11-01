@@ -115,7 +115,7 @@ class _SetAvatarViewState extends State<SetAvatarView> {
               left: 0,
               child: TextButton(
                 style: TextButton.styleFrom(
-                    backgroundColor: Colors.grey, shape: const CircleBorder(), primary: Colors.white),
+                    backgroundColor: Colors.grey, shape: const CircleBorder(), foregroundColor: Colors.white),
                 child: const Icon(Icons.close),
                 onPressed: () => RouteUtil.pop(context),
               ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
@@ -8,9 +7,6 @@ import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:synchronized/synchronized.dart';
-import 'package:synchronized/extension.dart';
 
 class WebSocketUtils {
   WebSocketUtils._internal();
@@ -65,7 +61,7 @@ class WebSocketUtils {
         nvm.contactList[crm.userId]?.add(crm);
 
         if (await Permission.notification.request().isGranted) {
-           if (AppRoute.currRoute != ChatView.routeName) {
+          if (AppRoute.currRoute != ChatView.routeName) {
             NotificationConfig.send("你有一条来自社区的信息", "", notificationId: crm.userId, params: msg);
           }
         }
@@ -75,7 +71,7 @@ class WebSocketUtils {
         // });
         // debugPrint("lock--1------->${lock.inLock}");
         // lock.synchronized(() async {
-          await ChatRecordDB.insertData(userId!, crm, crm.userId );
+        await ChatRecordDB.insertData(userId!, crm, crm.userId);
         // });
 
         AppUtils.getContext().read<ChatRecordViewModel>().wsInsertRecord(crm, crm.userId);

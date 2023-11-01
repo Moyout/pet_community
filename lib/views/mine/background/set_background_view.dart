@@ -19,8 +19,6 @@ class SetBackgroundView extends StatefulWidget {
 }
 
 class _SetBackgroundViewState extends State<SetBackgroundView> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +77,7 @@ class _SetBackgroundViewState extends State<SetBackgroundView> {
                                     ),
                                     style: TextButton.styleFrom(
                                       backgroundColor: const Color(0xff252525),
-                                      primary: Colors.white,
+                                      foregroundColor: Colors.white,
                                       textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () => context.read<EditDataViewModel>().setBackground(context),
@@ -119,7 +117,7 @@ class _SetBackgroundViewState extends State<SetBackgroundView> {
               left: 0,
               child: TextButton(
                 style: TextButton.styleFrom(
-                    backgroundColor: Colors.grey, shape: const CircleBorder(), primary: Colors.white),
+                    backgroundColor: Colors.grey, shape: const CircleBorder(), foregroundColor: Colors.white),
                 child: const Icon(Icons.close),
                 onPressed: () => RouteUtil.pop(context),
               ),

@@ -29,7 +29,7 @@ class _CommentItemState extends State<CommentItem> {
 
   void getUserAvatar() async {
     userInfoModel = await UserInfoRequest.getOtherUserInfo(widget.commentatorId, false);
-    debugPrint("userInfoModel--------->${userInfoModel}");
+    debugPrint("userInfoModel--------->$userInfoModel");
     if (mounted) {
       setState(() {});
     }

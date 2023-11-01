@@ -71,7 +71,7 @@ class UserInfoViewModel extends ChangeNotifier {
 
   ///点击头像
   void avatarOnTap(BuildContext context, String? avatar) {
-    debugPrint("avatar---------> ${avatar}");
+    debugPrint("avatar---------> $avatar");
     RouteUtil.pushNamed(
       context,
       SetAvatarView.routeName,

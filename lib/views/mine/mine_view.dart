@@ -364,7 +364,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                     child: TextButton(
                                       style: TextButton.styleFrom(
                                         backgroundColor: Colors.grey.withOpacity(0.5),
-                                        primary: ThemeUtil.reversePrimaryColor(context),
+                                        foregroundColor: ThemeUtil.reversePrimaryColor(context),
                                       ),
                                       onPressed: () => context.read<NavViewModel>().editData(context),
                                       child: Text("编辑资料", style: TextStyle(fontSize: 12.sp)),

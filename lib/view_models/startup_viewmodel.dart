@@ -42,7 +42,7 @@ class StartUpViewModel extends ChangeNotifier {
   Future<void> getLaunchImageInfo() async {
     // random = Random().nextInt(jpgFileCount);
     random = 1 + Random().nextInt(10);
-    debugPrint("random--------->${random}");
+    debugPrint("random--------->$random");
     // bytes = BaseToUint8List().base64ToImage("");
   }
 }

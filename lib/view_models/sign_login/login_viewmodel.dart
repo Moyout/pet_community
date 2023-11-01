@@ -2,7 +2,6 @@ import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/sign_login/login_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
@@ -34,20 +33,12 @@ class LoginViewModel extends ChangeNotifier {
         SpUtil.setBool(PublicKeys.isLogin, true);
         String? token = SpUtil.getString(PublicKeys.token);
         int? userId = SpUtil.getInt(PublicKeys.userId);
-        context
-            .read<NavViewModel>()
-            .isLogin = true;
+        context.read<NavViewModel>().isLogin = true;
         await UserInfoRequest.getUserInfo(userId!, token!);
 
-        context
-            .read<MineViewModel>()
-            .userArticleModel = await UserArticleRequest.getUserArticle(userId: userId);
-        context
-            .read<MineViewModel>()
-            .userArticlePage = 1;
-        context
-            .read<MineViewModel>()
-            .isAll = false;
+        context.read<MineViewModel>().userArticleModel = await UserArticleRequest.getUserArticle(userId: userId);
+        context.read<MineViewModel>().userArticlePage = 1;
+        context.read<MineViewModel>().isAll = false;
 
         context.read<MineViewModel>().notifyListeners();
         context.read<NavViewModel>().notifyListeners();
@@ -68,26 +59,14 @@ class LoginViewModel extends ChangeNotifier {
   static void tokenExpire({String? msg}) {
     if (msg != null) ToastUtil.showBottomToast(msg);
     SpUtil.remove("UserInfoModel");
-    AppUtils
-        .getContext()
-        .read<NavViewModel>()
-        .isLogin = false;
+    AppUtils.getContext().read<NavViewModel>().isLogin = false;
     SpUtil.setBool(PublicKeys.isLogin, false);
-    AppUtils
-        .getContext()
-        .read<NavViewModel>()
-        .userInfoModel = UserInfoModel();
-    AppUtils
-        .getContext()
-        .read<MineViewModel>()
-        .userArticleModel = UserArticleModel();
+    AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
+    AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
     AppUtils.getContext().read<NavViewModel>().notifyListeners();
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     Future.delayed(const Duration(milliseconds: 300), () {
-      AppUtils
-          .getContext()
-          .read<SignLoginViewModel>()
-          .initialPage = 1;
+      AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
       RouteUtil.pushNamed(AppUtils.getContext(), SignLoginView.routeName);
     });
   }

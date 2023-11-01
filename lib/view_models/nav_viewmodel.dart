@@ -1,19 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:pet_community/common/app_route.dart';
-import 'package:pet_community/config/notification_config.dart';
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/util/websocket/websocket_util.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
-import 'package:pet_community/view_models/message/chat_record_viewmodel.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
-import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
-import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
@@ -139,7 +131,7 @@ class NavViewModel extends ChangeNotifier {
       // if (AppRoute.currRoute != StartUpView.routeName) connectWebSocket();
       if (AppRoute.currRoute != StartUpView.routeName) WebSocketUtils().initSocket();
       notifyListeners();
-      debugPrint("netMode--------->${netMode}");
+      debugPrint("netMode--------->$netMode");
     });
   }
 

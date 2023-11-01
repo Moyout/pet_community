@@ -35,7 +35,7 @@ class VideoDetailViewModel extends ChangeNotifier {
   }
 
   void getFocusNode(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode); // 获取焦点
     });
   }

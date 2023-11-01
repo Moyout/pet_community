@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pet_community/util/app_util.dart';
 import 'package:pet_community/util/screen_util.dart';
-import 'package:pet_community/util/theme_util.dart';
 
 class LiveButtonPainter extends CustomPainter {
   final Color primaryColor;
@@ -24,7 +22,6 @@ class LiveButtonPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     debugPrint("size-------------------->${size}");
-
     Paint paint = Paint()
       ..color = primaryColor
       ..isAntiAlias = true

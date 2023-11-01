@@ -141,7 +141,7 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                                   const CupertinoActivityIndicator(),
                                               height: height,
                                               width: width,
-                                              fit: BoxFit.contain,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         );

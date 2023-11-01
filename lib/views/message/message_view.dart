@@ -1,11 +1,8 @@
 import 'package:intl/intl.dart';
-import 'package:pet_community/enums/chat_record_enum.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
-import 'package:pet_community/util/database/chat_record_db.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 
 class MessageView extends StatefulWidget {

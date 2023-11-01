@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/sign_viewmodel.dart';
-import 'package:pet_community/view_models/startup_viewmodel.dart';
 
 class SlideVerificationViewModel extends ChangeNotifier {
   double initial = 0;
@@ -19,7 +18,7 @@ class SlideVerificationViewModel extends ChangeNotifier {
   int randomIndex = 0;
 
   void initViewModel() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       refresh();
     });
   }

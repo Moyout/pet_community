@@ -22,7 +22,7 @@ class ThemeUtil {
         titleTextStyle: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
       textTheme: TextTheme(
-        bodyText2: TextStyle(fontSize: 14.sp, color: Colors.black),
+        bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
       dividerColor: Colors.blueGrey,
@@ -35,7 +35,7 @@ class ThemeUtil {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-           // overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
+          // overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
           // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
           foregroundColor: MaterialStateProperty.all(Colors.white),
         ),
@@ -65,9 +65,9 @@ class ThemeUtil {
       iconTheme: const IconThemeData(color: Color(0xffb9b9b9)),
       dividerColor: Colors.grey,
       brightness: Brightness.dark,
-      dialogTheme:   DialogTheme(
-        // backgroundColor: Colors.red
-      ),
+      dialogTheme: const DialogTheme(
+          // backgroundColor: Colors.red
+          ),
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
@@ -84,7 +84,7 @@ class ThemeUtil {
         style: ButtonStyle(
           // overlayColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),
           backgroundColor: MaterialStateProperty.all(Colors.black87),
-          foregroundColor: MaterialStateProperty.all(Color(0xffeeeeee)),
+          foregroundColor: MaterialStateProperty.all(const Color(0xffeeeeee)),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -19,7 +18,6 @@ class ChatRecordViewModel extends ChangeNotifier {
     list.clear();
     getUserChatRecord(context, userId);
     // notifyListeners();
-
   }
 
   ///加载聊天记录
@@ -29,7 +27,7 @@ class ChatRecordViewModel extends ChangeNotifier {
       otherId,
     );
     // list = list.reversed.toList();
-    debugPrint("list--------->${list}");
+    debugPrint("list--------->$list");
   }
 
   ///加载更多聊天记录
@@ -45,7 +43,7 @@ class ChatRecordViewModel extends ChangeNotifier {
       enablePullUp = false;
     }
     notifyListeners();
-    debugPrint("list-w-------->${list}");
+    debugPrint("list-w-------->$list");
   }
 
   ///新信息添加到底部

@@ -189,7 +189,7 @@ class BaseRequest {
       )
           .catchError(
         (e) {
-          debugPrint("e--------->${e}");
+          debugPrint("e--------->$e");
         },
       );
     }

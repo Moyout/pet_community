@@ -1,6 +1,5 @@
 import 'package:pet_community/models/article/user_article_model.dart';
 import 'package:pet_community/util/tools.dart';
-import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/views/mine/avatar/set_avatar_view.dart';

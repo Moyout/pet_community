@@ -5,7 +5,7 @@ class InitAppViewModel extends ChangeNotifier {
 
   ///初始化设置
   Future<void> appInitSetting() async {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       isDark = SpUtil.getBool(PublicKeys.darkTheme) ?? false;
       notifyListeners();
     });

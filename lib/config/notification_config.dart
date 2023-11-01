@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:pet_community/common/app_route.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
@@ -31,7 +30,7 @@ class NotificationConfig {
     // debugPrint("details--input------->${details.input}");
     if (details.payload != null) {
       dynamic data = jsonDecode(details.payload!);
-      debugPrint("data- 231--- ----->${data}");
+      debugPrint("data- 231--- ----->$data");
       ChatRecordModel? crm = ChatRecordModel.fromJson(data);
       debugPrint("crm- userId--- ----->${crm.userId}");
       if (crm.userId != 0) {
@@ -48,7 +47,7 @@ class NotificationConfig {
     debugPrint("response--input------->${response.input}");
     if (response.payload != null) {
       dynamic data = jsonDecode(response.payload!);
-      debugPrint("data- 231--- ----->${data}");
+      debugPrint("data- 231--- ----->$data");
       debugPrint("data- userId--- ----->${data.userId}");
     }
     debugPrint("details--notificationResponseType------->${response.notificationResponseType}");
