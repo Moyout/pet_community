@@ -24,7 +24,7 @@ class SlideVerificationViewModel extends ChangeNotifier {
   }
 
   void refresh() {
-    randomIndex = Random().nextInt(10);
+    randomIndex = Random().nextInt(10) + 1;
     opacity = 0.8;
     sliderDistance = 0;
     isPass = false;

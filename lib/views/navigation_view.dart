@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/init_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
@@ -19,6 +20,8 @@ class NavigationView extends StatefulWidget {
 }
 
 class _NavigationViewState extends State<NavigationView> with SingleTickerProviderStateMixin {
+  bool _visible = true;
+
   @override
   void initState() {
     context.read<NavViewModel>().initViewModel(this);
@@ -34,90 +37,107 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
       endDrawer: Drawer(
         child: buildDrawer(context),
       ),
-      body: Stack(
-        children: [
-          PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: context.watch<NavViewModel>().pageController,
-            // onPageChanged: (i) => context.read<NavViewModel>().pageTo(i),///有冲突
-            children: const [
-              HomeView(),
-              CommunityView(),
-              LiveView(),
-              MessageView(),
-              MineView(),
-            ],
-          ),
-          Positioned(
-            bottom: MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom / 2 + 5.w,
-            left: 30.w,
-            // height: 70.w,
-            // height: 50.w,
-            right: 30.w,
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.w),
-                color: ThemeUtil.primaryColor(context),
-                // color: Colors.red,
-              ),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(
-                  context.watch<NavViewModel>().bottomList.length,
-                  (int index) {
-                    return Expanded(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onPanDown: (v) => context.read<NavViewModel>().onClickBottom(index),
-                        onDoubleTap: () => context.read<NavViewModel>().onDoubleTap(index),
-                        child: Container(
-                          // height: 50.w,
-                          child: CustomPaint(
-                            painter: index == 2
-                                ? LiveButtonPainter(
-                                    paddingHeight: 10.w,
-                                    leftSemicircle: index == 0,
-                                    isActive: context.watch<NavViewModel>().bottomList[index].isActive,
-                                    rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
-                                    primaryColor: ThemeUtil.primaryColor(context),
-                                  )
-                                : null,
-                            // size: Size(150, 150),
-                            child: Container(
-                              // padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
-                              child: Transform.rotate(
-                                alignment: Alignment.bottomCenter,
-                                angle: context.watch<NavViewModel>().bottomList[index].isActive
-                                    ? context.watch<NavViewModel>().animation.value
-                                    : 0,
-                                child: AnimatedScale(
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.bounceOut,
-                                  scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
-                                  child: Image.asset(
-                                    context.watch<NavViewModel>().bottomList[index].icon,
-                                    width: 30.w,
-                                    height: 30.w,
-                                    fit: BoxFit.contain,
-                                    color: context.watch<NavViewModel>().bottomList[index].isActive
-                                        ? Colors.blueAccent
-                                        : ThemeUtil.reversePrimaryColor(context),
+      body: NotificationListener<UserScrollNotification>(
+        onNotification: (scrollNotification) {
+          debugPrint(" ----------- --------->${scrollNotification.direction}");
+          final ScrollDirection direction = scrollNotification.direction;
+          setState(() {
+            if (direction == ScrollDirection.reverse) {
+              _visible = false;
+            } else if (direction == ScrollDirection.forward) {
+              _visible = true;
+            }
+          });
+
+          return true;
+        },
+        child: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: context.watch<NavViewModel>().pageController,
+              // onPageChanged: (i) => context.read<NavViewModel>().pageTo(i),///有冲突
+              children: const [
+                HomeView(),
+                CommunityView(),
+                LiveView(),
+                MessageView(),
+                MineView(),
+              ],
+            ),
+            Positioned(
+              bottom:
+                  MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom / 2 + 5.w,
+              left: 30.w,
+              height: !_visible ? 0 : null,
+              // height: 70.w,
+              // height: 50.w,
+              right: 30.w,
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.w),
+                  color: ThemeUtil.primaryColor(context),
+                  // color: Colors.red,
+                ),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(
+                    context.watch<NavViewModel>().bottomList.length,
+                    (int index) {
+                      return Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onPanDown: (v) => context.read<NavViewModel>().onClickBottom(index),
+                          onDoubleTap: () => context.read<NavViewModel>().onDoubleTap(index),
+                          child: Container(
+                            // height: 50.w,
+                            child: CustomPaint(
+                              painter: index == 2
+                                  ? LiveButtonPainter(
+                                      paddingHeight: !_visible ? 0 : 10.w,
+                                      leftSemicircle: index == 0,
+                                      isActive: context.watch<NavViewModel>().bottomList[index].isActive,
+                                      rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
+                                      primaryColor: ThemeUtil.primaryColor(context),
+                                    )
+                                  : null,
+                              // size: Size(150, 150),
+                              child: Container(
+                                // padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
+                                child: Transform.rotate(
+                                  alignment: Alignment.bottomCenter,
+                                  angle: context.watch<NavViewModel>().bottomList[index].isActive
+                                      ? context.watch<NavViewModel>().animation.value
+                                      : 0,
+                                  child: AnimatedScale(
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.bounceOut,
+                                    scale: context.watch<NavViewModel>().bottomList[index].isActive ? 1.1 : 1,
+                                    child: Image.asset(
+                                      context.watch<NavViewModel>().bottomList[index].icon,
+                                      width: 30.w,
+                                      height: 30.w,
+                                      fit: BoxFit.contain,
+                                      color: context.watch<NavViewModel>().bottomList[index].isActive
+                                          ? Colors.blueAccent
+                                          : ThemeUtil.reversePrimaryColor(context),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

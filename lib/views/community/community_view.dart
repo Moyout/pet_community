@@ -175,7 +175,7 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                       ),
               ),
             ),
-            Container(color: Colors.transparent, height: 50.w)
+            // Container(color: Colors.transparent, height: 50.w)
           ],
         ),
       ),

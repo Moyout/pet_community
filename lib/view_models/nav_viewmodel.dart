@@ -107,9 +107,7 @@ class NavViewModel extends ChangeNotifier {
     if (bottomList[index].isActive) {
       animationController.reset();
       animationController.forward();
-      if (await Vibration.hasVibrator() == true) {
-        Vibration.vibrate(duration: 50);
-      }
+      HapticFeedback.heavyImpact();
     } else {
       onClickBottom(index);
       pageTo(index);

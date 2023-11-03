@@ -21,7 +21,7 @@ class LiveButtonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    debugPrint("size-------------------->${size}");
+    // debugPrint("size-------------------->${size}");
     Paint paint = Paint()
       ..color = primaryColor
       ..isAntiAlias = true
