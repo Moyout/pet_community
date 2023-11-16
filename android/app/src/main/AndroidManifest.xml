@@ -18,7 +18,7 @@
     <!--    android:name="${applicationName}"-->
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="宠物社区"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
