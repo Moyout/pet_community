@@ -60,6 +60,15 @@ class _MessageViewState extends State<MessageView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                if (context.watch<NavViewModel>().contactList.isEmpty)
+                  Center(
+                    child: Column(
+                      children: [
+                        Image.asset(Assets.backgroundsNoData, width: 250.w, height: 250.w, fit: BoxFit.contain),
+                        Text("No Data")
+                      ],
+                    ),
+                  ),
                 ...context.watch<NavViewModel>().contactList.entries.map((e) {
                   DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime);
                   String dateTimeStr = DateFormat.Hm().format(dateTime);

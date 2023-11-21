@@ -19,14 +19,29 @@ class NavigationView extends StatefulWidget {
   State<NavigationView> createState() => _NavigationViewState();
 }
 
-class _NavigationViewState extends State<NavigationView> with SingleTickerProviderStateMixin {
-  bool _visible = true;
+class _NavigationViewState extends State<NavigationView> with TickerProviderStateMixin {
+  late AnimationController ac;
+  late Animation animation;
 
   @override
   void initState() {
     context.read<NavViewModel>().initViewModel(this);
-
+    initAnimation();
     super.initState();
+  }
+
+  void initAnimation() {
+    ac = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+      reverseDuration: const Duration(milliseconds: 300),
+    );
+    animation = Tween(
+      begin: MediaQuery.of(AppUtils.getContext()).padding.bottom == 0
+          ? 10.w
+          : MediaQuery.of(AppUtils.getContext()).padding.bottom / 2 + 5.w,
+      end: -100.w,
+    ).animate(ac);
   }
 
   @override
@@ -34,21 +49,17 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
     return Scaffold(
       key: context.watch<NavViewModel>().scaffoldKey,
       resizeToAvoidBottomInset: false,
-      endDrawer: Drawer(
-        child: buildDrawer(context),
-      ),
+      endDrawer: Drawer(child: buildDrawer(context)),
       body: NotificationListener<UserScrollNotification>(
         onNotification: (scrollNotification) {
-          debugPrint(" ----------- --------->${scrollNotification.direction}");
           final ScrollDirection direction = scrollNotification.direction;
           setState(() {
             if (direction == ScrollDirection.reverse) {
-              _visible = false;
+              ac.forward();
             } else if (direction == ScrollDirection.forward) {
-              _visible = true;
+              ac.reverse();
             }
           });
-
           return true;
         },
         child: Stack(
@@ -66,10 +77,9 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
               ],
             ),
             Positioned(
-              bottom:
-                  MediaQuery.of(context).padding.bottom == 0 ? 10.w : MediaQuery.of(context).padding.bottom / 2 + 5.w,
+              bottom: animation.value,
               left: 30.w,
-              height: !_visible ? 0 : null,
+              // height: !_visible ? 0 : null,
               // height: 70.w,
               // height: 50.w,
               right: 30.w,
@@ -96,7 +106,7 @@ class _NavigationViewState extends State<NavigationView> with SingleTickerProvid
                             child: CustomPaint(
                               painter: index == 2
                                   ? LiveButtonPainter(
-                                      paddingHeight: !_visible ? 0 : 10.w,
+                                      paddingHeight: 10.w,
                                       leftSemicircle: index == 0,
                                       isActive: context.watch<NavViewModel>().bottomList[index].isActive,
                                       rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,

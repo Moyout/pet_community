@@ -22,10 +22,10 @@ class NavViewModel extends ChangeNotifier {
 
   Map<int, List<ChatRecordModel>> contactList = {}; //聊天记录列表
 
-  ///页面控制器
+  ///动画控制器
   late AnimationController animationController;
 
-  ///控制器
+  ///动画
   late Animation animation;
   List<NavBottomModel> bottomList = [
     ///导航栏
