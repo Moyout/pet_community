@@ -33,8 +33,8 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
   void initAnimation() {
     ac = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
-      reverseDuration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500),
+      reverseDuration: const Duration(milliseconds: 200),
     );
     animation = Tween(
       begin: MediaQuery.of(AppUtils.getContext()).padding.bottom == 0
@@ -77,7 +77,7 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
               ],
             ),
             Positioned(
-              bottom: animation.value,
+              bottom: animation.value + 5.w,
               left: 30.w,
               // height: !_visible ? 0 : null,
               // height: 70.w,

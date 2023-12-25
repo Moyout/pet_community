@@ -452,7 +452,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                   child: ScrollConfiguration(
                     behavior: OverScrollBehavior(),
                     child: Container(
-                      color: ThemeUtil.primaryColor(context),
+                      color: ThemeUtil.primaryColor(context).withOpacity(0.5),
                       height: tabViewHeight *
                           (((context.watch<MineViewModel>().userArticleModel.data?.length ?? 9) / 3).ceil() < 3
                               ? 3
@@ -473,7 +473,9 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(child: Container(height: 55.w, color: ThemeUtil.primaryColor(context))),
+                SliverToBoxAdapter(
+                  child: Container(height: 55.w, color: ThemeUtil.primaryColor(context).withOpacity(0.5)),
+                ),
               ],
             ),
             Positioned(
