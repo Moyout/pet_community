@@ -39,7 +39,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 const Spacer(),
                 SizedBox(
-                  height: 50.w,
+                  // height: 50.w,
                   child: TextFileWidget(
                     controller: context.watch<LoginViewModel>().accountC,
                     hintText: "请输入邮箱",

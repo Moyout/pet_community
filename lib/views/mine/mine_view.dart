@@ -100,6 +100,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                               ),
+                              border: Border.all(width: 0, color: Colors.white),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -262,6 +263,9 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                           ? const SizedBox()
                           : Container(
                               padding: horizontalPadding,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0, color: Colors.white),
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [

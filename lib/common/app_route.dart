@@ -13,6 +13,7 @@ import 'package:pet_community/views/sign_login/login_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/views/sign_login/sign_view.dart';
 import 'package:pet_community/views/startup_view.dart';
+import 'package:pet_community/views/test_view.dart';
 
 class AppRoute extends NavigatorObserver {
   static String? currRoute;
@@ -25,6 +26,7 @@ class AppRoute extends NavigatorObserver {
     LoginView.routeName: (context) => const LoginView(),
     ReleaseWorkView.routeName: (context) => const ReleaseWorkView(),
     EditDataView.routeName: (context) => const EditDataView(),
+    TestView.routeName: (context) => const TestView(),
     EditView.routeName: (context) => EditView(title: (ModalRoute.of(context)?.settings.arguments as Map)["title"]),
     SetBackgroundView.routeName: (context) => SetBackgroundView(
           background: '${(ModalRoute.of(context)?.settings.arguments as Map)["background"]}',
