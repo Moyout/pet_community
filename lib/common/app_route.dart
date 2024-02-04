@@ -26,7 +26,7 @@ class AppRoute extends NavigatorObserver {
     LoginView.routeName: (context) => const LoginView(),
     ReleaseWorkView.routeName: (context) => const ReleaseWorkView(),
     EditDataView.routeName: (context) => const EditDataView(),
-    TestView.routeName: (context) => const TestView(),
+    TestView.routeName: (context) => TestView(),
     EditView.routeName: (context) => EditView(title: (ModalRoute.of(context)?.settings.arguments as Map)["title"]),
     SetBackgroundView.routeName: (context) => SetBackgroundView(
           background: '${(ModalRoute.of(context)?.settings.arguments as Map)["background"]}',

@@ -1,5 +1,11 @@
 import 'dart:math';
 
+import 'package:audio_session/audio_session.dart';
+import 'package:haishin_kit/audio_source.dart';
+import 'package:haishin_kit/net_stream_drawable_texture.dart';
+import 'package:haishin_kit/rtmp_connection.dart';
+import 'package:haishin_kit/rtmp_stream.dart';
+import 'package:haishin_kit/video_source.dart';
 import 'package:pet_community/util/tools.dart';
 
 class TestView extends StatefulWidget {
@@ -15,12 +21,17 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
   Matrix4 matrix = Matrix4.identity();
   late AnimationController ac, ac2, ac3;
   late Animation animation, animation2, animation3;
+  RtmpConnection? _connection;
+  RtmpStream? _stream;
+  bool _recording = false;
+  CameraPosition currentPosition = CameraPosition.back;
 
   @override
   void initState() {
     super.initState();
     initAc(this);
     init();
+    initPlatformState();
   }
 
   initAc(TickerProvider tp) {
@@ -157,7 +168,7 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
                     color: Colors.blueGrey,
                     clipBehavior: Clip.antiAlias,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => startRtmp(),
                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
                       child: Container(
                         alignment: Alignment.center,
@@ -170,16 +181,68 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            _stream == null ? const Text("") : Expanded(child: NetStreamDrawableTexture(_stream)),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: _recording ? const Icon(Icons.fiber_smart_record) : const Icon(Icons.not_started),
+          onPressed: () {
+            if (_recording) {
+              _connection?.close();
+              setState(() {
+                _recording = false;
+              });
+            } else {
+              _connection?.connect("rtmp://192.168.0.113:1935/live");
+            }
+          },
         ),
       ),
     );
   }
 
+  startRtmp() {}
+
   @override
   void dispose() {
     ac.dispose();
+    ac2.dispose();
+    ac3.dispose();
 
     super.dispose();
+  }
+
+  Future<void> initPlatformState() async {
+    await Permission.camera.request();
+    await Permission.microphone.request();
+
+    // Set up AVAudioSession for iOS.
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth,
+    ));
+
+    RtmpConnection connection = await RtmpConnection.create();
+    connection.eventChannel.receiveBroadcastStream().listen((event) {
+      switch (event["data"]["code"]) {
+        case 'NetConnection.Connect.Success':
+          _stream?.publish("test");
+          setState(() {
+            _recording = true;
+          });
+          break;
+      }
+    });
+    RtmpStream stream = await RtmpStream.create(connection);
+    stream.attachAudio(AudioSource());
+    stream.attachVideo(VideoSource(position: currentPosition));
+
+    if (!mounted) return;
+
+    setState(() {
+      _connection = connection;
+      _stream = stream;
+    });
   }
 }

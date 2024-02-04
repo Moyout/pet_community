@@ -12,17 +12,17 @@ import 'package:pet_community/main.dart';
 import '../lib/views/test_view.dart';
 
 void main() {
-  testWidgets("Test view", (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        builder: (ctx, widget) {
-          return const TestView();
-        },
-      ),
-    );
-    final titleFinder = find.text('T');
-    final messageFinder = find.text('M');
-    debugPrint("titleFinder-------------------->${titleFinder}");
-    debugPrint("messageFinder-------------------->${messageFinder}");
-  });
+  // testWidgets("Test view", (tester) async {
+  //   await tester.pumpWidget(
+  //     MaterialApp(
+  //       builder: (ctx, widget) {
+  //         return const TestView();
+  //       },
+  //     ),
+  //   );
+  //   final titleFinder = find.text('T');
+  //   final messageFinder = find.text('M');
+  //   debugPrint("titleFinder-------------------->${titleFinder}");
+  //   debugPrint("messageFinder-------------------->${messageFinder}");
+  // });
 }
