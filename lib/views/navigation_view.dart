@@ -54,10 +54,12 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
         onNotification: (scrollNotification) {
           final ScrollDirection direction = scrollNotification.direction;
           setState(() {
-            if (direction == ScrollDirection.reverse) {
-              ac.forward();
-            } else if (direction == ScrollDirection.forward) {
-              ac.reverse();
+            if (scrollNotification.depth == 1) {
+              if (direction == ScrollDirection.reverse) {
+                ac.forward();
+              } else if (direction == ScrollDirection.forward) {
+                ac.reverse();
+              }
             }
           });
           return true;

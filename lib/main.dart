@@ -14,6 +14,8 @@ void main() {
   AppConfig.startJPush(); //初始化jpush
   AppConfig.errorWidget(); //错误widget
   AppConfig.setScreenOrientations(); //竖屏
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]); //隐藏导航栏
+
   // Future.delayed(const Duration(milliseconds: 200), () {
   //   runApp(
   //     MultiProvider(providers: providers, child: const MyApp()),

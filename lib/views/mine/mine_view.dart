@@ -100,7 +100,10 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                               ),
-                              border: Border.all(width: 0, color: Colors.white),
+                              border: Border.all(
+                                width: 0,
+                                color: ThemeUtil.primaryColor(context),
+                              ),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -264,7 +267,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                           : Container(
                               padding: horizontalPadding,
                               decoration: BoxDecoration(
-                                border: Border.all(width: 0, color: Colors.white),
+                                border: Border.all(width: 0, color: ThemeUtil.primaryColor(context)),
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -383,8 +386,11 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                 SliverToBoxAdapter(
                   child: Container(
                     padding: horizontalPadding.add(EdgeInsets.symmetric(vertical: 5.w)),
-                    color: ThemeUtil.primaryColor(context),
                     width: 250.w,
+                    decoration: BoxDecoration(
+                      color: ThemeUtil.primaryColor(context),
+                      // border: Border.all(color: ThemeUtil.primaryColor(context)),
+                    ),
                     child: LayoutBuilder(
                       builder: (context, box) {
                         TextSpan textSpan = TextSpan(

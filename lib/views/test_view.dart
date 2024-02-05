@@ -18,10 +18,7 @@ class TestView extends StatefulWidget {
 }
 
 class _TestViewState extends State<TestView> with TickerProviderStateMixin {
-  Matrix4 matrix = Matrix4.identity();
-  late AnimationController ac, ac2, ac3;
-  late Animation animation, animation2, animation3;
-  RtmpConnection? _connection;
+  late RtmpConnection? _connection;
   RtmpStream? _stream;
   bool _recording = false;
   CameraPosition currentPosition = CameraPosition.back;
@@ -29,53 +26,13 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    initAc(this);
     init();
-    initPlatformState();
   }
 
-  initAc(TickerProvider tp) {
-    ac = AnimationController(vsync: tp, duration: const Duration(milliseconds: 800));
-    ac2 = AnimationController(vsync: tp, duration: const Duration(milliseconds: 1000));
-    ac3 = AnimationController(vsync: tp, duration: const Duration(milliseconds: 1200));
-    CurvedAnimation ca = CurvedAnimation(parent: ac, curve: Curves.bounceInOut);
-    CurvedAnimation ca2 = CurvedAnimation(parent: ac2, curve: Curves.bounceInOut);
-    CurvedAnimation ca3 = CurvedAnimation(parent: ac3, curve: Curves.bounceInOut);
-    animation = Tween(begin: 1000.0, end: 0.0).animate(ca);
-    animation2 = Tween(begin: 1000.0, end: 0.0).animate(ca2);
-    animation3 = Tween(begin: 1800.0, end: 0.0).animate(ca3);
-
-    ac.forward();
-    ac2.forward();
-    ac3.forward();
-    ac.addListener(() {
-      setState(() {});
-    });
-    ac2.addListener(() {
-      setState(() {});
-    });
-    ac3.addListener(() {
-      setState(() {});
-    });
-  }
-
-  init() {
-    matrix.setEntry(3, 2, 0.001); // 设置矩阵的元素，实现透视效果
-    // matrix.rotateY(pi / 4); // 绕 y 轴旋转
-    // matrix.rotateX(90); // 绕 x轴旋转
-    matrix.rotateZ(pi / 180 * 3); // 绕 Z 轴旋转
-    matrix.rotateY(pi / 180 * -10); // 绕 y 轴旋转
-    matrix.rotateX(pi / 180 * 5); // 绕 y 轴旋转
-
-    ///2
-    // matrix2.setEntry(3, 2, 0.001); // 设置矩阵的元素，实现透视效果
-    // // matrix.rotateY(pi / 4); // 绕 y 轴旋转
-    // // matrix.rotateX(90); // 绕 x轴旋转
-    // matrix2.rotateZ(pi / 180 * -5); // 绕 Z 轴旋转
-    // // matrix2.rotateY(pi / 180 * -10); // 绕 y 轴旋转
-    // // matrix2.rotateX(pi / 180 * -20); // 绕 y 轴旋转
-
-    setState(() {});
+  init() async {
+    bool res = await initPermission();
+    debugPrint("res-------------------->${res}");
+    if (res) initPlatformState();
   }
 
   @override
@@ -92,96 +49,7 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20.w),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Transform(
-                  alignment: FractionalOffset.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateZ(pi / 180 * 3)
-                    ..rotateY(pi / 180 * -10)
-                    ..rotateX(pi / 180 * 5)
-                    ..translate(0.0, 0.0, -animation.value),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(12.w),
-                    color: Colors.blueGrey,
-                    clipBehavior: Clip.antiAlias,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 120.w,
-                        width: MediaQuery.of(context).size.width,
-                        child: Text("火火火🔥"),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Transform(
-                  alignment: FractionalOffset.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, -0.001)
-                    ..rotateZ(pi / 180 * -5)
-                    ..rotateX(pi / 180 * -5)
-                    ..translate(0.0, 0.0, animation2.value),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(12.w),
-                    color: Colors.brown,
-                    clipBehavior: Clip.antiAlias,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 120.w,
-                        width: MediaQuery.of(context).size.width,
-                        child: Text("火火火🔥"),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Transform(
-                  alignment: FractionalOffset.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateZ(pi / 180 * 3)
-                    ..rotateY(pi / 180 * -10)
-                    ..rotateX(pi / 180 * 5)
-                    ..translate(0.0, 0.0, -animation3.value),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(12.w),
-                    color: Colors.blueGrey,
-                    clipBehavior: Clip.antiAlias,
-                    child: TextButton(
-                      onPressed: () => startRtmp(),
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 120.w,
-                        width: MediaQuery.of(context).size.width,
-                        child: Text("火火火🔥"),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            _stream == null ? const Text("") : Expanded(child: NetStreamDrawableTexture(_stream)),
+            if (_stream != null) Expanded(child: NetStreamDrawableTexture(_stream)),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -201,30 +69,20 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
     );
   }
 
-  startRtmp() {}
-
-  @override
-  void dispose() {
-    ac.dispose();
-    ac2.dispose();
-    ac3.dispose();
-
-    super.dispose();
+  Future<bool> initPermission() async {
+    return await Permission.camera.request().isGranted && await Permission.microphone.request().isGranted;
   }
 
   Future<void> initPlatformState() async {
-    await Permission.camera.request();
-    await Permission.microphone.request();
-
     // Set up AVAudioSession for iOS.
-    final session = await AudioSession.instance;
+    AudioSession session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
       avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth,
     ));
 
-    RtmpConnection connection = await RtmpConnection.create();
-    connection.eventChannel.receiveBroadcastStream().listen((event) {
+    _connection = await RtmpConnection.create();
+    _connection?.eventChannel.receiveBroadcastStream().listen((event) {
       switch (event["data"]["code"]) {
         case 'NetConnection.Connect.Success':
           _stream?.publish("test");
@@ -234,15 +92,19 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
           break;
       }
     });
-    RtmpStream stream = await RtmpStream.create(connection);
-    stream.attachAudio(AudioSource());
-    stream.attachVideo(VideoSource(position: currentPosition));
+    if (_connection != null) {
+      _stream = await RtmpStream.create(_connection!);
+      _stream?.attachAudio(AudioSource());
+      _stream?.attachVideo(VideoSource(position: currentPosition));
+      setState(() {});
+    }
 
     if (!mounted) return;
+  }
 
-    setState(() {
-      _connection = connection;
-      _stream = stream;
-    });
+  @override
+  void dispose() {
+    _connection?.close();
+    super.dispose();
   }
 }
