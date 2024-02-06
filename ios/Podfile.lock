@@ -14,17 +14,14 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - haishin_kit (0.12.0):
-    - Flutter
-    - HaishinKit (= 1.7.3)
-  - HaishinKit (1.7.3):
-    - Logboard (~> 2.4.1)
+  - HaishinKit (1.0.13):
+    - Logboard (~> 2.1.3)
   - image_cropper (0.0.4):
     - Flutter
     - TOCropViewController (~> 2.6.1)
   - image_picker_ios (0.0.1):
     - Flutter
-  - Logboard (2.4.1)
+  - Logboard (2.1.3)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -42,6 +39,9 @@ PODS:
   - TOCropViewController (2.6.1)
   - video_player_avfoundation (0.0.1):
     - Flutter
+  - video_stream (0.0.1):
+    - Flutter
+    - HaishinKit (~> 1.0.10)
 
 DEPENDENCIES:
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
@@ -49,7 +49,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
-  - haishin_kit (from `.symlinks/plugins/haishin_kit/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -58,6 +57,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
+  - video_stream (from `.symlinks/plugins/video_stream/ios`)
 
 SPEC REPOS:
   trunk:
@@ -79,8 +79,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
-  haishin_kit:
-    :path: ".symlinks/plugins/haishin_kit/ios"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
@@ -97,6 +95,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
+  video_stream:
+    :path: ".symlinks/plugins/video_stream/ios"
 
 SPEC CHECKSUMS:
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
@@ -106,11 +106,10 @@ SPEC CHECKSUMS:
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  haishin_kit: 78778a018aeb3994a8e2e4dcda47b7dee2bbeb41
-  HaishinKit: 326e27c4d06427ba53bffc68e516a92033293051
+  HaishinKit: d1786896ace24065d466bde02356c5352ac001b0
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
-  Logboard: b78984e3f9fa5075d5bfd9308d51b453992aad0e
+  Logboard: e74ec2d9941abd22f4db3a3ddcd0735011df92c7
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
@@ -119,6 +118,7 @@ SPEC CHECKSUMS:
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
+  video_stream: 672f6bd5ed287e658c6014f7c3b8368b845cceb7
 
 PODFILE CHECKSUM: 2d69a4bc1f3b65c88d51c2c3dfbf7c7160913774
 

@@ -397,14 +397,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  haishin_kit:
-    dependency: "direct main"
-    description:
-      name: haishin_kit
-      sha256: "1f9f1354ea7a39b3adbd8f9d623687518dfdf6d758124c9497e960d725837fba"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.12.0"
   html:
     dependency: transitive
     description:
@@ -757,6 +749,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  rtmp_broadcaster:
+    dependency: "direct main"
+    description:
+      name: rtmp_broadcaster
+      sha256: a7e51d84098862505ef02ae35f048d058985e2d5c4cf1ab136021393a9295dc6
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
   rxdart:
     dependency: transitive
     description:

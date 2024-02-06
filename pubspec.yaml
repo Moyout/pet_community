@@ -82,6 +82,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+
 #  timeago: ^3.2.2
 
   #jpush_flutter: ^2.3.5
@@ -90,9 +91,10 @@ dependencies:
   sqflite: ^2.3.0
 
   flutter_launcher_icons: ^0.13.1
-#  rtmp_broadcaster: ^2.2.4
+  rtmp_broadcaster: ^2.2.4
 #  wakelock: ^0.6.2
-  haishin_kit: ^0.12.0
+#  haishin_kit: ^0.12.0
+#  video_stream: ^0.0.1
   audio_session: ^0.1.18
 
 

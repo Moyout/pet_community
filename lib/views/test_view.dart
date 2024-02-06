@@ -1,12 +1,11 @@
 import 'dart:math';
 
 import 'package:audio_session/audio_session.dart';
-import 'package:haishin_kit/audio_source.dart';
-import 'package:haishin_kit/net_stream_drawable_texture.dart';
-import 'package:haishin_kit/rtmp_connection.dart';
-import 'package:haishin_kit/rtmp_stream.dart';
-import 'package:haishin_kit/video_source.dart';
+
 import 'package:pet_community/util/tools.dart';
+import 'package:rtmp_broadcaster/camera.dart';
+// import 'package:video_stream/camera.dart';
+import 'package:video_player/video_player.dart';
 
 class TestView extends StatefulWidget {
   static const String routeName = "TestView";
@@ -18,10 +17,10 @@ class TestView extends StatefulWidget {
 }
 
 class _TestViewState extends State<TestView> with TickerProviderStateMixin {
-  late RtmpConnection? _connection;
-  RtmpStream? _stream;
+  List<CameraDescription> cameras = [];
+  CameraController? controller;
+  String streamURL = "rtmp://192.168.0.113:1935/live/test";
   bool _recording = false;
-  CameraPosition currentPosition = CameraPosition.back;
 
   @override
   void initState() {
@@ -31,8 +30,18 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
 
   init() async {
     bool res = await initPermission();
-    debugPrint("res-------------------->${res}");
-    if (res) initPlatformState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    cameras = await availableCameras();
+    controller = CameraController(cameras[0], ResolutionPreset.high);
+    controller?.initialize();
+    controller?.addListener(() {});
+  }
+
+  Future<bool> initPermission() async {
+    return await Permission.camera.request().isGranted && await Permission.microphone.request().isGranted;
   }
 
   @override
@@ -49,62 +58,31 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20.w),
-            if (_stream != null) Expanded(child: NetStreamDrawableTexture(_stream)),
+            if (_recording) Expanded(child: CameraPreview(controller!)),
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          child: _recording ? const Icon(Icons.fiber_smart_record) : const Icon(Icons.not_started),
-          onPressed: () {
-            if (_recording) {
-              _connection?.close();
-              setState(() {
-                _recording = false;
-              });
-            } else {
-              _connection?.connect("rtmp://192.168.0.113:1935/live");
-            }
-          },
+          child: _recording ? const Icon(Icons.stop_circle) : const Icon(Icons.not_started),
+          onPressed: () => startRecord(),
         ),
       ),
     );
   }
 
-  Future<bool> initPermission() async {
-    return await Permission.camera.request().isGranted && await Permission.microphone.request().isGranted;
-  }
-
-  Future<void> initPlatformState() async {
-    // Set up AVAudioSession for iOS.
-    AudioSession session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth,
-    ));
-
-    _connection = await RtmpConnection.create();
-    _connection?.eventChannel.receiveBroadcastStream().listen((event) {
-      switch (event["data"]["code"]) {
-        case 'NetConnection.Connect.Success':
-          _stream?.publish("test");
-          setState(() {
-            _recording = true;
-          });
-          break;
-      }
-    });
-    if (_connection != null) {
-      _stream = await RtmpStream.create(_connection!);
-      _stream?.attachAudio(AudioSource());
-      _stream?.attachVideo(VideoSource(position: currentPosition));
-      setState(() {});
+  startRecord() async {
+    if (!_recording) {
+      controller?.startVideoStreaming(streamURL, androidUseOpenGL: false);
+    } else {
+      await controller?.pauseVideoStreaming();
+      controller?.stopVideoStreaming();
     }
-
-    if (!mounted) return;
+    _recording = !_recording;
+    setState(() {});
   }
 
   @override
   void dispose() {
-    _connection?.close();
+    controller?.dispose();
     super.dispose();
   }
 }
