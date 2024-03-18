@@ -42,8 +42,9 @@ class _SignViewState extends State<SignView> {
                 ),
               ),
               const Spacer(),
-              SizedBox(
-                height: 50.w,
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 6.w),
+                // height: 50.w,
                 child: TextFileWidget(
                   controller: context.watch<SignViewModel>().accountC,
                   hintText: "请输入邮箱",
@@ -64,16 +65,11 @@ class _SignViewState extends State<SignView> {
                       ),
                     ),
                   ),
-                  rightIcon: GestureDetector(
-                    key: sendIconKey,
-                    onTap: () =>
-                        context.read<SignViewModel>().showSendVerificationWidget(context, passwordTextFiledKey),
-                    child: const Icon(Icons.send, color: Colors.green),
-                  ),
                 ),
               ),
-              SizedBox(
-                height: 50.w,
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 6.w),
+                // height: 50.w,
                 child: TextFileWidget(
                   controller: context.watch<SignViewModel>().passwordC,
                   isHide: !context.watch<SignViewModel>().isShowPassword,
@@ -97,8 +93,9 @@ class _SignViewState extends State<SignView> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50.w,
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 6.w),
+                // height: 50.w,
                 child: TextFileWidget(
                   controller: context.watch<SignViewModel>().verificationC,
                   readOnly: !context.watch<SlideVerificationViewModel>().isPass,
@@ -110,7 +107,13 @@ class _SignViewState extends State<SignView> {
                   ],
                   leftIcon: Padding(
                     padding: EdgeInsets.only(left: 14.w, right: 14.w),
-                    child: Icon(Icons.numbers, size: 20.w),
+                    child: Icon(Icons.abc, size: 20.w),
+                  ),
+                  rightIcon: GestureDetector(
+                    key: sendIconKey,
+                    onTap: () =>
+                        context.read<SignViewModel>().showSendVerificationWidget(context, passwordTextFiledKey),
+                    child: const Icon(Icons.send, color: Colors.green),
                   ),
                 ),
               ),
@@ -179,11 +182,11 @@ class _SignViewState extends State<SignView> {
                   // margin: EdgeInsets.symmetric(vertical: 10.w),
                   child: TextButton(
                     onPressed: () => context.read<SignViewModel>().sign(context, checkboxKey),
-                    style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
-                    child: Text(
-                      "注册",
-                      style: TextStyle(color: ThemeUtil.reversePrimaryColor(context)),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blueGrey,
+                      foregroundColor: Colors.white,
                     ),
+                    child: Text("注册"),
                   ),
                 ),
               ),

@@ -38,7 +38,8 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 const Spacer(),
-                SizedBox(
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 6.w),
                   // height: 50.w,
                   child: TextFileWidget(
                     controller: context.watch<LoginViewModel>().accountC,
@@ -63,8 +64,9 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 50.w,
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 6.w),
+                  // height: 50.w,
                   child: TextFileWidget(
                     controller: context.watch<LoginViewModel>().passwordC,
                     isHide: !context.watch<LoginViewModel>().isShowPassword,

@@ -438,7 +438,18 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                     // ),
                   ),
                 ),
-                SliverToBoxAdapter(child: Container(color: ThemeUtil.primaryColor(context), height: 10)),
+                // SliverToBoxAdapter(
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //         width: 0,
+                //         color: ThemeUtil.primaryColor(context),
+                //       ),
+                //     ),
+                //     // color: ThemeUtil.primaryColor(context),
+                //     height: 0.w,
+                //   ),
+                // ),
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverHeaderDelegate(
@@ -448,6 +459,10 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: ThemeUtil.primaryColor(context),
+                        border: Border.all(
+                          width: 0,
+                          color: ThemeUtil.primaryColor(context),
+                        ),
                       ),
                       child: TabBar(
                         controller: context.watch<MineViewModel>().tC,

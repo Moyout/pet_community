@@ -59,7 +59,7 @@ class TextFileWidget extends StatelessWidget {
         hintText: hintText,
         contentPadding: const EdgeInsets.all(0).add(EdgeInsets.symmetric(horizontal: 5.w)),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50.w),
+          borderRadius: BorderRadius.circular(8.w),
         ),
         counter: const SizedBox(),
       ),

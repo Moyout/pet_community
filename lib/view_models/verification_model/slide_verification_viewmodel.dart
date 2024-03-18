@@ -15,7 +15,7 @@ class SlideVerificationViewModel extends ChangeNotifier {
   double opacity = 0.8;
   bool isPass = false;
   bool isShowError = false;
-  int randomIndex = 0;
+  int randomIndex = 1;
 
   void initViewModel() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
