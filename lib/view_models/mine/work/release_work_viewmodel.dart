@@ -60,7 +60,6 @@ class ReleaseWorkViewModel extends ChangeNotifier {
       } else if (articleModel.code == 1007) {
         isSuccess = false;
         ToastUtil.showBottomToast(articleModel.msg!);
-        AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
         RouteUtil.pushNamed(AppUtils.getContext(), SignLoginView.routeName);
         break;
       } else {

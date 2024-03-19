@@ -9,9 +9,7 @@ import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/mine/edit_data/edit_view.dart';
 import 'package:pet_community/views/mine/work/release_work_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
-import 'package:pet_community/views/sign_login/login_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
-import 'package:pet_community/views/sign_login/sign_view.dart';
 import 'package:pet_community/views/startup_view.dart';
 import 'package:pet_community/views/test_view.dart';
 
@@ -22,8 +20,8 @@ class AppRoute extends NavigatorObserver {
     NavigationView.routeName: (context) => const NavigationView(),
     StartUpView.routeName: (context) => const StartUpView(),
     SignLoginView.routeName: (context) => const SignLoginView(),
-    SignView.routeName: (context) => const SignView(),
-    LoginView.routeName: (context) => const LoginView(),
+    // SignView.routeName: (context) => const SignView(),
+    // LoginView.routeName: (context) => const LoginView(),
     ReleaseWorkView.routeName: (context) => const ReleaseWorkView(),
     EditDataView.routeName: (context) => const EditDataView(),
     TestView.routeName: (context) => TestView(),

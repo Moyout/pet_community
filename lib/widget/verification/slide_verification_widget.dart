@@ -181,7 +181,7 @@ class _SlideVerificationWidgetState extends State<SlideVerificationWidget> {
                       child: const Icon(Icons.refresh, color: Colors.grey),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () => Navigator.pop(context, false),
                       child: const Icon(Icons.clear, color: Colors.grey),
                     ),
                   ],

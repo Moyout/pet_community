@@ -5,7 +5,7 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
-import 'package:pet_community/views/sign_login/login_view.dart';
+import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
 
 class UserInfoView extends StatefulWidget {
@@ -289,7 +289,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                             context,
                                             context.read<NavViewModel>().isLogin
                                                 ? ChatView.routeName
-                                                : LoginView.routeName,
+                                                : SignLoginView.routeName,
                                             arguments:
                                                 context.read<NavViewModel>().isLogin ? {"userId": widget.userId} : null,
                                           );

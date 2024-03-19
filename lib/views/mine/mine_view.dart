@@ -167,7 +167,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                         },
                                       );
                                     } else {
-                                      context.read<SignLoginViewModel>().initialPage = 1;
+                                      // context.read<SignLoginViewModel>().initialPage = 1;
                                       RouteUtil.pushNamed(context, SignLoginView.routeName);
                                     }
                                   },

@@ -61,11 +61,10 @@ class SlideVerificationViewModel extends ChangeNotifier {
   void onHorizontalDragEnd(BuildContext context) {
     if (opacity == 0) {
       isPass = true;
-      context.read<SignViewModel>().isSendVerification = true;
+      // context.read<SignViewModel>().isSendVerification = true;
       notifyListeners();
-      context.read<SignViewModel>().sendVerificationCode();
       Future.delayed(const Duration(milliseconds: 800)).then((value) {
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       });
     } else {
       isPass = false;

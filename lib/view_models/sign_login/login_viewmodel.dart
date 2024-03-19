@@ -66,7 +66,6 @@ class LoginViewModel extends ChangeNotifier {
     AppUtils.getContext().read<NavViewModel>().notifyListeners();
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     Future.delayed(const Duration(milliseconds: 300), () {
-      AppUtils.getContext().read<SignLoginViewModel>().initialPage = 1;
       RouteUtil.pushNamed(AppUtils.getContext(), SignLoginView.routeName);
     });
   }

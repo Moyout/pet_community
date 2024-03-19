@@ -78,7 +78,6 @@ class MineViewModel extends ChangeNotifier {
         },
       );
     } else {
-      context.read<SignLoginViewModel>().initialPage = 1;
       RouteUtil.pushNamed(context, SignLoginView.routeName);
     }
   }

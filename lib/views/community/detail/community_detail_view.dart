@@ -206,50 +206,50 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                             );
                           }),
                           Padding(padding: EdgeInsets.symmetric(vertical: 5.w)),
-                          DefaultTextStyle(
-                            style: TextStyle(fontSize: 10.sp, color: ThemeUtil.reversePrimaryColor(context)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Column(
-                                    children: const [
-                                      Icon(IconData(0xe607, fontFamily: "AliIcon"), color: Colors.green, size: 30),
-                                      Text("分享"),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Column(
-                                    children: const [
-                                      Icon(IconData(0xe66a, fontFamily: "AliIcon"), color: Colors.blue, size: 30),
-                                      Text("分享"),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Column(
-                                    children: const [
-                                      Icon(IconData(0xe651, fontFamily: "AliIcon"), color: Colors.grey, size: 30),
-                                      Text("赞"),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Column(
-                                    children: const [
-                                      Icon(IconData(0xe629, fontFamily: "AliIcon"), color: Colors.grey, size: 28),
-                                      Text("踩"),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // DefaultTextStyle(
+                          //   style: TextStyle(fontSize: 10.sp, color: ThemeUtil.reversePrimaryColor(context)),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //     children: [
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: Column(
+                          //           children: const [
+                          //             Icon(IconData(0xe607, fontFamily: "AliIcon"), color: Colors.green, size: 30),
+                          //             Text("分享"),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: Column(
+                          //           children: const [
+                          //             Icon(IconData(0xe66a, fontFamily: "AliIcon"), color: Colors.blue, size: 30),
+                          //             Text("分享"),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: Column(
+                          //           children: const [
+                          //             Icon(IconData(0xe651, fontFamily: "AliIcon"), color: Colors.grey, size: 30),
+                          //             Text("赞"),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: Column(
+                          //           children: const [
+                          //             Icon(IconData(0xe629, fontFamily: "AliIcon"), color: Colors.grey, size: 28),
+                          //             Text("踩"),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           Divider(color: Colors.grey.withOpacity(0.2), thickness: 8.w),
                           Container(
                             alignment: Alignment.centerLeft,

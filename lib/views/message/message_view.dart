@@ -76,7 +76,10 @@ class _MessageViewState extends State<MessageView> {
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 1.w),
                     child: TextButton(
-                      style: TextButton.styleFrom(backgroundColor: ThemeUtil.primaryColor(context)),
+                      style: TextButton.styleFrom(
+                        backgroundColor: ThemeUtil.primaryColor(context),
+                        shape: const RoundedRectangleBorder(), //todo:
+                      ),
                       onPressed: () {
                         debugPrint("e--------------》》${e.value.first.userId}");
                         RouteUtil.pushNamed(context, ChatView.routeName, arguments: {"userId": e.key});
