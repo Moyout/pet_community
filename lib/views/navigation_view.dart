@@ -73,7 +73,7 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
               children: const [
                 HomeView(),
                 CommunityView(),
-                // LiveView(),
+                LiveView(),
                 MessageView(),
                 MineView(),
               ],
@@ -106,15 +106,15 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
                           child: Container(
                             // height: 50.w,
                             child: CustomPaint(
-                              // painter: index == 2
-                              //     ? LiveButtonPainter(
-                              //         paddingHeight: 10.w,
-                              //         leftSemicircle: index == 0,
-                              //         isActive: context.watch<NavViewModel>().bottomList[index].isActive,
-                              //         rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
-                              //         primaryColor: ThemeUtil.primaryColor(context),
-                              //       )
-                              //     : null,
+                              painter: index == 2
+                                  ? LiveButtonPainter(
+                                      paddingHeight: 10.w,
+                                      leftSemicircle: index == 0,
+                                      isActive: context.watch<NavViewModel>().bottomList[index].isActive,
+                                      rightSemicircle: index == context.watch<NavViewModel>().bottomList.length - 1,
+                                      primaryColor: ThemeUtil.primaryColor(context),
+                                    )
+                                  : null,
                               // size: Size(150, 150),
                               child: Container(
                                 // padding: EdgeInsets.fromLTRB(0, 10.w, 0, 10.w),
