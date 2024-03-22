@@ -47,6 +47,8 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
+                              debugPrint(
+                                  " .content---------------------->${context.read<CommunityViewModel>().articleModel.data?.articles[index].content}");
                               RouteUtil.pushNamed(
                                 context,
                                 CommunityDetailView.routeName,
@@ -54,8 +56,7 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                   "title":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].title ?? "",
                                   "content":
-                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].content ??
-                                          "",
+                                      context.read<CommunityViewModel>().articleModel.data?.articles[index].content,
                                   "articleId":
                                       context.read<CommunityViewModel>().articleModel.data!.articles[index].articleId,
                                   "pictures":

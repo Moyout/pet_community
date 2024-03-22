@@ -14,7 +14,7 @@ class CommunityDetailView extends StatefulWidget {
   final int articleId;
   final int userId;
   final String title;
-  final String content;
+  final String? content;
   final List<String> pictures;
   final bool isShowUserInfoView;
 
@@ -182,14 +182,15 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                            child: SelectableText(
-                              widget.content,
-                              style: const TextStyle(letterSpacing: 1.2),
+                          if (widget.content != null && widget.content!.isNotEmpty)
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                              child: SelectableText(
+                                widget.content ?? "",
+                                style: const TextStyle(letterSpacing: 1.2),
+                              ),
                             ),
-                          ),
                           ...List.generate(widget.pictures.length, (index) {
                             return GestureDetector(
                               onTap: () => context.read<CommunityDetailViewModel>().pushShowPicture(
