@@ -31,6 +31,7 @@ class WebSocketUtils {
 
           channel ??= IOWebSocketChannel.connect(
             Uri.parse("${ApiConfig.wsUrl}/chat?userId=$userId"),
+            headers: {"Origin": "*"},
             protocols: [token],
             pingInterval: const Duration(seconds: 20),
           );
