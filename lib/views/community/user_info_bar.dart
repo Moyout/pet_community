@@ -62,7 +62,7 @@ class _UserInfoBarState extends State<UserInfoBar> with AutomaticKeepAliveClient
             SizedBox(
               width: 250.w,
               child: Text(
-                "$userName",
+                userName ?? "",
                 style: TextStyle(fontSize: 15.sp),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,

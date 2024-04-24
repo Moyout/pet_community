@@ -28,6 +28,7 @@ class BaseRequest {
           debugPrint("\n================== 请求数据 ==========================");
           debugPrint("url = ${options.uri.toString()}");
           debugPrint("headers = ${options.headers}");
+          debugPrint("method = ${options.method}");
           debugPrint("params = ${options.data}");
           handler.next(options);
           if (isShowLoading) {

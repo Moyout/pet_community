@@ -39,7 +39,10 @@ class _WorksTabState extends State<WorksTab> {
             color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.2),
             child: TextButton(
               onPressed: () => context.read<MineViewModel>().releaseWork(context),
-              style: TextButton.styleFrom(foregroundColor: ThemeUtil.reversePrimaryColor(context)),
+              style: TextButton.styleFrom(
+                shape: const RoundedRectangleBorder(),
+                foregroundColor: ThemeUtil.reversePrimaryColor(context),
+              ),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Icon(Icons.camera_alt), Text("发作品")],

@@ -94,11 +94,66 @@ class MineViewModel extends ChangeNotifier {
   }
 
   ///发作品
-  void releaseWork(BuildContext context) {
-    if (context.read<NavViewModel>().isLogin) {
-      RouteUtil.pushNamed(context, ReleaseWorkView.routeName);
-    } else {
+  Future<void> releaseWork(BuildContext context) async {
+    if (!context.read<NavViewModel>().isLogin) {
       RouteUtil.pushNamed(context, SignLoginView.routeName);
+      return;
+    }
+    var res = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(),
+      backgroundColor: ThemeUtil.primaryColor(context),
+      builder: (context) {
+        return Theme(
+          data: ThemeData(useMaterial3: false),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: ThemeUtil.primaryColor(context),
+                      foregroundColor: ThemeUtil.reversePrimaryColor(context),
+                    ),
+                    onPressed: () => Navigator.pop(context, 0),
+                    child: Text("视频作品"),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: ThemeUtil.primaryColor(context),
+                      foregroundColor: ThemeUtil.reversePrimaryColor(context),
+                    ),
+                    onPressed: () => Navigator.pop(context, 1),
+                    child: Text("图文作品"),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: ThemeUtil.primaryColor(context),
+                      foregroundColor: ThemeUtil.reversePrimaryColor(context),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("取消"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (res != null) {
+      RouteUtil.pushNamed(context, res == 0 ? ReleaseWorkView.routeName : ReleaseWorkView.routeName);
     }
   }
 

@@ -178,6 +178,9 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
               color: ThemeUtil.reversePrimaryColor(context),
               height: 35.w,
               child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: BeveledRectangleBorder(),
+                ),
                 onPressed: () => context.read<NavViewModel>().loginOut(context),
                 child: const Text("退出登录", style: TextStyle(color: Colors.red)),
               ),
