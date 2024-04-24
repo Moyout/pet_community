@@ -73,7 +73,7 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
               children: const [
                 HomeView(),
                 CommunityView(),
-                LiveView(),
+                // LiveView(),
                 MessageView(),
                 MineView(),
               ],
@@ -106,7 +106,7 @@ class _NavigationViewState extends State<NavigationView> with TickerProviderStat
                           child: Container(
                             // height: 50.w,
                             child: CustomPaint(
-                              painter: index == 2
+                              painter: index == 5
                                   ? LiveButtonPainter(
                                       paddingHeight: 10.w,
                                       leftSemicircle: index == 0,

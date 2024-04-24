@@ -467,7 +467,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                       child: TabBar(
                         controller: context.watch<MineViewModel>().tC,
                         onTap: (index) {},
-                        tabs: const [Text("作品"), Text("收藏")],
+                        tabs: const [Text("图文作品"), Text("视频作品")],
                       ),
                     ),
                   ),

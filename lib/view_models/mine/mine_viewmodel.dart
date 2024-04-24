@@ -4,6 +4,7 @@ import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
 import 'package:pet_community/views/mine/avatar/set_avatar_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
+import 'package:pet_community/views/mine/work/release_work2_view.dart';
 import 'package:pet_community/views/mine/work/release_work_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 
@@ -153,7 +154,7 @@ class MineViewModel extends ChangeNotifier {
     );
 
     if (res != null) {
-      RouteUtil.pushNamed(context, res == 0 ? ReleaseWorkView.routeName : ReleaseWorkView.routeName);
+      RouteUtil.pushNamed(context, res == 0 ? ReleaseWork2View.routeName : ReleaseWorkView.routeName);
     }
   }
 

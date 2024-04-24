@@ -7,6 +7,7 @@ import 'package:pet_community/views/mine/avatar/set_avatar_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/edit_data/edit_data_view.dart';
 import 'package:pet_community/views/mine/edit_data/edit_view.dart';
+import 'package:pet_community/views/mine/work/release_work2_view.dart';
 import 'package:pet_community/views/mine/work/release_work_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
@@ -24,7 +25,8 @@ class AppRoute extends NavigatorObserver {
     // LoginView.routeName: (context) => const LoginView(),
     ReleaseWorkView.routeName: (context) => const ReleaseWorkView(),
     EditDataView.routeName: (context) => const EditDataView(),
-    TestView.routeName: (context) => TestView(),
+    TestView.routeName: (context) => const TestView(),
+    ReleaseWork2View.routeName: (context) => const ReleaseWork2View(),
     EditView.routeName: (context) => EditView(title: (ModalRoute.of(context)?.settings.arguments as Map)["title"]),
     SetBackgroundView.routeName: (context) => SetBackgroundView(
           background: '${(ModalRoute.of(context)?.settings.arguments as Map)["background"]}',

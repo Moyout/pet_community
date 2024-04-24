@@ -23,14 +23,14 @@ class _ReleaseWorkViewState extends State<ReleaseWorkView> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () => RouteUtil.pop(context),
-            child: Icon(
-              Icons.arrow_back_ios_new,
-              size: 18,
-              color: ThemeUtil.reversePrimaryColor(context),
-            ),
-          ),
+          // leading: GestureDetector(
+          //   onTap: () => RouteUtil.pop(context),
+          //   child: Icon(
+          //     Icons.arrow_back_ios_new,
+          //     size: 18,
+          //     color: ThemeUtil.reversePrimaryColor(context),
+          //   ),
+          // ),
           title: Text("发布作品", style: TextStyle(fontSize: 14.sp)),
           actions: [
             Center(
