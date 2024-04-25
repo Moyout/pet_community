@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/home/video_viewmodel.dart';
 
@@ -51,10 +52,14 @@ class _VideoWidgetState extends State<VideoWidget> {
                 child: !context.watch<VideoViewModel>().playerController!.value.isInitialized
                     ? Hero(
                         tag: "cover${widget.index}",
-                        child: CachedNetworkImage(
-                          cacheKey: "coverImage${widget.index}",
-                          imageUrl: widget.picUrl,
+                        child: Image.network(
+                          widget.picUrl,
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )
+                              : child,
                         ),
                       )
                     : Hero(

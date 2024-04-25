@@ -76,14 +76,21 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                               if (context.watch<HomeViewModel>().videoModel.data != null)
                                 Hero(
                                   tag: "cover$index",
-                                  child: CachedNetworkImage(
-                                    cacheKey:
-                                        "videoCoverImage:${context.read<HomeViewModel>().videoModel.data?.videos[index].videoId}",
-                                    imageUrl: context.watch<HomeViewModel>().videoModel.data!.videos[index].cover ?? "",
-                                    progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
-                                      height: index % 2 == 0 ? 150.w : 250.w,
-                                      child: const Center(child: CupertinoActivityIndicator()),
-                                    ),
+                                  child: Image.network(
+                                    context.watch<HomeViewModel>().videoModel.data!.videos[index].cover ?? "",
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress != null) {
+                                        return SizedBox(
+                                          height: index % 2 == 0 ? 150.w : 250.w,
+                                          child: const Center(child: CupertinoActivityIndicator()),
+                                        );
+                                      }
+                                      return child;
+                                    },
+                                    // progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                                    //   height: index % 2 == 0 ? 150.w : 250.w,
+                                    //   child: const Center(child: CupertinoActivityIndicator()),
+                                    // ),
                                   ),
                                 ),
                               Container(
@@ -124,7 +131,5 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
   }
 
   @override
-  bool get wantKeepAlive {
-    return true;
-  }
+  bool get wantKeepAlive => true;
 }

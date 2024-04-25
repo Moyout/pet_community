@@ -1,5 +1,7 @@
 import 'package:flutter/rendering.dart';
+import 'package:pet_community/models/article_comment/release_comment_model.dart';
 import 'package:pet_community/models/video/video_detail_model.dart';
+import 'package:pet_community/models/video_comment/video_comment_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class VideoDetailViewModel extends ChangeNotifier {
@@ -58,5 +60,21 @@ class VideoDetailViewModel extends ChangeNotifier {
       isNoSliding = false;
       notifyListeners();
     }
+  }
+
+  Future<bool> sendComment(int? videoId, int? userId) async {
+    String? token = SpUtil.getString(PublicKeys.token);
+    ReleaseCommentModel model = await VideoCommentRequest.releaseComment(
+      commentContent: textC.text.trim(),
+      videoId: videoId,
+      userId: userId,
+      token: token,
+    );
+    if (model.code == 0) {
+      if (model.msg != null) ToastUtil.showBottomToast(model.msg!);
+      textC.clear();
+      return true;
+    }
+    return false;
   }
 }

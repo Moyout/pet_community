@@ -73,12 +73,15 @@ class _WorksTabState extends State<WorksTab> {
                       });
                     },
                     child: widget.userArticleModel.data![index].pictures!.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: widget.userArticleModel.data![index].pictures![0],
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                const CupertinoActivityIndicator(),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ? Image.network(
+                            widget.userArticleModel.data![index].pictures![0],
+                            errorBuilder: (context, url, error) => const Icon(Icons.error),
                             fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                ? const Center(
+                                    child: CupertinoActivityIndicator(),
+                                  )
+                                : child,
                           )
                         : Container(
                             padding: EdgeInsets.symmetric(horizontal: 5.w),

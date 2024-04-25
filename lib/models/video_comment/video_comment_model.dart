@@ -41,17 +41,15 @@ class VideoCommentRequest {
   // }
 
   static Future<ReleaseCommentModel> releaseComment({
-    required String commentator,
     required String commentContent,
-    required int videoId,
-    required int userId,
-    required String token,
+    required int? videoId,
+    required int? userId,
+    required String? token,
   }) async {
     String url = ApiConfig.baseUrl + "/videoComment/releaseComment";
     var response = await BaseRequest().toPost(
       url,
       parameters: {
-        "commentator": commentator,
         "commentContent": commentContent,
         "videoId": videoId,
         "userId": userId,

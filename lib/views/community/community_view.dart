@@ -131,18 +131,22 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                           child: Container(
                                             clipBehavior: Clip.antiAlias,
                                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
-                                            child: CachedNetworkImage(
-                                              imageUrl: context
+                                            child: Image.network(
+                                              context
                                                   .watch<CommunityViewModel>()
                                                   .articleModel
                                                   .data!
                                                   .articles[index]
                                                   .pictures![index2],
-                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                  const CupertinoActivityIndicator(),
                                               height: height,
                                               width: width,
                                               fit: BoxFit.cover,
+                                              loadingBuilder: (context, child, loadingProgress) =>
+                                                  loadingProgress != null
+                                                      ? const Center(
+                                                          child: CupertinoActivityIndicator(),
+                                                        )
+                                                      : child,
                                             ),
                                           ),
                                         );

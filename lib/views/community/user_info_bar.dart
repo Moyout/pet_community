@@ -45,12 +45,16 @@ class _UserInfoBarState extends State<UserInfoBar> with AutomaticKeepAliveClient
       children: [
         ClipOval(
           child: avatar != null
-              ? CachedNetworkImage(
+              ? Image.network(
+                  avatar!,
                   width: 45.w,
                   height: 45.w,
                   fit: BoxFit.cover,
-                  progressIndicatorBuilder: (context, url, downloadProgress) => const CupertinoActivityIndicator(),
-                  imageUrl: avatar!,
+                  loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                      ? const Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : child,
                 )
               : Image.asset("assets/images/ic_launcher.png", width: 45.w, height: 45.w, fit: BoxFit.cover),
         ),

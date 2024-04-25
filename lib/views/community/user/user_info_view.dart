@@ -87,12 +87,15 @@ class _UserInfoViewState extends State<UserInfoView>
                         child: Transform.scale(
                           scale: 1 + mvModelW.scale,
                           child: context.watch<UserInfoViewModel>().userInfoModel.data?.background != null
-                              ? CachedNetworkImage(
-                                  imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data!.background!,
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                      const CupertinoActivityIndicator(),
+                              ? Image.network(
+                                  context.watch<UserInfoViewModel>().userInfoModel.data!.background!,
                                   fit: BoxFit.cover,
                                   height: 400.w,
+                                  loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                      ? const Center(
+                                          child: CupertinoActivityIndicator(),
+                                        )
+                                      : child,
                                 )
                               : Image.asset(
                                   "assets/images/backgrounds/pet_bg.png",
@@ -227,13 +230,16 @@ class _UserInfoViewState extends State<UserInfoView>
                             tag: "avatar",
                             child: ClipOval(
                               child: context.watch<UserInfoViewModel>().userInfoModel.data?.avatar != null
-                                  ? CachedNetworkImage(
-                                      imageUrl: context.watch<UserInfoViewModel>().userInfoModel.data!.avatar!,
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          const CupertinoActivityIndicator(),
+                                  ? Image.network(
+                                      context.watch<UserInfoViewModel>().userInfoModel.data!.avatar!,
                                       width: 70.w,
                                       height: 70.w,
                                       fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                          ? const Center(
+                                              child: CupertinoActivityIndicator(),
+                                            )
+                                          : child,
                                     )
                                   : Image.asset(
                                       "assets/images/ic_launcher.png",

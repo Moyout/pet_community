@@ -31,65 +31,79 @@ class _VideoListViewState extends State<VideoListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      runSpacing: 1.w,
-      spacing: 1.w,
-      children: [
-        ...List.generate(videoList.length, (index) {
-          return Container(
-            color: ThemeUtil.scaffoldColor(context),
-            width: (MediaQuery.of(context).size.width - 3.w) / 3,
-            height: 149.w,
-            child: Stack(
+    return (videoList.isEmpty)
+        ? Container(
+            alignment: Alignment.center,
+            child: Column(
               children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: GestureDetector(
-                    onTap: () => openVideoDetail(index),
-                    child: CachedNetworkImage(
-                      imageUrl: videoList[index].cover ?? "",
-                      progressIndicatorBuilder: (context, url, downloadProgress) => const CupertinoActivityIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                      fit: BoxFit.cover,
-                    ),
-                    // child: false
-                    //     ? CachedNetworkImage(
-                    //         imageUrl: "widget.data![index].pictures![0]",
-                    //         progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    //             const CupertinoActivityIndicator(),
-                    //         errorWidget: (context, url, error) => const Icon(Icons.error),
-                    //         fit: BoxFit.cover,
-                    //       )
-                    //     : Container(
-                    //         padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    //         alignment: Alignment.center,
-                    //         color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.2),
-                    //         child: Text(videoList[index].title ?? ""),
-                    //       ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 5.w,
-                  left: 5.w,
-                  child: Row(
-                    children: [
-                      Icon(Icons.favorite_border_rounded, color: Colors.white, size: 14.w),
-                      Text(
-                        "${videoList[index].likes ?? 0}",
-                        style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                      )
-                    ],
-                  ),
-                ),
+                Image.asset(Assets.backgroundsNoData, width: 250.w, height: 250.w),
+                Text("空空如也"),
               ],
             ),
+          )
+        : Wrap(
+            runSpacing: 1.w,
+            spacing: 1.w,
+            children: [
+              ...List.generate(videoList.length, (index) {
+                return Container(
+                  color: ThemeUtil.scaffoldColor(context),
+                  width: (MediaQuery.of(context).size.width - 3.w) / 3,
+                  height: 149.w,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: GestureDetector(
+                          onTap: () => openVideoDetail(index),
+                          child: Image.network(
+                            videoList[index].cover ?? "",
+                            errorBuilder: (context, url, error) => const Icon(Icons.error),
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                ? const Center(
+                                    child: CupertinoActivityIndicator(),
+                                  )
+                                : child,
+                          ),
+                          // child: false
+                          //     ? CachedNetworkImage(
+                          //         imageUrl: "widget.data![index].pictures![0]",
+                          //         progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          //             const CupertinoActivityIndicator(),
+                          //         errorWidget: (context, url, error) => const Icon(Icons.error),
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : Container(
+                          //         padding: EdgeInsets.symmetric(horizontal: 5.w),
+                          //         alignment: Alignment.center,
+                          //         color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.2),
+                          //         child: Text(videoList[index].title ?? ""),
+                          //       ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 5.w,
+                        left: 5.w,
+                        child: Row(
+                          children: [
+                            Icon(Icons.favorite_border_rounded, color: Colors.white, size: 14.w),
+                            Text(
+                              "${videoList[index].likes ?? 0}",
+                              style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ],
           );
-        }),
-      ],
-    );
   }
 
   void openVideoDetail(int index) {

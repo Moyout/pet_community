@@ -69,12 +69,15 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                               scale: 1 + mvModelW.scale,
                               child: context.watch<NavViewModel>().isLogin &&
                                       context.watch<NavViewModel>().userInfoModel?.data?.background != null
-                                  ? CachedNetworkImage(
-                                      imageUrl: context.watch<NavViewModel>().userInfoModel!.data!.background!,
+                                  ? Image.network(
+                                      context.watch<NavViewModel>().userInfoModel!.data!.background!,
                                       fit: BoxFit.cover,
                                       height: 400.w,
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          const CupertinoActivityIndicator(),
+                                      loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                          ? const Center(
+                                              child: CupertinoActivityIndicator(),
+                                            )
+                                          : child,
                                     )
                                   : Image.asset(
                                       "assets/images/backgrounds/pet_bg.png",
@@ -216,13 +219,16 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                 child: ClipOval(
                                   child: context.watch<NavViewModel>().isLogin &&
                                           context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
-                                      ? CachedNetworkImage(
-                                          imageUrl: context.watch<NavViewModel>().userInfoModel!.data!.avatar!,
+                                      ? Image.network(
+                                          context.watch<NavViewModel>().userInfoModel!.data!.avatar!,
                                           width: 70.w,
                                           height: 70.w,
                                           fit: BoxFit.cover,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                              const CupertinoActivityIndicator(),
+                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                              ? const Center(
+                                                  child: CupertinoActivityIndicator(),
+                                                )
+                                              : child,
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -452,29 +458,50 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                 //     height: 0.w,
                 //   ),
                 // ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SliverHeaderDelegate(
-                    minHeight: 30.w,
-                    maxHeight: 30.w,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
+                // SliverPersistentHeader(
+                //   pinned: true,
+                //   delegate: SliverHeaderDelegate(
+                //     minHeight: 30.w,
+                //     maxHeight: 30.w,
+                //     child: Container(
+                //       alignment: Alignment.center,
+                //       decoration: BoxDecoration(
+                //         color: ThemeUtil.primaryColor(context),
+                //         border: Border.all(
+                //           width: 0,
+                //           color: ThemeUtil.primaryColor(context),
+                //         ),
+                //       ),
+                //       child: TabBar(
+                //
+                //         controller: context.watch<MineViewModel>().tC,
+                //         onTap: (index) {},
+                //         // padding: EdgeInsets.zero,
+                //         tabs: const [Text("图文作品"), Text("视频作品")],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 20.w),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: ThemeUtil.primaryColor(context),
+                      border: Border.all(
+                        width: 0,
                         color: ThemeUtil.primaryColor(context),
-                        border: Border.all(
-                          width: 0,
-                          color: ThemeUtil.primaryColor(context),
-                        ),
                       ),
-                      child: TabBar(
-                        controller: context.watch<MineViewModel>().tC,
-                        onTap: (index) {},
-                        tabs: const [Text("图文作品"), Text("视频作品")],
-                      ),
+                    ),
+                    child: TabBar(
+                      controller: context.watch<MineViewModel>().tC,
+                      onTap: (index) {},
+                      // padding: EdgeInsets.zero,
+                      tabs: const [Text("图文作品"), Text("视频作品")],
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(child: Divider(height: 0.1)),
+                const SliverToBoxAdapter(child: Divider(height: 0.01)),
                 SliverToBoxAdapter(
                   child: ScrollConfiguration(
                     behavior: OverScrollBehavior(),

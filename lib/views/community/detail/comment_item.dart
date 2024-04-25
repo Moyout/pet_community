@@ -47,13 +47,16 @@ class _CommentItemState extends State<CommentItem> {
             children: [
               ClipOval(
                 child: userInfoModel?.data?.avatar != null
-                    ? CachedNetworkImage(
+                    ? Image.network(
+                        userInfoModel!.data!.avatar!,
                         width: 40.w,
                         height: 40.w,
                         fit: BoxFit.cover,
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            const CupertinoActivityIndicator(),
-                        imageUrl: userInfoModel!.data!.avatar!,
+                        loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                            ? const Center(
+                                child: CupertinoActivityIndicator(),
+                              )
+                            : child,
                       )
                     : Image.asset(
                         "assets/images/ic_launcher.png",

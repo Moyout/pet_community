@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
@@ -91,11 +92,16 @@ class _MessageViewState extends State<MessageView> {
                             margin: EdgeInsets.only(right: 5.w, left: 5.w),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                             child: userIdAvatarMap[e.key]?.data?.avatar != null
-                                ? CachedNetworkImage(
-                                    imageUrl: userIdAvatarMap[e.key]!.data!.avatar!,
+                                ? Image.network(
+                                    userIdAvatarMap[e.key]!.data!.avatar!,
                                     width: 40.w,
                                     height: 40.w,
                                     fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                        ? const Center(
+                                            child: CupertinoActivityIndicator(),
+                                          )
+                                        : child,
                                   )
                                 : Image.asset(
                                     "assets/images/ic_launcher.png",

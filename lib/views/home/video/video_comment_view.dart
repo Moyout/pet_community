@@ -17,6 +17,8 @@ class VideoCommentView extends StatefulWidget {
 }
 
 class _VideoCommentViewState extends State<VideoCommentView> {
+  VideoDetailViewModel vvm = AppUtils.getContext().read<VideoDetailViewModel>();
+
   NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
   ScrollController sc = ScrollController();
   VideoCommentModel vm = VideoCommentModel(data: Data(videoComments: [], total: 0));
@@ -127,13 +129,8 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                           controller: context.read<VideoDetailViewModel>().textC,
                           readOnly: true,
                           scrollController: context.watch<VideoDetailViewModel>().sc,
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (c) {
-                                  return const InputCommentWidget();
-                                });
-                          },
+                          onTap: () => showEditDialog(),
+                          onChanged: (v) => setState(() {}),
                           scrollPadding: EdgeInsets.zero,
                           maxLines: 5,
                           minLines: 1,
@@ -152,12 +149,11 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                     height: 30.w,
                     width: 50.w,
                     child: TextButton(
-                      onPressed: () {
-                        ToastUtil.showBottomToast("该作品评论功能未开启");
-                      },
+                      onPressed: vvm.textC.text.trim().isEmpty ? null : () => sendComment(),
                       child: Text("发表", style: TextStyle(color: Colors.white, fontSize: 10.sp)),
                       style: TextButton.styleFrom(
                         shape: const StadiumBorder(),
+                        disabledBackgroundColor: Colors.grey,
                         backgroundColor: Colors.deepPurple,
                         padding: const EdgeInsets.all(0),
                       ),
@@ -226,6 +222,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                   ),
                 ),
                 Container(
+                  constraints: BoxConstraints(minWidth: 40.w),
                   margin: EdgeInsets.only(bottom: 12.w),
                   padding: EdgeInsets.only(top: 4.w, bottom: 4.w, left: 10.w, right: 10.w),
                   decoration: BoxDecoration(
@@ -241,5 +238,19 @@ class _VideoCommentViewState extends State<VideoCommentView> {
         },
       ),
     );
+  }
+
+  void showEditDialog() async {
+    var isNeedRefresh = await showModalBottomSheet(
+      context: context,
+      builder: (c) => InputCommentWidget(videoId: widget.videoId),
+    );
+    debugPrint("isNeedRefresh--------->$isNeedRefresh");
+    if (isNeedRefresh ?? false) getVideoComment();
+  }
+
+  void sendComment() async {
+    bool isSuccess = await vvm.sendComment(widget.videoId, nvm.userInfoModel?.data?.userId);
+    if (isSuccess) getVideoComment();
   }
 }

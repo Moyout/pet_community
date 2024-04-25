@@ -1,14 +1,20 @@
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/home/video_detail_viewmodel.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
 
 class InputCommentWidget extends StatefulWidget {
-  const InputCommentWidget({Key? key}) : super(key: key);
+  final int? videoId;
+
+  const InputCommentWidget({Key? key, this.videoId}) : super(key: key);
 
   @override
   State<InputCommentWidget> createState() => _InputCommentWidgetState();
 }
 
 class _InputCommentWidgetState extends State<InputCommentWidget> {
+  VideoDetailViewModel vvm = AppUtils.getContext().read<VideoDetailViewModel>();
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
+
   @override
   void initState() {
     super.initState();
@@ -36,12 +42,13 @@ class _InputCommentWidgetState extends State<InputCommentWidget> {
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   margin: EdgeInsets.symmetric(vertical: 5.w),
                   child: TextField(
-                    focusNode: context.watch<VideoDetailViewModel>().focusNode,
-                    controller: context.read<VideoDetailViewModel>().textC,
+                    focusNode: vvm.focusNode,
+                    controller: vvm.textC,
                     onTap: () {},
                     scrollPadding: EdgeInsets.zero,
                     maxLines: 5,
                     minLines: 1,
+                    onChanged: (v) => setState(() {}),
                     textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 16.sp, letterSpacing: 1),
                     decoration: InputDecoration(
@@ -56,12 +63,11 @@ class _InputCommentWidgetState extends State<InputCommentWidget> {
                 height: 30.w,
                 width: 50.w,
                 child: TextButton(
-                  onPressed: () {
-                    ToastUtil.showBottomToast("该作品评论功能未开启");
-                  },
+                  onPressed: vvm.textC.text.trim().isEmpty ? null : () => sendComment(),
                   child: Text("发表", style: TextStyle(color: Colors.white, fontSize: 10.sp)),
                   style: TextButton.styleFrom(
                     shape: const StadiumBorder(),
+                    disabledBackgroundColor: Colors.grey,
                     backgroundColor: Colors.deepPurple,
                     padding: const EdgeInsets.all(0),
                   ),
@@ -73,5 +79,10 @@ class _InputCommentWidgetState extends State<InputCommentWidget> {
         Container(height: MediaQuery.of(context).viewInsets.bottom)
       ],
     );
+  }
+
+  void sendComment() async {
+    bool isSuccess = await vvm.sendComment(widget.videoId, nvm.userInfoModel?.data?.userId);
+    if (isSuccess) Navigator.pop(AppUtils.getContext(), true);
   }
 }

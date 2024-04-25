@@ -109,14 +109,17 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                             child: Consumer<VideoDetailViewModel>(
                               builder: (context, VideoDetailViewModel model, child) {
                                 return model.videoDetailModel?.data?.userInfo.avatar != null
-                                    ? CachedNetworkImage(
+                                    ? Image.network(
+                                        model.videoDetailModel?.data?.userInfo.avatar ?? "",
                                         // cacheKey: "userAvatar:${widget.userId}",
                                         width: 50.w,
                                         height: 50.w,
                                         fit: BoxFit.cover,
-                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                            const CupertinoActivityIndicator(),
-                                        imageUrl: model.videoDetailModel?.data?.userInfo.avatar ?? "",
+                                        loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                            ? const Center(
+                                                child: CupertinoActivityIndicator(),
+                                              )
+                                            : child,
                                       )
                                     : Image.asset(
                                         "assets/images/ic_launcher.png",

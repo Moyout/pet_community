@@ -88,13 +88,16 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                 },
                                 child: ClipOval(
                                   child: userInfoModel?.data?.avatar != null
-                                      ? CachedNetworkImage(
+                                      ? Image.network(
+                                          userInfoModel!.data!.avatar!,
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                              const CupertinoActivityIndicator(),
-                                          imageUrl: userInfoModel!.data!.avatar!,
+                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                              ? const Center(
+                                                  child: CupertinoActivityIndicator(),
+                                                )
+                                              : child,
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -198,11 +201,14 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                     widget.pictures,
                                     index,
                                   ),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.pictures[index],
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    const CupertinoActivityIndicator(),
+                              child: Image.network(
+                                widget.pictures[index],
                                 fit: BoxFit.fitWidth,
+                                loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                    ? const Center(
+                                        child: CupertinoActivityIndicator(),
+                                      )
+                                    : child,
                               ),
                             );
                           }),

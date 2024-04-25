@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:pet_community/enums/chat_record_enum.dart';
 import 'package:pet_community/models/chat/chat_record_model.dart';
 import 'package:pet_community/util/time_util.dart';
@@ -12,8 +13,7 @@ class ChatRecordView extends StatefulWidget {
   final int userId;
   final String? avatar;
 
-  const ChatRecordView({Key? key, required this.userId, this.avatar})
-      : super(key: key);
+  const ChatRecordView({Key? key, required this.userId, this.avatar}) : super(key: key);
 
   @override
   State<ChatRecordView> createState() => _ChatRecordViewState();
@@ -36,13 +36,10 @@ class _ChatRecordViewState extends State<ChatRecordView> {
         enablePullDown: false,
         enablePullUp: context.read<ChatRecordViewModel>().enablePullUp,
         reverse: true,
-        onLoading: () =>
-            context.read<ChatRecordViewModel>().onLoad(context, widget.userId),
+        onLoading: () => context.read<ChatRecordViewModel>().onLoad(context, widget.userId),
         child: Container(
           // color: context.read<ChatViewModel>().onLongPress ? ThemeUtil.scaffoldColor(context)  : null,
-          alignment: context.watch<ChatRecordViewModel>().list.length < 10
-              ? Alignment.topCenter
-              : null, //需判断是否能滑动
+          alignment: context.watch<ChatRecordViewModel>().list.length < 10 ? Alignment.topCenter : null, //需判断是否能滑动
           child: ListView.separated(
             reverse: true,
             shrinkWrap: true,
@@ -56,41 +53,30 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                       // color: Colors.grey,
                       margin: EdgeInsets.only(bottom: 10.w),
                       child: Row(
-                        mainAxisAlignment: context
-                                    .watch<ChatRecordViewModel>()
-                                    .list[index]
-                                    .userId !=
-                                context
-                                    .read<NavViewModel>()
-                                    .userInfoModel
-                                    ?.data
-                                    ?.userId
+                        mainAxisAlignment: context.watch<ChatRecordViewModel>().list[index].userId !=
+                                context.read<NavViewModel>().userInfoModel?.data?.userId
                             ? MainAxisAlignment.start
                             : MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          context
-                                      .watch<ChatRecordViewModel>()
-                                      .list[index]
-                                      .userId !=
-                                  context
-                                      .read<NavViewModel>()
-                                      .userInfoModel
-                                      ?.data
-                                      ?.userId
+                          context.watch<ChatRecordViewModel>().list[index].userId !=
+                                  context.read<NavViewModel>().userInfoModel?.data?.userId
                               ? Container(
                                   clipBehavior: Clip.antiAlias,
-                                  margin:
-                                      EdgeInsets.only(right: 5.w, left: 5.w),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5.w)),
+                                  margin: EdgeInsets.only(right: 5.w, left: 5.w),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                                   child: widget.avatar != null
-                                      ? CachedNetworkImage(
-                                          imageUrl: widget.avatar!,
+                                      ? Image.network(
+                                          widget.avatar!,
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                              ? const Center(
+                                                  child: CupertinoActivityIndicator(),
+                                                )
+                                              : child,
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -100,34 +86,22 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                         ),
                                 )
                               : const SizedBox(),
-                          context
-                                      .watch<ChatRecordViewModel>()
-                                      .list[index]
-                                      .userId !=
-                                  context
-                                      .read<NavViewModel>()
-                                      .userInfoModel
-                                      ?.data
-                                      ?.userId
+                          context.watch<ChatRecordViewModel>().list[index].userId !=
+                                  context.read<NavViewModel>().userInfoModel?.data?.userId
                               ? Container(
                                   width: 5.w,
                                   height: 0,
                                   margin: EdgeInsets.only(top: 18.w),
                                   decoration: BoxDecoration(
                                     border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 8.w,
-                                          style: BorderStyle.solid),
+                                      bottom:
+                                          BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                       left: BorderSide(
                                         color: ThemeUtil.primaryColor(context),
                                         width: 8.w,
                                         style: BorderStyle.solid,
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 8.w,
-                                          style: BorderStyle.solid),
+                                      top: BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                     ),
                                   ),
                                 )
@@ -138,123 +112,70 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                               maxWidth: MediaQuery.of(context).size.width * 0.7,
                               minHeight: 40.w,
                             ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8.w, vertical: 10.w),
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.w),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
+                              color: Theme.of(context).brightness == Brightness.dark
                                   ? ThemeUtil.primaryColor(context)
-                                  : context
-                                              .watch<ChatRecordViewModel>()
-                                              .list[index]
-                                              .userId ==
-                                          context
-                                              .read<NavViewModel>()
-                                              .userInfoModel
-                                              ?.data
-                                              ?.userId
+                                  : context.watch<ChatRecordViewModel>().list[index].userId ==
+                                          context.read<NavViewModel>().userInfoModel?.data?.userId
                                       ? ThemeUtil.reversePrimaryColor(context)
                                       : Colors.white,
                               borderRadius: BorderRadius.circular(5.w),
                             ),
-                            child: context
-                                        .watch<ChatRecordViewModel>()
-                                        .list[index]
-                                        .type ==
-                                    ChatRecordEnum.voice.number
-                                ? VoiceRecordWidget(
-                                    crm: context
-                                        .watch<ChatRecordViewModel>()
-                                        .list[index])
+                            child: context.watch<ChatRecordViewModel>().list[index].type == ChatRecordEnum.voice.number
+                                ? VoiceRecordWidget(crm: context.watch<ChatRecordViewModel>().list[index])
                                 : SelectableText(
                                     "${context.watch<ChatRecordViewModel>().list[index].data}",
                                     style: TextStyle(
                                       fontSize: 16.sp,
-                                      color: ThemeUtil.brightness(context) ==
-                                              Brightness.dark
+                                      color: ThemeUtil.brightness(context) == Brightness.dark
                                           ? null
-                                          : context
-                                                      .watch<
-                                                          ChatRecordViewModel>()
-                                                      .list[index]
-                                                      .userId ==
-                                                  context
-                                                      .read<NavViewModel>()
-                                                      .userInfoModel
-                                                      ?.data
-                                                      ?.userId
+                                          : context.watch<ChatRecordViewModel>().list[index].userId ==
+                                                  context.read<NavViewModel>().userInfoModel?.data?.userId
                                               ? Colors.white
                                               : null,
                                     ),
                                   ),
                           ),
-                          context
-                                      .watch<ChatRecordViewModel>()
-                                      .list[index]
-                                      .userId ==
-                                  context
-                                      .read<NavViewModel>()
-                                      .userInfoModel
-                                      ?.data
-                                      ?.userId
+                          context.watch<ChatRecordViewModel>().list[index].userId ==
+                                  context.read<NavViewModel>().userInfoModel?.data?.userId
                               ? Container(
                                   width: 5.w,
                                   height: 0,
                                   margin: EdgeInsets.only(top: 18.w),
                                   decoration: BoxDecoration(
                                     border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 8.w,
-                                          style: BorderStyle.solid),
+                                      bottom:
+                                          BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                       right: BorderSide(
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.dark
+                                        color: Theme.of(context).brightness == Brightness.dark
                                             ? ThemeUtil.primaryColor(context)
-                                            : ThemeUtil.reversePrimaryColor(
-                                                context),
+                                            : ThemeUtil.reversePrimaryColor(context),
                                         width: 8.w,
                                         style: BorderStyle.solid,
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 8.w,
-                                          style: BorderStyle.solid),
+                                      top: BorderSide(color: Colors.transparent, width: 8.w, style: BorderStyle.solid),
                                     ),
                                   ),
                                 )
                               : const SizedBox(),
-                          (context
-                                      .watch<ChatRecordViewModel>()
-                                      .list[index]
-                                      .userId ==
-                                  context
-                                      .read<NavViewModel>()
-                                      .userInfoModel
-                                      ?.data
-                                      ?.userId)
+                          (context.watch<ChatRecordViewModel>().list[index].userId ==
+                                  context.read<NavViewModel>().userInfoModel?.data?.userId)
                               ? Container(
                                   clipBehavior: Clip.antiAlias,
-                                  margin:
-                                      EdgeInsets.only(right: 5.w, left: 5.w),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5.w)),
-                                  child: context
-                                              .watch<NavViewModel>()
-                                              .userInfoModel
-                                              ?.data
-                                              ?.avatar !=
-                                          null
-                                      ? CachedNetworkImage(
-                                          imageUrl: context
-                                                  .watch<NavViewModel>()
-                                                  .userInfoModel
-                                                  ?.data
-                                                  ?.avatar ??
-                                              "",
+                                  margin: EdgeInsets.only(right: 5.w, left: 5.w),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
+                                  child: context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
+                                      ? Image.network(
+                                          context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                              ? const Center(
+                                                  child: CupertinoActivityIndicator(),
+                                                )
+                                              : child,
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -269,8 +190,7 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                     );
             },
             separatorBuilder: (BuildContext context, int index) {
-              List<ChatRecordModel> list =
-                  context.watch<ChatRecordViewModel>().list;
+              List<ChatRecordModel> list = context.watch<ChatRecordViewModel>().list;
               String? time;
               if (list[index].showTime) {
                 time = TimeUtils.timeDifferenceCurrTime(list[index].sendTime);

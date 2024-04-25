@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:pet_community/util/tools.dart';
@@ -66,6 +67,11 @@ class _EditDataViewState extends State<EditDataView> {
                           width: 100.w,
                           height: 100.w,
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )
+                              : child,
                         ),
                       ),
                     ),
