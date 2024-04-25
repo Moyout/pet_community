@@ -2,8 +2,12 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pet_community/models/upload/upload_model.dart';
+import 'package:pet_community/models/upload/upload_video_model.dart';
+import 'package:pet_community/models/video/video_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/work/release_work_viewmodel.dart';
+import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ReleaseWork2View extends StatefulWidget {
@@ -16,6 +20,7 @@ class ReleaseWork2View extends StatefulWidget {
 }
 
 class _ReleaseWorkViewState extends State<ReleaseWork2View> {
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
   TextEditingController titleC = TextEditingController();
   TextEditingController contentC = TextEditingController();
 
@@ -24,11 +29,6 @@ class _ReleaseWorkViewState extends State<ReleaseWork2View> {
   String? fileName;
 
   late File cover;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +43,10 @@ class _ReleaseWorkViewState extends State<ReleaseWork2View> {
                 height: 25.w,
                 width: 45.w,
                 child: TextButton(
-                  onPressed:
-                      (titleC.text.trim().isNotEmpty || videoXFile!=null)
-                          ? () =>  onSubmit( )
-                          : null,
+                  onPressed: (titleC.text.trim().isNotEmpty || videoXFile != null) ? () => onSubmit() : null,
                   style: TextButton.styleFrom(
-                    backgroundColor: (titleC.text.trim().isNotEmpty || videoXFile!=null)
-                        ? const Color(0xff07C160)
-                        : Colors.grey,
+                    backgroundColor:
+                        (titleC.text.trim().isNotEmpty || videoXFile != null) ? const Color(0xff07C160) : Colors.grey,
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.zero,
                   ),
@@ -136,7 +132,6 @@ class _ReleaseWorkViewState extends State<ReleaseWork2View> {
     if (videoXFile != null) {
       String path = (await getTemporaryDirectory()).path;
       String thumbnailPath = path + "/${DateTime.now().millisecond}.jpg";
-
       fileName = await VideoThumbnail.thumbnailFile(
         video: videoXFile!.path,
         imageFormat: ImageFormat.JPEG,
@@ -146,14 +141,23 @@ class _ReleaseWorkViewState extends State<ReleaseWork2View> {
         quality: 100,
       );
       cover = File(thumbnailPath);
-      debugPrint("fileName--------->${fileName}");
-      debugPrint("cover--------->${cover.path}");
-
       setState(() {});
     }
-
-    debugPrint("video--------->${videoXFile?.path}");
   }
 
-  onSubmit() {}
+  void onSubmit() async {
+    String? token = SpUtil.getString(PublicKeys.token);
+    UploadVideoModel um = await UploadRequest.uploadVideoFile(videoXFile!.path, nvm.userInfoModel?.data?.userId, token);
+    if (um.data?.video != null) {
+      bool isSuccess = await VideoRequest.releaseVideo(
+        title: titleC.text.trim(),
+        content: contentC.text.trim(),
+        cover: um.data?.cover,
+        videoPath: um.data?.video,
+        userId: nvm.userInfoModel?.data?.userId,
+        token: token,
+      );
+      if (isSuccess) Navigator.pop(context);
+    }
+  }
 }

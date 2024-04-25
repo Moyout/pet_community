@@ -46,7 +46,7 @@ class RefreshWidget extends StatelessWidget {
               ],
             );
           } else {
-            body = const Text("No more Data");
+            body = const Text("刷新完成");
           }
           return SizedBox(
             height: 50.0.w,
@@ -88,14 +88,14 @@ class RefreshWidget extends StatelessWidget {
         },
       ),
 
-      headerTriggerDistance: 40.0.w,
-      // header trigger refresh trigger distance
-      footerTriggerDistance: 40.0.w,
-      springDescription: const SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
-      // custom spring back animate,the props meaning see the flutter api
-      maxOverScrollExtent: 50.w,
-      //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
-      maxUnderScrollExtent: 50,
+      // headerTriggerDistance: 40.0.w,
+      // // header trigger refresh trigger distance
+      // footerTriggerDistance: 40.0.w,
+      // springDescription: const SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
+      // // custom spring back animate,the props meaning see the flutter api
+      // maxOverScrollExtent: 50.w,
+      // //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
+      // maxUnderScrollExtent: 50,
       // Maximum dragging range at the bottom
       enableScrollWhenRefreshCompleted: true,
       //This property is incompatible with PageView and TabBarView. If you need TabBarView to slide left and right, you need to set it to true.

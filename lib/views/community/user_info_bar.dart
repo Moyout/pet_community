@@ -4,7 +4,7 @@ import 'package:pet_community/util/tools.dart';
 
 class UserInfoBar extends StatefulWidget {
   final int index;
-  final int userId;
+  final int? userId;
   final String publicationTime;
 
   const UserInfoBar({
@@ -56,7 +56,7 @@ class _UserInfoBarState extends State<UserInfoBar> with AutomaticKeepAliveClient
         ),
         SizedBox(width: 10.w),
         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(

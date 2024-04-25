@@ -90,6 +90,12 @@ class NavViewModel extends ChangeNotifier {
   }
 
   void onClickBottom(int index) {
+    if (index == bottomList.length - 1 && !isLogin) {
+      RouteUtil.pushNamed(AppUtils.getContext(), SignLoginView.routeName);
+
+      return;
+    }
+
     if (bottomList[index].isActive) {
       ///刷新
     } else {
@@ -154,11 +160,10 @@ class NavViewModel extends ChangeNotifier {
     AppUtils.getContext().read<NavViewModel>().userInfoModel = UserInfoModel();
     AppUtils.getContext().read<MineViewModel>().userArticleModel = UserArticleModel();
     contactList.clear();
-
     AppUtils.getContext().read<MineViewModel>().notifyListeners();
     RouteUtil.pop(context);
     WebSocketUtils().dispose();
-
+    onClickBottom(0);
     notifyListeners();
   }
 

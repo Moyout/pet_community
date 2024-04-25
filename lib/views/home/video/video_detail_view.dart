@@ -100,7 +100,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                         pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                        pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
                       child: Center(
                         child: Hero(
@@ -138,7 +138,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                             isScrollControlled: true,
                             context: context,
                             builder: (c) {
-                              return const VideoCommentView();
+                              return VideoCommentView(videoId: widget.videoId);
                             });
                       },
                       child: Container(

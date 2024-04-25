@@ -1,6 +1,6 @@
-class ReleaseCommentModel {
-  ReleaseCommentModel({
-    int? code,
+class UploadVideoModel {
+  UploadVideoModel({
+    num? code,
     String? msg,
     Data? data,
   }) {
@@ -9,25 +9,25 @@ class ReleaseCommentModel {
     _data = data;
   }
 
-  ReleaseCommentModel.fromJson(dynamic json) {
+  UploadVideoModel.fromJson(dynamic json) {
     _code = json['code'];
     _msg = json['msg'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-  int? _code;
+  num? _code;
   String? _msg;
   Data? _data;
-  ReleaseCommentModel copyWith({
-    int? code,
+  UploadVideoModel copyWith({
+    num? code,
     String? msg,
     Data? data,
   }) =>
-      ReleaseCommentModel(
+      UploadVideoModel(
         code: code ?? _code,
         msg: msg ?? _msg,
         data: data ?? _data,
       );
-  int? get code => _code;
+  num? get code => _code;
   String? get msg => _msg;
   Data? get data => _data;
 
@@ -42,30 +42,36 @@ class ReleaseCommentModel {
   }
 }
 
-/// commentId : 1035
-
 class Data {
   Data({
-    int? commentId,
+    String? cover,
+    String? video,
   }) {
-    _commentId = commentId;
+    _cover = cover;
+    _video = video;
   }
 
   Data.fromJson(dynamic json) {
-    _commentId = json['commentId'];
+    _cover = json['cover'];
+    _video = json['video'];
   }
-  int? _commentId;
+  String? _cover;
+  String? _video;
   Data copyWith({
-    int? commentId,
+    String? cover,
+    String? video,
   }) =>
       Data(
-        commentId: commentId ?? _commentId,
+        cover: cover ?? _cover,
+        video: video ?? _video,
       );
-  int? get commentId => _commentId;
+  String? get cover => _cover;
+  String? get video => _video;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['commentId'] = _commentId;
+    map['cover'] = _cover;
+    map['video'] = _video;
     return map;
   }
 }

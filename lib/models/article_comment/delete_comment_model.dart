@@ -1,28 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pet_community/util/tools.dart';
 
-class DeleteCommentRequest {
-  static Future<DeleteCommentModel> deleteComment({
-    required int commentId,
-    required int userId,
-    required String token,
-  }) async {
-    String url = ApiConfig.baseUrl + "/articleComment/deleteComment";
-    var response = await BaseRequest().toPost(
-      url,
-      parameters: {
-        "commentId": commentId,
-        "userId": userId,
-      },
-      options: Options(headers: {PublicKeys.token: token}),
-      isShowLoading: true,
-    );
-    DeleteCommentModel scModel = DeleteCommentModel.fromJson(response);
-
-    return scModel;
-  }
-}
-
 /// code : 0
 /// msg : "删除成功"
 /// data : null

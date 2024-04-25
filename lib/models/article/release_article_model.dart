@@ -3,7 +3,6 @@ import 'package:pet_community/util/tools.dart';
 
 class ReleaseArticleRequest {
   static Future<ReleaseArticleModel> releaseArticle({
-    required String author,
     required String title,
     required String content,
     required String cover,
@@ -14,7 +13,6 @@ class ReleaseArticleRequest {
     String url = ApiConfig.baseUrl + "/article/create";
 
     Map<String, dynamic>? dataMap = {
-      "author": author,
       "title": title,
       "content": content,
       "cover": cover,

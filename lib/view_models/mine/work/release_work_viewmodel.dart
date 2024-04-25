@@ -83,7 +83,6 @@ class ReleaseWorkViewModel extends ChangeNotifier {
       String token = SpUtil.getString(PublicKeys.token)!;
       String userName = AppUtils.getContext().read<NavViewModel>().userInfoModel?.data?.userName ?? "";
       ReleaseArticleModel releaseArticleModel = await ReleaseArticleRequest.releaseArticle(
-        author: userName,
         title: titleC.text.trim(),
         content: textC.text.trim(),
         cover: "cover",

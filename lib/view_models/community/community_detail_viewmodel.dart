@@ -90,7 +90,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
         String commentator = context.read<NavViewModel>().userInfoModel?.data?.userName ?? "";
         String avatar = context.read<NavViewModel>().userInfoModel?.data?.avatar ??
             ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg";
-        ReleaseCommentModel releaseCommentModel = await ReleaseCommentRequest.releaseComment(
+        ReleaseCommentModel releaseCommentModel = await CommentRequest.releaseComment(
           commentator: commentator,
           commentContent: textC.text.trimRight(),
           articleId: articleId,
@@ -129,7 +129,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
     String? token = SpUtil.getString(PublicKeys.token);
     int? userId = SpUtil.getInt(PublicKeys.userId);
     DeleteCommentModel deleteCommentModel =
-        await DeleteCommentRequest.deleteComment(commentId: commentId, userId: userId!, token: token!);
+        await CommentRequest.deleteComment(commentId: commentId, userId: userId!, token: token!);
     if (deleteCommentModel.code == 0) {
       commentModel.data?.articleComments.removeWhere((element) => element.commentId == commentId);
       isDelete = true;

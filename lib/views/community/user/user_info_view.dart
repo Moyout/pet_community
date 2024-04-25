@@ -4,6 +4,7 @@ import 'package:pet_community/view_models/community/user/user_info_viewmodel.dar
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
+import 'package:pet_community/views/mine/work/video_list_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
@@ -30,6 +31,7 @@ class _UserInfoViewState extends State<UserInfoView>
 
   TextStyle textStyle = TextStyle(fontSize: 12.sp, color: Colors.grey, overflow: TextOverflow.ellipsis);
   TextStyle textStyle2 = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis);
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
 
   @override
   void initState() {
@@ -418,11 +420,13 @@ class _UserInfoViewState extends State<UserInfoView>
                       setState(() {});
                     },
                     tabs: [
-                      const Text("作品"),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [Text("收藏"), Icon(Icons.lock, size: 18)],
-                      )
+                      const Text("图文作品"),
+                      const Text("视频作品"),
+
+                      // Row(
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: const [Text("收藏"), Icon(Icons.lock, size: 18)],
+                      // )
                     ],
                   ),
                 ),
@@ -449,27 +453,34 @@ class _UserInfoViewState extends State<UserInfoView>
                         isShowRelease: false,
                         isShowUserInfoView: false,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(40.w),
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                            child: const Icon(Icons.lock, size: 35),
-                          ),
-                          const Text("收藏内容不可见"),
-                          Text(
-                            "该用户将收藏列表设为私密",
-                            style: TextStyle(color: Colors.grey, fontSize: 12.sp),
-                          ),
-                        ],
-                      ),
+                      VideoListView(userId: widget.userId),
+                      // Column(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       padding: EdgeInsets.all(10.w),
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(40.w),
+                      //         color: Colors.grey.withOpacity(0.5),
+                      //       ),
+                      //       child: const Icon(Icons.lock, size: 35),
+                      //     ),
+                      //     const Text("收藏内容不可见"),
+                      //     Text(
+                      //       "该用户将收藏列表设为私密",
+                      //       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 155.w,
+                color: ThemeUtil.primaryColor(context),
               ),
             ),
           ],

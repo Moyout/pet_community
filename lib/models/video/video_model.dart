@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
 
@@ -19,11 +20,59 @@ class VideoRequest {
     // print(userInfoModel.data);
     return scModel;
   }
-}
 
-/// code : 0
-/// msg : "成功"
-/// data : {"total":2,"videos":[{"videoId":10023,"cover":"http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"标题","content":"今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的","video":"http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":7,"publicationTime":"2023-07-29T19:19:11","userId":100027},{"videoId":10025,"cover":"http://localhost:8081/images/100029/petVideoCover/6c6d0be14ed2e7502d2638d0a93d69b6.png","title":"title2","content":"像不像你女朋友生气时候的样子😂2","video":"http://localhost:8081/images/100029/petVideo/6c6d0be14ed2e7502d2638d0a93d69b6.mp4","likes":30,"publicationTime":"2023-07-29T21:42:30","userId":100029}]}
+  static Future<List<Videos>> getUserVideoList(
+    int? userId, {
+    int page = 1,
+    int count = 20,
+    bool isShowLoading = true,
+  }) async {
+    String url = ApiConfig.baseUrl + "/video/queryUserVideo";
+    var response = await BaseRequest().toGet(
+      url,
+      parameters: {"page": page, "count": count, "userId": userId},
+      isShowLoading: isShowLoading,
+    );
+    List<Videos> list = [];
+    if (response != null) {
+      (response["data"] as List).forEach((element) {
+        var video = Videos.fromJson(element);
+        list.add(video);
+      });
+    }
+    debugPrint("list---------------------->${list}");
+    return list;
+  }
+
+  static Future<bool> releaseVideo({
+    required String? title,
+    required String? content,
+    required String? cover,
+    required String? videoPath,
+    required int? userId,
+    required String? token,
+  }) async {
+    String url = ApiConfig.baseUrl + "/video/releasePetVideo";
+
+    Map<String, dynamic>? dataMap = {
+      "title": title,
+      "content": content,
+      "cover": cover,
+      "video": videoPath,
+      "userId": userId,
+    };
+    var response = await BaseRequest().toPost(
+      url,
+      parameters: dataMap,
+      options: Options(headers: {PublicKeys.token: token}),
+      isShowLoading: true,
+    );
+
+    // ReleaseArticleModel scModel = ReleaseArticleModel.fromJson(response);
+    // return scModel;
+    return response['code'] == 0;
+  }
+}
 
 class VideoModel extends ResponseModel {
   VideoModel({
@@ -61,9 +110,6 @@ class VideoModel extends ResponseModel {
     return map;
   }
 }
-
-/// total : 2
-/// videos : [{"videoId":10023,"cover":"http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png","title":"标题","content":"今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的","video":"http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4","likes":7,"publicationTime":"2023-07-29T19:19:11","userId":100027},{"videoId":10025,"cover":"http://localhost:8081/images/100029/petVideoCover/6c6d0be14ed2e7502d2638d0a93d69b6.png","title":"title2","content":"像不像你女朋友生气时候的样子😂2","video":"http://localhost:8081/images/100029/petVideo/6c6d0be14ed2e7502d2638d0a93d69b6.mp4","likes":30,"publicationTime":"2023-07-29T21:42:30","userId":100029}]
 
 class Data {
   Data({
@@ -107,15 +153,6 @@ class Data {
     return map;
   }
 }
-
-/// videoId : 10023
-/// cover : "http://localhost:8081/images/100027/petVideoCover/2693a96a81a3461691a517452ca744da.png"
-/// title : "标题"
-/// content : "今天带着多多跑楼顶耍了，随后又带着去打了疫苗，只希望你健健康康的"
-/// video : "http://localhost:8081/images/100027/petVideo/2693a96a81a3461691a517452ca744da.mp4"
-/// likes : 7
-/// publicationTime : "2023-07-29T19:19:11"
-/// userId : 100027
 
 class Videos {
   Videos({

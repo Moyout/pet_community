@@ -3,6 +3,7 @@ import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/mine/mine_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
+import 'package:pet_community/views/mine/work/video_list_view.dart';
 import 'package:pet_community/views/mine/work/works_tab.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/widget/delegate/sliver_header_delegate.dart';
@@ -17,6 +18,7 @@ class MineView extends StatefulWidget {
 class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   double tabViewHeight = 150.w;
   bool isShowMore = false;
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
 
   @override
   void initState() {
@@ -492,7 +494,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                             isShowRelease: true,
                             isShowUserInfoView: true,
                           ),
-                          const Text(" "),
+                          VideoListView(userId: nvm.userInfoModel?.data?.userId),
                         ],
                       ),
                     ),
