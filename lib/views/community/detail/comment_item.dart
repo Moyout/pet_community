@@ -18,6 +18,7 @@ class CommentItem extends StatefulWidget {
 }
 
 class _CommentItemState extends State<CommentItem> {
+  CommunityDetailViewModel cm = AppUtils.getContext().read<CommunityDetailViewModel>();
   UserInfoModel? userInfoModel;
 
   @override
@@ -144,7 +145,13 @@ class _CommentItemState extends State<CommentItem> {
                     ],
                   ),
                   Text(
-                    "${context.read<CommunityDetailViewModel>().commentModel.data!.articleComments[widget.index].commentTime}",
+                    context
+                            .read<CommunityDetailViewModel>()
+                            .commentModel
+                            .data
+                            ?.articleComments[widget.index]
+                            .commentTime ??
+                        "",
                     style: TextStyle(
                       color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.5),
                       fontSize: 10.sp,
@@ -164,7 +171,7 @@ class _CommentItemState extends State<CommentItem> {
             child: Stack(
               children: [
                 SelectableText(
-                  "${context.read<CommunityDetailViewModel>().commentModel.data!.articleComments[widget.index].commentContent}",
+                  cm.commentModel.data?.articleComments[widget.index].commentContent ?? "",
                   style: TextStyle(
                     letterSpacing: 1.0,
                     fontSize: 13.sp,
@@ -182,26 +189,7 @@ class _CommentItemState extends State<CommentItem> {
                               context.watch<NavViewModel>().userInfoModel?.data?.userId &&
                           context.watch<NavViewModel>().userInfoModel?.data?.userId != null)
                       ? InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (buildContext) {
-                                  return CupertinoDialog(
-                                    content: "是否删除此评论",
-                                    onYes: () async {
-                                      Navigator.pop(AppUtils.getContext());
-                                      await AppUtils.getContext().read<CommunityDetailViewModel>().deleteComment(
-                                          AppUtils.getContext()
-                                              .read<CommunityDetailViewModel>()
-                                              .commentModel
-                                              .data!
-                                              .articleComments[widget.index]
-                                              .commentId);
-                                      // if (delete) Navigator.pop(AppUtils.getContext());
-                                    },
-                                  );
-                                });
-                          },
+                          onTap: () => deleteComment(),
                           child: Text(
                             "删除",
                             style: TextStyle(color: Colors.blue, fontSize: 12.sp),
@@ -215,5 +203,22 @@ class _CommentItemState extends State<CommentItem> {
         ],
       ),
     );
+  }
+
+  deleteComment() {
+    int articleId = cm.commentModel.data!.articleComments[widget.index].articleId;
+    showDialog(
+        context: context,
+        builder: (buildContext) {
+          return CupertinoDialog(
+            content: "是否删除此评论",
+            onYes: () async {
+              Navigator.pop(AppUtils.getContext());
+              bool isSuccess = await cm.deleteComment(cm.commentModel.data!.articleComments[widget.index].commentId);
+              if (isSuccess) cm.onRefresh(articleId);
+              // if (delete) Navigator.pop(AppUtils.getContext());
+            },
+          );
+        });
   }
 }

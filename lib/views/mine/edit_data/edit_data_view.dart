@@ -17,6 +17,7 @@ class EditDataView extends StatefulWidget {
 }
 
 class _EditDataViewState extends State<EditDataView> {
+  NavViewModel nvm =AppUtils.getContext().read<NavViewModel>();
   TextStyle titleText = TextStyle(color: Colors.grey, fontSize: 14.sp);
   TextStyle valueText = TextStyle(fontSize: 14.sp);
 
@@ -61,26 +62,20 @@ class _EditDataViewState extends State<EditDataView> {
                     Hero(
                       tag: "avatar",
                       child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
-                              ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                          width: 100.w,
-                          height: 100.w,
-                          fit: BoxFit.cover,
-                          placeholder: (c, w) => CupertinoActivityIndicator(),
-                        ),
-                        // child: Image.network(
-                        //   context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
-                        //       ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
-                        //   width: 100.w,
-                        //   height: 100.w,
-                        //   fit: BoxFit.cover,
-                        //   loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                        //       ? const Center(
-                        //           child: CupertinoActivityIndicator(),
-                        //         )
-                        //       : child,
-                        // ),
+                        child: context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
+                            ? CachedNetworkImage(
+                                imageUrl: nvm.userInfoModel!.data!.avatar!,
+                                width: 100.w,
+                                height: 100.w,
+                                fit: BoxFit.cover,
+                                placeholder: (c, w) => const CupertinoActivityIndicator(),
+                              )
+                            : Image.asset(
+                                Assets.imagesIcLauncher,
+                                width: 100.w,
+                                height: 100.w,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Positioned(

@@ -35,6 +35,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
   }
 
   Future<void> getVideoComment() async {
+    vm = VideoCommentModel(data: Data(videoComments: [], total: 0));
     var res = await VideoCommentRequest.getComment(videoId: widget.videoId, page: 1);
     if (res.data?.videoComments != null && res.data!.videoComments.isNotEmpty) {
       vm = res;
@@ -272,7 +273,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
   }
 
   deleteComment(int index) async {
-    debugPrint("vm---------------------->${vm.data?.videoComments[index].commentId}");
+    debugPrint("vm---------------------->${vm.data?.videoComments.hashCode}");
     var isDelete = await showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -287,7 +288,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
             ],
           );
         });
-    debugPrint("isDelete---------------------->${isDelete}");
+
     if (isDelete ?? false) {
       String? token = SpUtil.getString(PublicKeys.token);
       DeleteCommentModel model = await VideoCommentRequest.deleteComment(
@@ -300,6 +301,8 @@ class _VideoCommentViewState extends State<VideoCommentView> {
         // rc.requestRefresh();
         onRefresh();
       }
+      setState(() {});
     }
+    debugPrint("vm----------2------------>${vm.data?.videoComments.hashCode}");
   }
 }

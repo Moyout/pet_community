@@ -57,6 +57,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
 
   ///刷新评论
   Future<void> onRefresh(int articleId) async {
+    commentModel = CommentModel();
     commentPage = 1;
     enablePullUp = true;
     CommentModel model = await CommentRequest.getComment(articleId: articleId, page: commentPage)
@@ -88,8 +89,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
         String? token = SpUtil.getString(PublicKeys.token);
         int? userId = SpUtil.getInt(PublicKeys.userId);
         String commentator = context.read<NavViewModel>().userInfoModel?.data?.userName ?? "";
-        String avatar = context.read<NavViewModel>().userInfoModel?.data?.avatar ??
-            ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg";
+
         ReleaseCommentModel releaseCommentModel = await CommentRequest.releaseComment(
           commentator: commentator,
           commentContent: textC.text.trimRight(),
@@ -110,9 +110,10 @@ class CommunityDetailViewModel extends ChangeNotifier {
             );
           }
           enablePullUp = true;
-
           textC.clear();
+          FocusScope.of(context).unfocus();
           ToastUtil.showBottomToast(releaseCommentModel.msg!);
+          onRefresh(articleId);
         } else if (releaseCommentModel.code == 1007) {
           LoginViewModel.tokenExpire(msg: releaseCommentModel.msg!);
         }
@@ -133,6 +134,7 @@ class CommunityDetailViewModel extends ChangeNotifier {
     if (deleteCommentModel.code == 0) {
       commentModel.data?.articleComments.removeWhere((element) => element.commentId == commentId);
       isDelete = true;
+      notifyListeners();
     } else if (deleteCommentModel.code == 1007) {
       LoginViewModel.tokenExpire();
     }

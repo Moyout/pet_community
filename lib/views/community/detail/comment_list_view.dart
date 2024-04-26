@@ -13,15 +13,21 @@ class CommentListView extends StatefulWidget {
 }
 
 class _CommentListViewState extends State<CommentListView> {
+  CommunityDetailViewModel cm =AppUtils.getContext().read<CommunityDetailViewModel>();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: ValueKey(cm.commentModel.hashCode),
+
       children: [
-        ...List.generate(context.read<CommunityDetailViewModel>().commentModel.data!.articleComments.length, (index) {
+        ...List.generate(cm.commentModel.data!.articleComments.length, (index) {
           return CommentItem(
             userId: widget.userId,
             index: index,
-            commentatorId: context.read<CommunityDetailViewModel>().commentModel.data!.articleComments[index].userId,
+            commentatorId: cm.commentModel.data!.articleComments[index].userId,
           );
         })
       ],
