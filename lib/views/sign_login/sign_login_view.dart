@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:pet_community/util/email_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
+import 'package:pet_community/views/sign_login/privacy_policy_view.dart';
 import 'package:pet_community/views/sign_login/reset_password_view.dart';
 import 'package:pet_community/widget/verification/slide_verification_widget.dart';
 
@@ -63,14 +64,19 @@ class _SignLoginViewState extends State<SignLoginView> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             children: [
               Expanded(
                 child: ListView(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 100.w, bottom: 40.w),
+                      alignment: Alignment.centerRight,
+                      height: 50.w,
+                      child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 50.w, bottom: 40.w, left: 20.w, right: 20.w),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         isLoginMode ? "登录" : "注册",
@@ -78,7 +84,7 @@ class _SignLoginViewState extends State<SignLoginView> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 6.w),
+                      margin: EdgeInsets.symmetric(vertical: 6.w, horizontal: 20.w),
                       child: defaultTextField(
                         accountC,
                         maxLength: 23,
@@ -103,7 +109,7 @@ class _SignLoginViewState extends State<SignLoginView> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 6.w),
+                      margin: EdgeInsets.symmetric(vertical: 6.w, horizontal: 20.w),
                       // height: 50.w,
                       child: defaultTextField(
                         passwordC,
@@ -130,7 +136,7 @@ class _SignLoginViewState extends State<SignLoginView> {
                     ),
                     if (!isLoginMode)
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 6.w),
+                        margin: EdgeInsets.symmetric(vertical: 6.w, horizontal: 20.w),
                         // height: 50.w,
                         child: defaultTextField(
                           verificationC,
@@ -152,7 +158,7 @@ class _SignLoginViewState extends State<SignLoginView> {
                         ),
                       ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 12.w),
+                      margin: EdgeInsets.symmetric(vertical: 12.w, horizontal: 20.w),
                       child: DefaultTextStyle(
                         style: TextStyle(
                           color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.8),
@@ -180,83 +186,82 @@ class _SignLoginViewState extends State<SignLoginView> {
                 ),
               ),
               SafeArea(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        isAgree = !isAgree;
-                        setState(() {});
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 16.w),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          isAgree = !isAgree;
+                          setState(() {});
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 16.w),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 6.w),
+                                width: 14.w,
+                                height: 14.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: !isAgree ? null : Colors.blue,
+                                  border: Border.all(
+                                    color: isAgree ? Colors.white : Colors.black,
+                                    width: 1.2,
+                                    strokeAlign: BorderSide.strokeAlignOutside,
+                                  ),
+                                ),
+                                // child: Icon(Icons.check_circle_outline),
+                              ),
+                              Container(
+                                // height: 20.w,
+                                // alignment: Alignment.centerLeft,
+                                // color: Colors.blue,
+                                constraints: BoxConstraints(maxWidth: 260.w),
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: "已经阅读并同意",
+                                    children: [
+                                      TextSpan(
+                                        text: "《用户协议》",
+                                        style: const TextStyle(color: Colors.blue),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => Navigator.pushNamed(context, PrivacyPolicyView.routeName),
+                                      ),
+                                      TextSpan(
+                                        text: "《隐私政策》",
+                                        style: const TextStyle(color: Colors.blue),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => Navigator.pushNamed(context, PrivacyPolicyView.routeName),
+                                      ),
+                                    ],
+                                  ),
+                                  style: TextStyle(fontSize: 12.sp),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
                         width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 6.w),
-                              width: 14.w,
-                              height: 14.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: !isAgree ? null : Colors.blue,
-                                border: Border.all(
-                                  color: isAgree ? Colors.white : Colors.black,
-                                  width: 1.2,
-                                  strokeAlign: BorderSide.strokeAlignOutside,
-                                ),
-                              ),
-                              // child: Icon(Icons.check_circle_outline),
-                            ),
-                            Container(
-                              // height: 20.w,
-                              // alignment: Alignment.centerLeft,
-                              // color: Colors.blue,
-                              constraints: BoxConstraints(maxWidth: 260.w),
-                              child: Text.rich(
-                                TextSpan(
-                                  text: "已经阅读并同意",
-                                  children: [
-                                    TextSpan(
-                                      text: "《用户协议》",
-                                      style: const TextStyle(color: Colors.blue),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          //todo : 用户协议
-                                        },
-                                    ),
-                                    TextSpan(
-                                      text: "《隐私政策》",
-                                      style: const TextStyle(color: Colors.blue),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          //todo : 隐私政策
-                                        },
-                                    ),
-                                  ],
-                                ),
-                                style: TextStyle(fontSize: 12.sp),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ],
+                        child: TextButton(
+                          onPressed: check() ? () => signOrLogin() : null,
+                          style: TextButton.styleFrom(
+                            disabledBackgroundColor: Colors.grey,
+                            backgroundColor: Colors.blueGrey,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: isLoginMode ? const Text("登录") : const Text("注册"),
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-                      width: MediaQuery.of(context).size.width,
-                      child: TextButton(
-                        onPressed: check() ? () => signOrLogin() : null,
-                        style: TextButton.styleFrom(
-                          disabledBackgroundColor: Colors.grey,
-                          backgroundColor: Colors.blueGrey,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: isLoginMode ? const Text("登录") : const Text("注册"),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
