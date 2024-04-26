@@ -157,7 +157,10 @@ class _ReleaseWorkViewState extends State<ReleaseWork2View> {
         userId: nvm.userInfoModel?.data?.userId,
         token: token,
       );
-      if (isSuccess) Navigator.pop(context);
+      if (isSuccess) {
+        ToastUtil.showBottomToast("发布成功");
+        Navigator.pop(context);
+      }
     }
   }
 }

@@ -13,6 +13,7 @@ class HomeViewModel extends ChangeNotifier {
     page = 1;
     enablePullUp = true;
     videoModel = await VideoRequest.getVideo(page: page);
+
     notifyListeners();
   }
 

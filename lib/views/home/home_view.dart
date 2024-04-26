@@ -14,10 +14,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin {
+  HomeViewModel hvm = AppUtils.getContext().read<HomeViewModel>();
   @override
   void initState() {
     super.initState();
-    context.read<HomeViewModel>().initViewModel();
+    hvm.initViewModel();
   }
 
   @override
@@ -31,13 +32,13 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
           behavior: OverScrollBehavior(),
           child: SmartRefresher(
             controller: context.watch<HomeViewModel>().refreshC,
-            onRefresh: () => context.read<HomeViewModel>().onRefresh(false),
-            onLoading: () => context.read<HomeViewModel>().loadMore(),
+            onRefresh: () => hvm.onRefresh(false),
+            onLoading: () => hvm.loadMore(),
             enablePullUp: context.watch<HomeViewModel>().enablePullUp,
             child: context.watch<HomeViewModel>().videoModel == null
                 ? Center(
                     child: TextButton(
-                      onPressed: () => context.read<HomeViewModel>().onRefresh(true),
+                      onPressed: () => hvm.onRefresh(true),
                       child: const Text("重新加载"),
                     ),
                   )
@@ -51,11 +52,11 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                             context,
                             VideoDetailView.routeName,
                             arguments: {
-                              "videoId": context.read<HomeViewModel>().videoModel.data?.videos[index].videoId,
-                              "videoUrl": context.read<HomeViewModel>().videoModel.data!.videos[index].video!,
-                              "picUrl": context.read<HomeViewModel>().videoModel.data!.videos[index].cover!,
-                              "content": context.read<HomeViewModel>().videoModel.data?.videos[index].content,
-                              "userId": context.read<HomeViewModel>().videoModel.data!.videos[index].userId,
+                              "videoId": hvm.videoModel.data?.videos[index].videoId,
+                              "videoUrl": hvm.videoModel.data!.videos[index].video!,
+                              "picUrl": hvm.videoModel.data!.videos[index].cover!,
+                              "content": hvm.videoModel.data?.videos[index].content,
+                              "userId": hvm.videoModel.data!.videos[index].userId,
                               "index": index,
                             },
                           );
@@ -111,6 +112,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
                                     Container(
                                       padding: EdgeInsets.symmetric(vertical: 5.w),
                                       child: UserAvatarName(
+                                        key: ValueKey(hvm.videoModel.hashCode),
                                         index: index,
                                         userId: context.watch<HomeViewModel>().videoModel.data!.videos[index].userId,
                                       ),

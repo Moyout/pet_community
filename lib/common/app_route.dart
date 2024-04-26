@@ -11,6 +11,7 @@ import 'package:pet_community/views/mine/work/release_work2_view.dart';
 import 'package:pet_community/views/mine/work/release_work_view.dart';
 import 'package:pet_community/views/mine/work/video_list_view.dart';
 import 'package:pet_community/views/navigation_view.dart';
+import 'package:pet_community/views/sign_login/reset_password_view.dart';
 import 'package:pet_community/views/sign_login/sign_login_view.dart';
 import 'package:pet_community/views/startup_view.dart';
 import 'package:pet_community/views/test_view.dart';
@@ -28,6 +29,7 @@ class AppRoute extends NavigatorObserver {
     EditDataView.routeName: (context) => const EditDataView(),
     TestView.routeName: (context) => const TestView(),
     ReleaseWork2View.routeName: (context) => const ReleaseWork2View(),
+    ResetPasswordView.routeName: (context) => const ResetPasswordView(),
     VideoListView.routeName: (context) => VideoListView(
           userId: (ModalRoute.of(context)?.settings.arguments as Map)["userId"],
         ),

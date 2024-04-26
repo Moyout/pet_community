@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:pet_community/models/article_comment/delete_comment_model.dart';
 import 'package:pet_community/models/video_comment/video_comment_model.dart';
 import 'package:pet_community/util/scroll_util.dart';
 import 'package:pet_community/util/tools.dart';
@@ -5,6 +7,7 @@ import 'package:pet_community/view_models/home/video_detail_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
 import 'package:pet_community/views/community/user_info_bar.dart';
 import 'package:pet_community/views/home/video/input_comment_widget.dart';
+import 'package:pet_community/widget/dialog/cupertino_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class VideoCommentView extends StatefulWidget {
@@ -180,7 +183,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
         itemCount: vm.data?.videoComments.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+            padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -189,21 +192,35 @@ class _VideoCommentViewState extends State<VideoCommentView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     UserInfoBar(
-                      index: index,
+                      key: ValueKey(vm.hashCode),
                       userId: vm.data?.videoComments[index].userId,
                       publicationTime: vm.data?.videoComments[index].commentTime ?? "",
                     ),
                     if (vm.data?.videoComments[index].userId == nvm.userInfoModel?.data?.userId)
-                      Container(
-                        padding: EdgeInsets.all(2.w),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
-                        child: Text(
-                          "作者",
-                          style: TextStyle(fontSize: 10.sp, color: ThemeUtil.scaffoldColor(context)),
-                        ),
+                      Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(2.w),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(4.w),
+                            ),
+                            child: Text(
+                              "自己",
+                              style: TextStyle(fontSize: 10.sp, color: ThemeUtil.scaffoldColor(context)),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => deleteComment(index),
+                            child: Container(
+                              margin: EdgeInsets.only(top: 12.w),
+                              child: Text(
+                                "删除",
+                                style: TextStyle(fontSize: 10.sp, color: Colors.redAccent),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                   ],
                 ),
@@ -252,5 +269,37 @@ class _VideoCommentViewState extends State<VideoCommentView> {
   void sendComment() async {
     bool isSuccess = await vvm.sendComment(widget.videoId, nvm.userInfoModel?.data?.userId);
     if (isSuccess) getVideoComment();
+  }
+
+  deleteComment(int index) async {
+    debugPrint("vm---------------------->${vm.data?.videoComments[index].commentId}");
+    var isDelete = await showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            content: const Text("是否删除此评论"),
+            actions: [
+              CupertinoDialogAction(child: const Text("取消"), onPressed: () => Navigator.pop(context)),
+              CupertinoDialogAction(
+                child: const Text("确定", style: TextStyle(color: Colors.redAccent)),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
+        });
+    debugPrint("isDelete---------------------->${isDelete}");
+    if (isDelete ?? false) {
+      String? token = SpUtil.getString(PublicKeys.token);
+      DeleteCommentModel model = await VideoCommentRequest.deleteComment(
+        commentId: vm.data?.videoComments[index].commentId,
+        userId: nvm.userInfoModel?.data?.userId,
+        token: token,
+      );
+      if (model.code == 0) {
+        if (model.msg != null) ToastUtil.showBottomToast(model.msg!);
+        // rc.requestRefresh();
+        onRefresh();
+      }
+    }
   }
 }

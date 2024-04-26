@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:pet_community/util/email_util.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/sign_login_viewmodel.dart';
+import 'package:pet_community/views/sign_login/reset_password_view.dart';
 import 'package:pet_community/widget/verification/slide_verification_widget.dart';
 
 class SignLoginView extends StatefulWidget {
@@ -168,7 +169,7 @@ class _SignLoginViewState extends State<SignLoginView> {
                               child: isLoginMode ? const Text("注册账号") : const Text("已有账号"),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () => Navigator.pushNamed(context, ResetPasswordView.routeName),
                               child: const Text("忘记密码"),
                             ),
                           ],

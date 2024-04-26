@@ -64,12 +64,7 @@ class _MessageViewState extends State<MessageView> {
               children: [
                 if (context.watch<NavViewModel>().contactList.isEmpty)
                   Center(
-                    child: Column(
-                      children: [
-                        Image.asset(Assets.backgroundsNoData, width: 250.w, height: 250.w, fit: BoxFit.contain),
-                        Text("No Data")
-                      ],
-                    ),
+                    child: Image.asset(Assets.backgroundsNoData, width: 250.w, height: 250.w, fit: BoxFit.contain),
                   ),
                 ...context.watch<NavViewModel>().contactList.entries.map((e) {
                   DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(e.value.last.sendTime);

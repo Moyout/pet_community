@@ -3,13 +3,11 @@ import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 
 class UserInfoBar extends StatefulWidget {
-  final int index;
   final int? userId;
   final String publicationTime;
 
   const UserInfoBar({
     Key? key,
-    required this.index,
     required this.userId,
     required this.publicationTime,
   }) : super(key: key);
@@ -32,10 +30,7 @@ class _UserInfoBarState extends State<UserInfoBar> with AutomaticKeepAliveClient
     UserInfoModel result = await UserInfoRequest.getOtherUserInfo(widget.userId, false);
     avatar = result.data?.avatar;
     userName = result.data?.userName;
-    debugPrint("avatar--------->${avatar}");
-    if (mounted) {
-      setState(() {});
-    }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -63,8 +58,9 @@ class _UserInfoBarState extends State<UserInfoBar> with AutomaticKeepAliveClient
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 250.w,
+            Container(
+              // width: 250.w,
+              constraints: BoxConstraints(maxWidth: 250.w),
               child: Text(
                 userName ?? "",
                 style: TextStyle(fontSize: 15.sp),

@@ -4,6 +4,7 @@ import 'package:pet_community/view_models/community/community_viewmodel.dart';
 import 'package:pet_community/views/community/detail/community_detail_view.dart';
 import 'package:pet_community/views/community/user_info_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_extend/share_extend.dart';
 
 class CommunityView extends StatefulWidget {
   const CommunityView({Key? key}) : super(key: key);
@@ -13,9 +14,11 @@ class CommunityView extends StatefulWidget {
 }
 
 class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveClientMixin {
+  CommunityViewModel cm = AppUtils.getContext().read<CommunityViewModel>();
+
   @override
   void initState() {
-    context.read<CommunityViewModel>().initViewModel();
+    cm.initViewModel();
     super.initState();
   }
 
@@ -33,12 +36,12 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
               child: SmartRefresher(
                 enablePullUp: context.watch<CommunityViewModel>().enablePullUp,
                 controller: context.watch<CommunityViewModel>().refreshC,
-                onRefresh: () => context.read<CommunityViewModel>().onRefresh(false),
-                onLoading: () => context.read<CommunityViewModel>().loadMore(),
+                onRefresh: () => cm.onRefresh(false),
+                onLoading: () => cm.loadMore(),
                 child: context.watch<CommunityViewModel>().articleModel.data == null
                     ? Center(
                         child: TextButton(
-                          onPressed: () => context.read<CommunityViewModel>().onRefresh(true),
+                          onPressed: () => cm.onRefresh(true),
                           child: const Text("重新加载"),
                         ),
                       )
@@ -48,21 +51,16 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                           return GestureDetector(
                             onTap: () {
                               debugPrint(
-                                  " .content---------------------->${context.read<CommunityViewModel>().articleModel.data?.articles[index].content}");
+                                  " .content---------------------->${cm.articleModel.data?.articles[index].content}");
                               RouteUtil.pushNamed(
                                 context,
                                 CommunityDetailView.routeName,
                                 arguments: {
-                                  "title":
-                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].title ?? "",
-                                  "content":
-                                      context.read<CommunityViewModel>().articleModel.data?.articles[index].content,
-                                  "articleId":
-                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].articleId,
-                                  "pictures":
-                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].pictures!,
-                                  "userId":
-                                      context.read<CommunityViewModel>().articleModel.data!.articles[index].userId,
+                                  "title": cm.articleModel.data!.articles[index].title ?? "",
+                                  "content": cm.articleModel.data?.articles[index].content,
+                                  "articleId": cm.articleModel.data!.articles[index].articleId,
+                                  "pictures": cm.articleModel.data!.articles[index].pictures!,
+                                  "userId": cm.articleModel.data!.articles[index].userId,
                                   "isShowUserInfoView": true,
                                 },
                               );
@@ -80,15 +78,9 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                   SizedBox(
                                     height: 50.w,
                                     child: UserInfoBar(
-                                      index: index,
-                                      userId:
-                                          context.read<CommunityViewModel>().articleModel.data!.articles[index].userId,
-                                      publicationTime: context
-                                          .read<CommunityViewModel>()
-                                          .articleModel
-                                          .data!
-                                          .articles[index]
-                                          .publicationTime,
+                                      key: ValueKey(cm.articleModel.hashCode),
+                                      userId: cm.articleModel.data!.articles[index].userId,
+                                      publicationTime: cm.articleModel.data!.articles[index].publicationTime,
                                     ),
                                   ),
                                   Container(
@@ -143,8 +135,9 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                               fit: BoxFit.cover,
                                               loadingBuilder: (context, child, loadingProgress) =>
                                                   loadingProgress != null
-                                                      ? const Center(
-                                                          child: CupertinoActivityIndicator(),
+                                                      ? SizedBox(
+                                                          height: 200.w,
+                                                          child: const Center(child: CupertinoActivityIndicator()),
                                                         )
                                                       : child,
                                             ),
@@ -157,8 +150,11 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(children: const [Icon(Icons.share_outlined, size: 18), Text("分享")]),
-                                      Row(children: const [Icon(Icons.comment_outlined, size: 18), Text("0")]),
+                                      GestureDetector(
+                                        onTap: () => shareArticle(index),
+                                        child: const Row(children: [Icon(Icons.share_outlined, size: 18), Text("分享")]),
+                                      ),
+                                      const Row(children: [Icon(Icons.comment_outlined, size: 18)]),
                                       Row(children: [
                                         const Icon(Icons.favorite_border, size: 18),
                                         Text(context
@@ -185,6 +181,14 @@ class _CommunityViewState extends State<CommunityView> with AutomaticKeepAliveCl
         ),
       ),
     );
+  }
+
+  shareArticle(int index) {
+    ShareExtend.share(
+        "${cm.articleModel.data?.articles[index].title}\n"
+            "${cm.articleModel.data?.articles[index].pictures ?? ""}\n"
+            "\t\t\t-------来自《宠物社区》",
+        "text");
   }
 
   @override

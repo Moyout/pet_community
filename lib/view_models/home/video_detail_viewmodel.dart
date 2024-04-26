@@ -12,6 +12,7 @@ class VideoDetailViewModel extends ChangeNotifier {
   bool isNoSliding = false;
   late PointerMoveEvent pointerMoveEvent;
   VideoDetailModel? videoDetailModel;
+  PageController pageC = PageController(initialPage: 0);
 
   Future<void> initViewModel(int? videoId) async {
     textC.clear();

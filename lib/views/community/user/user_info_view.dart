@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/community/user/user_info_viewmodel.dart';
+import 'package:pet_community/view_models/home/video_detail_viewmodel.dart';
 import 'package:pet_community/view_models/nav_viewmodel.dart';
+import 'package:pet_community/views/community/detail/community_detail_view.dart';
+import 'package:pet_community/views/home/video/video_detail_view.dart';
 import 'package:pet_community/views/message/chat/chat_view.dart';
 import 'package:pet_community/views/mine/background/set_background_view.dart';
 import 'package:pet_community/views/mine/work/video_list_view.dart';
@@ -25,6 +28,8 @@ class UserInfoView extends StatefulWidget {
 
 class _UserInfoViewState extends State<UserInfoView>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  VideoDetailViewModel vvm = AppUtils.getContext().read<VideoDetailViewModel>();
+
   double tabViewHeight = 150.w;
   bool isShowMore = false;
   EdgeInsetsGeometry horizontalPadding = EdgeInsets.symmetric(horizontal: 16.w);
@@ -36,8 +41,6 @@ class _UserInfoViewState extends State<UserInfoView>
   @override
   void initState() {
     context.read<UserInfoViewModel>().initViewModel(widget.userId, this);
-    debugPrint("userId--------->${widget.userId}");
-    debugPrint(".userId2--------->${context.read<NavViewModel>().userInfoModel?.data?.userId}");
     super.initState();
   }
 
@@ -410,31 +413,27 @@ class _UserInfoViewState extends State<UserInfoView>
               ),
             ),
             SliverToBoxAdapter(child: Container(color: ThemeUtil.primaryColor(context), height: 10)),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: SliverHeaderDelegate(
-                minHeight: 30.w,
-                maxHeight: 30.w,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: ThemeUtil.primaryColor(context),
-                  ),
-                  child: TabBar(
-                    controller: context.watch<UserInfoViewModel>().tC,
-                    onTap: (index) {
-                      setState(() {});
-                    },
-                    tabs: [
-                      const Text("图文作品"),
-                      const Text("视频作品"),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.only(top: 20.w),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: ThemeUtil.primaryColor(context),
+                ),
+                child: TabBar(
+                  controller: context.watch<UserInfoViewModel>().tC,
+                  onTap: (index) {
+                    setState(() {});
+                  },
+                  tabs: [
+                    const Text("图文作品"),
+                    const Text("视频作品"),
 
-                      // Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: const [Text("收藏"), Icon(Icons.lock, size: 18)],
-                      // )
-                    ],
-                  ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   children: const [Text("收藏"), Icon(Icons.lock, size: 18)],
+                    // )
+                  ],
                 ),
               ),
             ),
@@ -492,7 +491,16 @@ class _UserInfoViewState extends State<UserInfoView>
           ],
         ),
       ),
+      floatingActionButton: (AppRoute.currRoute == VideoDetailView.routeName) ? buildFloatingWidget() : null,
     );
+  }
+
+  Widget buildFloatingWidget() {
+    return FloatingActionButton(
+        onPressed: () {
+          vvm.pageC.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.ease);
+        },
+        child: const Icon(Icons.arrow_back));
   }
 
   @override

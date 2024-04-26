@@ -31,14 +31,13 @@ class VideoDetailView extends StatefulWidget {
 }
 
 class _VideoDetailViewState extends State<VideoDetailView> {
-  PageController pageC = PageController(initialPage: 0);
+  VideoDetailViewModel vvm = AppUtils.getContext().read<VideoDetailViewModel>();
   int currentPage = 0;
-  PageController pageC2 = PageController(initialPage: 1);
 
   @override
   void initState() {
     super.initState();
-    context.read<VideoDetailViewModel>().initViewModel(widget.videoId);
+    vvm.initViewModel(widget.videoId);
   }
 
   @override
@@ -53,7 +52,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
           onPageChanged: (int index) {
             currentPage = index;
           },
-          controller: pageC,
+          controller: vvm.pageC,
           children: [
             buildVideoWidget(),
             buildUserInfoWidget(),
@@ -100,7 +99,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                        vvm.pageC.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
                       child: Center(
                         child: Hero(

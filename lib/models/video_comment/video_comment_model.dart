@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pet_community/models/article_comment/delete_comment_model.dart';
 import 'package:pet_community/models/article_comment/release_comment_model.dart';
 import 'package:pet_community/models/response_model.dart';
 import 'package:pet_community/util/tools.dart';
@@ -20,25 +21,25 @@ class VideoCommentRequest {
     return scModel;
   }
 
-  // static Future<DeleteCommentModel> deleteComment({
-  //   required int commentId,
-  //   required int userId,
-  //   required String token,
-  // }) async {
-  //   String url = ApiConfig.baseUrl + "/articleComment/deleteComment";
-  //   var response = await BaseRequest().toPost(
-  //     url,
-  //     parameters: {
-  //       "commentId": commentId,
-  //       "userId": userId,
-  //     },
-  //     options: Options(headers: {PublicKeys.token: token}),
-  //     isShowLoading: true,
-  //   );
-  //   DeleteCommentModel scModel = DeleteCommentModel.fromJson(response);
-  //
-  //   return scModel;
-  // }
+  static Future<DeleteCommentModel> deleteComment({
+    required int? commentId,
+    required int? userId,
+    required String? token,
+  }) async {
+    String url = ApiConfig.baseUrl + "/videoComment/deleteComment";
+    var response = await BaseRequest().toPost(
+      url,
+      parameters: {
+        "commentId": commentId,
+        "userId": userId,
+      },
+      options: Options(headers: {PublicKeys.token: token}),
+      isShowLoading: true,
+    );
+    DeleteCommentModel scModel = DeleteCommentModel.fromJson(response);
+
+    return scModel;
+  }
 
   static Future<ReleaseCommentModel> releaseComment({
     required String commentContent,

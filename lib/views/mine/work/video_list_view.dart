@@ -15,6 +15,7 @@ class VideoListView extends StatefulWidget {
 }
 
 class _VideoListViewState extends State<VideoListView> {
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
   List<Videos> videoList = [];
 
   @override
@@ -69,20 +70,6 @@ class _VideoListViewState extends State<VideoListView> {
                                   )
                                 : child,
                           ),
-                          // child: false
-                          //     ? CachedNetworkImage(
-                          //         imageUrl: "widget.data![index].pictures![0]",
-                          //         progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          //             const CupertinoActivityIndicator(),
-                          //         errorWidget: (context, url, error) => const Icon(Icons.error),
-                          //         fit: BoxFit.cover,
-                          //       )
-                          //     : Container(
-                          //         padding: EdgeInsets.symmetric(horizontal: 5.w),
-                          //         alignment: Alignment.center,
-                          //         color: ThemeUtil.reversePrimaryColor(context).withOpacity(0.2),
-                          //         child: Text(videoList[index].title ?? ""),
-                          //       ),
                         ),
                       ),
                       Positioned(
@@ -98,6 +85,15 @@ class _VideoListViewState extends State<VideoListView> {
                           ],
                         ),
                       ),
+                      if (widget.userId == nvm.userInfoModel?.data?.userId)
+                        Positioned(
+                          bottom: 5.w,
+                          right: 5.w,
+                          child: GestureDetector(
+                            onTap: () => deleteVideo(index),
+                            child: Icon(Icons.delete, color: Colors.redAccent, size: 20.w),
+                          ),
+                        ),
                     ],
                   ),
                 );
@@ -120,5 +116,35 @@ class _VideoListViewState extends State<VideoListView> {
         "index": index,
       },
     );
+  }
+
+  void deleteVideo(int index) async {
+    var res = await showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            content: const Text("是否删除此视频"),
+            actions: [
+              CupertinoDialogAction(child: const Text("取消"), onPressed: () => Navigator.pop(context)),
+              CupertinoDialogAction(
+                child: const Text("确定", style: TextStyle(color: Colors.redAccent)),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
+        });
+    if (res ?? false) {
+      String? token = SpUtil.getString(PublicKeys.token);
+
+      DeleteVideoModel model = await VideoRequest.deleteVideo(
+        videoId: videoList[index].videoId,
+        userId: nvm.userInfoModel?.data?.userId,
+        token: token,
+      );
+      if (model.code == 0) {
+        if (model.msg != null) ToastUtil.showBottomToast(model.msg!);
+        getUserVideo();
+      }
+    }
   }
 }

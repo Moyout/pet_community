@@ -23,10 +23,6 @@ class DeleteArticleRequest {
   }
 }
 
-/// code : 1007
-/// msg : "会话已过期,请重新登录"
-/// data : null
-
 class DeleteArticleModel {
   DeleteArticleModel({
     int? code,

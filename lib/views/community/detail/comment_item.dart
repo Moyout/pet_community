@@ -139,7 +139,7 @@ class _CommentItemState extends State<CommentItem> {
                         alignment: Alignment.centerLeft,
                         constraints: BoxConstraints(maxWidth: 150.w, minWidth: 0),
                         child: Text(
-                          "${userInfoModel?.data?.userName}",
+                          userInfoModel?.data?.userName ?? "",
                           style: TextStyle(fontSize: 12.sp),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

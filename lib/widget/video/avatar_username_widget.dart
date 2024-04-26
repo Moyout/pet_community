@@ -69,7 +69,7 @@ class _UserAvatarNameState extends State<UserAvatarName> with AutomaticKeepAlive
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: Text(
-                "$userName",
+                userName ?? "",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
