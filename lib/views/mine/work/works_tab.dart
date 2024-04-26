@@ -83,16 +83,22 @@ class _WorksTabState extends State<WorksTab> {
                             });
                           },
                           child: widget.userArticleModel.data![index].pictures!.isNotEmpty
-                              ? Image.network(
-                                  widget.userArticleModel.data![index].pictures![0],
-                                  errorBuilder: (context, url, error) => const Icon(Icons.error),
+                              ? CachedNetworkImage(
+                                  imageUrl: widget.userArticleModel.data![index].pictures![0],
                                   fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                      ? const Center(
-                                          child: CupertinoActivityIndicator(),
-                                        )
-                                      : child,
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  placeholder: (c, w) => CupertinoActivityIndicator(),
                                 )
+                              // ? Image.network(
+                              //     widget.userArticleModel.data![index].pictures![0],
+                              //     errorBuilder: (context, url, error) => const Icon(Icons.error),
+                              //     fit: BoxFit.cover,
+                              //     loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                              //         ? const Center(
+                              //             child: CupertinoActivityIndicator(),
+                              //           )
+                              //         : child,
+                              //   )
                               : Container(
                                   padding: EdgeInsets.symmetric(horizontal: 5.w),
                                   alignment: Alignment.center,

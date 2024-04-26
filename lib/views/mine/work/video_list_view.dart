@@ -60,16 +60,22 @@ class _VideoListViewState extends State<VideoListView> {
                         bottom: 0,
                         child: GestureDetector(
                           onTap: () => openVideoDetail(index),
-                          child: Image.network(
-                            videoList[index].cover ?? "",
-                            errorBuilder: (context, url, error) => const Icon(Icons.error),
+                          child: CachedNetworkImage(
+                            imageUrl: videoList[index].cover ?? "",
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
                             fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                ? const Center(
-                                    child: CupertinoActivityIndicator(),
-                                  )
-                                : child,
+                            placeholder: (c, w) => CupertinoActivityIndicator(),
                           ),
+                          // child: Image.network(
+                          //   videoList[index].cover ?? "",
+                          //   errorBuilder: (context, url, error) => const Icon(Icons.error),
+                          //   fit: BoxFit.cover,
+                          //   loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                          //       ? const Center(
+                          //           child: CupertinoActivityIndicator(),
+                          //         )
+                          //       : child,
+                          // ),
                         ),
                       ),
                       Positioned(

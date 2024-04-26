@@ -52,15 +52,20 @@ class _VideoWidgetState extends State<VideoWidget> {
                 child: !context.watch<VideoViewModel>().playerController!.value.isInitialized
                     ? Hero(
                         tag: "cover${widget.index}",
-                        child: Image.network(
-                          widget.picUrl,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.picUrl,
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                              ? const Center(
-                                  child: CupertinoActivityIndicator(),
-                                )
-                              : child,
+                          placeholder: (c, w) => CupertinoActivityIndicator(),
                         ),
+                        // child: Image.network(
+                        //   widget.picUrl,
+                        //   fit: BoxFit.cover,
+                        //   loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                        //       ? const Center(
+                        //           child: CupertinoActivityIndicator(),
+                        //         )
+                        //       : child,
+                        // ),
                       )
                     : Hero(
                         tag: "cover${widget.index}",

@@ -90,7 +90,7 @@ class _VideoCommentViewState extends State<VideoCommentView> {
               child: (vm.data?.videoComments.isNotEmpty ?? false)
                   ? buildCommentListView()
                   : Container(
-                      color: ThemeUtil.primaryColor(context),
+                      color: ThemeUtil.scaffoldColor(context),
                       alignment: Alignment.center,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,

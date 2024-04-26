@@ -15,9 +15,11 @@ class SignLoginViewModel extends ChangeNotifier {
   }
 
   ///激活注册账号
-  Future<void> sign(String account, String password, String code) async {
+  Future<bool> sign(String account, String password, String code) async {
     SignModel signModel = await SignRequest.activationAccount(account, password, code);
     ToastUtil.showBottomToast(signModel.msg);
+
+    return signModel.code == 200;
   }
 
   Future<void> loginAccount(BuildContext context, String account, String password) async {

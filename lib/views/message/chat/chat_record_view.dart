@@ -67,16 +67,12 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                   margin: EdgeInsets.only(right: 5.w, left: 5.w),
                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                                   child: widget.avatar != null
-                                      ? Image.network(
-                                          widget.avatar!,
+                                      ? CachedNetworkImage(
+                                          imageUrl: widget.avatar!,
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                              ? const Center(
-                                                  child: CupertinoActivityIndicator(),
-                                                )
-                                              : child,
+                                          placeholder: (c, w) => CupertinoActivityIndicator(),
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -166,17 +162,24 @@ class _ChatRecordViewState extends State<ChatRecordView> {
                                   margin: EdgeInsets.only(right: 5.w, left: 5.w),
                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                                   child: context.watch<NavViewModel>().userInfoModel?.data?.avatar != null
-                                      ? Image.network(
-                                          context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
+                                      ? CachedNetworkImage(
+                                          imageUrl: context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                              ? const Center(
-                                                  child: CupertinoActivityIndicator(),
-                                                )
-                                              : child,
+                                          placeholder: (c, w) => CupertinoActivityIndicator(),
                                         )
+                                      // ? Image.network(
+                                      //     context.watch<NavViewModel>().userInfoModel?.data?.avatar ?? "",
+                                      //     width: 40.w,
+                                      //     height: 40.w,
+                                      //     fit: BoxFit.cover,
+                                      //     loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                      //         ? const Center(
+                                      //             child: CupertinoActivityIndicator(),
+                                      //           )
+                                      //         : child,
+                                      //   )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
                                           width: 40.w,

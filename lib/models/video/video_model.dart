@@ -6,7 +6,7 @@ import 'package:pet_community/util/tools.dart';
 class VideoRequest {
   static Future<VideoModel> getVideo({
     int page = 1,
-    int count = 10,
+    int count = 5,
     bool isShowLoading = true,
   }) async {
     String url = ApiConfig.baseUrl + "/video/queryPetVideo";

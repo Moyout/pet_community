@@ -61,18 +61,26 @@ class _EditDataViewState extends State<EditDataView> {
                     Hero(
                       tag: "avatar",
                       child: ClipOval(
-                        child: Image.network(
-                          context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
+                        child: CachedNetworkImage(
+                          imageUrl: context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
                               ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
                           width: 100.w,
                           height: 100.w,
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                              ? const Center(
-                                  child: CupertinoActivityIndicator(),
-                                )
-                              : child,
+                          placeholder: (c, w) => CupertinoActivityIndicator(),
                         ),
+                        // child: Image.network(
+                        //   context.watch<NavViewModel>().userInfoModel?.data?.avatar ??
+                        //       ApiConfig.baseUrl + "/images/pet${context.read<StartUpViewModel>().random}.jpg",
+                        //   width: 100.w,
+                        //   height: 100.w,
+                        //   fit: BoxFit.cover,
+                        //   loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                        //       ? const Center(
+                        //           child: CupertinoActivityIndicator(),
+                        //         )
+                        //       : child,
+                        // ),
                       ),
                     ),
                     Positioned(

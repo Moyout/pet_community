@@ -88,16 +88,12 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                 },
                                 child: ClipOval(
                                   child: userInfoModel?.data?.avatar != null
-                                      ? Image.network(
-                                          userInfoModel!.data!.avatar!,
+                                      ? CachedNetworkImage(
+                                          imageUrl: userInfoModel!.data!.avatar!,
                                           width: 40.w,
                                           height: 40.w,
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                              ? const Center(
-                                                  child: CupertinoActivityIndicator(),
-                                                )
-                                              : child,
+                                          placeholder: (c, w) => const CupertinoActivityIndicator(),
                                         )
                                       : Image.asset(
                                           "assets/images/ic_launcher.png",
@@ -201,15 +197,20 @@ class _CommunityDetailViewState extends State<CommunityDetailView> {
                                     widget.pictures,
                                     index,
                                   ),
-                              child: Image.network(
-                                widget.pictures[index],
+                              child: CachedNetworkImage(
+                                imageUrl: widget.pictures[index],
                                 fit: BoxFit.fitWidth,
-                                loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                    ? const Center(
-                                        child: CupertinoActivityIndicator(),
-                                      )
-                                    : child,
+                                placeholder: (c, w) => CupertinoActivityIndicator(),
                               ),
+                              // child: Image.network(
+                              //   widget.pictures[index],
+                              //   fit: BoxFit.fitWidth,
+                              //   loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                              //       ? const Center(
+                              //           child: CupertinoActivityIndicator(),
+                              //         )
+                              //       : child,
+                              // ),
                             );
                           }),
                           Padding(padding: EdgeInsets.symmetric(vertical: 5.w)),

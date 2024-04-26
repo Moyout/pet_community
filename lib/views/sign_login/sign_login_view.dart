@@ -297,9 +297,14 @@ class _SignLoginViewState extends State<SignLoginView> {
     }
   }
 
-  void signOrLogin() {
-    isLoginMode
-        ? slvm.loginAccount(context, accountC.text.trim(), passwordC.text.trim())
-        : slvm.sign(accountC.text.trim(), passwordC.text.trim(), verificationC.text.trim());
+  Future<void> signOrLogin() async {
+    if (isLoginMode) {
+      slvm.loginAccount(context, accountC.text.trim(), passwordC.text.trim());
+    } else {
+      bool res = await slvm.sign(accountC.text.trim(), passwordC.text.trim(), verificationC.text.trim());
+
+      if (res) isLoginMode = true;
+      setState(() {});
+    }
   }
 }

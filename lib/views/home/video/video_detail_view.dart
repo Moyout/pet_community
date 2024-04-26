@@ -75,12 +75,12 @@ class _VideoDetailViewState extends State<VideoDetailView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "@${context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.userName}",
+                "@${context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.userName ?? ""}",
                 style: TextStyle(color: Colors.white.withOpacity(0.5), letterSpacing: 1.2, fontSize: 16.sp),
               ),
               SizedBox(height: 10.w),
               Text(
-                "${widget.content}\n",
+                "${widget.content ?? ""}\n",
                 style: TextStyle(color: Colors.white, fontSize: 14.sp),
               ),
             ],
@@ -108,18 +108,25 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                             child: Consumer<VideoDetailViewModel>(
                               builder: (context, VideoDetailViewModel model, child) {
                                 return model.videoDetailModel?.data?.userInfo.avatar != null
-                                    ? Image.network(
-                                        model.videoDetailModel?.data?.userInfo.avatar ?? "",
-                                        // cacheKey: "userAvatar:${widget.userId}",
+                                    ? CachedNetworkImage(
+                                        imageUrl: model.videoDetailModel?.data?.userInfo.avatar ?? "",
                                         width: 50.w,
                                         height: 50.w,
                                         fit: BoxFit.cover,
-                                        loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                            ? const Center(
-                                                child: CupertinoActivityIndicator(),
-                                              )
-                                            : child,
+                                        placeholder: (c, w) => CupertinoActivityIndicator(),
                                       )
+                                    // ? Image.network(
+                                    //     model.videoDetailModel?.data?.userInfo.avatar ?? "",
+                                    //     // cacheKey: "userAvatar:${widget.userId}",
+                                    //     width: 50.w,
+                                    //     height: 50.w,
+                                    //     fit: BoxFit.cover,
+                                    //     loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                    //         ? const Center(
+                                    //             child: CupertinoActivityIndicator(),
+                                    //           )
+                                    //         : child,
+                                    //   )
                                     : Image.asset(
                                         "assets/images/ic_launcher.png",
                                         width: 40.w,

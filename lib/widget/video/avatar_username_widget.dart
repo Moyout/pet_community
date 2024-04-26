@@ -43,18 +43,12 @@ class _UserAvatarNameState extends State<UserAvatarName> with AutomaticKeepAlive
           tag: "userAvatar:${widget.index}",
           child: ClipOval(
             child: avatar != null
-                ? Image.network(
-                    avatar!,
-                    // cacheKey: "userAvatar:${widget.userId}",
+                ? CachedNetworkImage(
+                    imageUrl: avatar!,
                     width: 20.w,
                     height: 20.w,
                     fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                        ? const Center(
-                            child: CupertinoActivityIndicator(),
-                          )
-                        : child,
-                    // loadingBuilder: (context, url, downloadProgress) => const CupertinoActivityIndicator(),
+                    placeholder: (c, w) => CupertinoActivityIndicator(),
                   )
                 : Image.asset(
                     "assets/images/ic_launcher.png",

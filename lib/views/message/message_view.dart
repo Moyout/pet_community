@@ -87,17 +87,25 @@ class _MessageViewState extends State<MessageView> {
                             margin: EdgeInsets.only(right: 5.w, left: 5.w),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
                             child: userIdAvatarMap[e.key]?.data?.avatar != null
-                                ? Image.network(
-                                    userIdAvatarMap[e.key]!.data!.avatar!,
+                                ? CachedNetworkImage(
+                                    imageUrl: userIdAvatarMap[e.key]!.data!.avatar!,
                                     width: 40.w,
                                     height: 40.w,
                                     fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
-                                        ? const Center(
-                                            child: CupertinoActivityIndicator(),
-                                          )
-                                        : child,
+                                    placeholder: (c, w) => CupertinoActivityIndicator(),
                                   )
+
+                                // ? Image.network(
+                                //     userIdAvatarMap[e.key]!.data!.avatar!,
+                                //     width: 40.w,
+                                //     height: 40.w,
+                                //     fit: BoxFit.cover,
+                                //     loadingBuilder: (context, child, loadingProgress) => loadingProgress != null
+                                //         ? const Center(
+                                //             child: CupertinoActivityIndicator(),
+                                //           )
+                                //         : child,
+                                //   )
                                 : Image.asset(
                                     "assets/images/ic_launcher.png",
                                     width: 40.w,
