@@ -307,7 +307,7 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                if (context.watch<NavViewModel>().userInfoModel?.data?.sex != "保密")
+                                                if (context.watch<NavViewModel>().userInfoModel?.data?.gender != "保密")
                                                   Container(
                                                     padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
                                                     margin: EdgeInsets.only(right: 5.w),
@@ -319,12 +319,12 @@ class _MineViewState extends State<MineView> with SingleTickerProviderStateMixin
                                                     ),
                                                     child: Row(
                                                       children: [
-                                                        context.watch<NavViewModel>().userInfoModel?.data?.sex == "男"
+                                                        context.watch<NavViewModel>().userInfoModel?.data?.gender == "男"
                                                             ? const Icon(Icons.male_outlined,
                                                                 color: Colors.blue, size: 14)
                                                             : const Icon(Icons.female, color: Colors.red, size: 14),
                                                         Text(
-                                                          " ${context.watch<NavViewModel>().userInfoModel?.data?.sex} ",
+                                                          " ${context.watch<NavViewModel>().userInfoModel?.data?.gender} ",
                                                           style: textStyle.copyWith(
                                                             fontSize: 10.sp,
                                                             color: ThemeUtil.reversePrimaryColor(context),

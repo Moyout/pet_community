@@ -40,7 +40,6 @@ class UserInfoRequest {
 
 /// code : 0
 /// msg : "操作成功"
-/// data : {"userId":100018,"userName":"吴绮诗a","avatar":"http://106.52.246.134:8081/images/100018/avatar/image_cropper_1653287231038.jpg","phone":null,"background":null,"email":"1067600623@qq.com","sex":"女","signature":"很懒aa😂👿😉😡😘😘","area":"广东省"}
 
 class UserInfoModel extends ResponseModel {
   UserInfoModel({
@@ -85,7 +84,7 @@ class UserInfoModel extends ResponseModel {
 /// phone : null
 /// background : null
 /// email : "1067600623@qq.com"
-/// sex : "女"
+/// gender : "女"
 /// signature : "很懒aa😂👿😉😡😘😘"
 /// area : "广东省"
 
@@ -97,7 +96,7 @@ class Data {
     String? phone,
     String? background,
     String? email,
-    String? sex,
+    String? gender,
     String? signature,
     String? area,
   }) {
@@ -107,7 +106,7 @@ class Data {
     _phone = phone;
     _background = background;
     _email = email;
-    _sex = sex;
+    _gender = gender;
     _signature = signature;
     _area = area;
   }
@@ -119,7 +118,7 @@ class Data {
     _phone = json['phone'];
     _background = json['background'];
     _email = json['email'];
-    _sex = json['sex'];
+    _gender = json['gender'];
     _signature = json['signature'];
     _area = json['area'];
   }
@@ -130,7 +129,7 @@ class Data {
   String? _phone;
   String? _background;
   String? _email;
-  String? _sex;
+  String? _gender;
   String? _signature;
   String? _area;
 
@@ -141,7 +140,7 @@ class Data {
     String? phone,
     String? background,
     String? email,
-    String? sex,
+    String? gender,
     String? signature,
     String? area,
   }) =>
@@ -152,7 +151,7 @@ class Data {
         phone: phone ?? _phone,
         background: background ?? _background,
         email: email ?? _email,
-        sex: sex ?? _sex,
+        gender: gender ?? _gender,
         signature: signature ?? _signature,
         area: area ?? _area,
       );
@@ -169,7 +168,7 @@ class Data {
 
   String? get email => _email;
 
-  String? get sex => _sex;
+  String? get gender => _gender;
 
   String? get signature => _signature;
 
@@ -183,7 +182,7 @@ class Data {
     map['phone'] = _phone;
     map['background'] = _background;
     map['email'] = _email;
-    map['sex'] = _sex;
+    map['gender'] = _gender;
     map['signature'] = _signature;
     map['area'] = _area;
     return map;

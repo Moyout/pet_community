@@ -7,7 +7,7 @@ import 'package:pet_community/models/upload/background_model.dart';
 import 'package:pet_community/models/user/set_area_model.dart';
 import 'package:pet_community/models/user/set_avatar_model.dart';
 import 'package:pet_community/models/user/set_background_model.dart';
-import 'package:pet_community/models/user/set_sex_model.dart';
+import 'package:pet_community/models/user/set_gender_model.dart';
 import 'package:pet_community/models/user/user_info_model.dart';
 import 'package:pet_community/util/tools.dart';
 import 'package:pet_community/view_models/sign_login/login_viewmodel.dart';
@@ -64,11 +64,11 @@ class EditDataViewModel extends ChangeNotifier {
   }
 
   ///设置性别
-  Future<void> setUserSex(String sex, BuildContext context) async {
+  Future<void> setUserGender(String gender, BuildContext context) async {
     int userId = SpUtil.getInt(PublicKeys.userId)!;
     String token = SpUtil.getString(PublicKeys.token)!;
-    SetSexModel setSexModel = await SetSexRequest.setUserSex(userId, token, sex);
-    ToastUtil.showBottomToast(setSexModel.msg);
+    SetGenderModel setGenderModel = await SetGenderRequest.setUserGender(userId, token, gender);
+    ToastUtil.showBottomToast(setGenderModel.msg);
     await UserInfoRequest.getUserInfo(userId, token);
     notifyListeners();
     Navigator.pop(context);

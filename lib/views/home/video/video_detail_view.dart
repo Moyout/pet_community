@@ -75,7 +75,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "@${context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.userName ?? ""}",
+                "@${context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.data?.userName ?? ""}",
                 style: TextStyle(color: Colors.white.withOpacity(0.5), letterSpacing: 1.2, fontSize: 16.sp),
               ),
               SizedBox(height: 10.w),
@@ -107,9 +107,9 @@ class _VideoDetailViewState extends State<VideoDetailView> {
                           child: ClipOval(
                             child: Consumer<VideoDetailViewModel>(
                               builder: (context, VideoDetailViewModel model, child) {
-                                return model.videoDetailModel?.data?.userInfo.avatar != null
+                                return model.videoDetailModel?.data?.userInfo.data?.avatar != null
                                     ? CachedNetworkImage(
-                                        imageUrl: model.videoDetailModel?.data?.userInfo.avatar ?? "",
+                                        imageUrl: model.videoDetailModel?.data?.userInfo.data?.avatar ?? "",
                                         width: 50.w,
                                         height: 50.w,
                                         fit: BoxFit.cover,
@@ -189,6 +189,7 @@ class _VideoDetailViewState extends State<VideoDetailView> {
 
   Widget buildUserInfoWidget() {
     return UserInfoView(
-        userId: widget.userId, avatar: context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.avatar);
+        userId: widget.userId,
+        avatar: context.watch<VideoDetailViewModel>().videoDetailModel?.data?.userInfo.data?.avatar);
   }
 }

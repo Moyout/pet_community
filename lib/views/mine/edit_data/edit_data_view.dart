@@ -17,7 +17,7 @@ class EditDataView extends StatefulWidget {
 }
 
 class _EditDataViewState extends State<EditDataView> {
-  NavViewModel nvm =AppUtils.getContext().read<NavViewModel>();
+  NavViewModel nvm = AppUtils.getContext().read<NavViewModel>();
   TextStyle titleText = TextStyle(color: Colors.grey, fontSize: 14.sp);
   TextStyle valueText = TextStyle(fontSize: 14.sp);
 
@@ -118,7 +118,7 @@ class _EditDataViewState extends State<EditDataView> {
               ListTile(
                 leading: Text("性别", style: titleText),
                 title: Text(
-                  context.watch<NavViewModel>().userInfoModel?.data?.sex ?? "--",
+                  context.watch<NavViewModel>().userInfoModel?.data?.gender ?? "--",
                   style: valueText,
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
@@ -146,7 +146,7 @@ class _EditDataViewState extends State<EditDataView> {
                                             TextButton.styleFrom(primary: Colors.black, backgroundColor: Colors.white),
                                         onPressed: () => e == "取消"
                                             ? Navigator.pop(context)
-                                            : context.read<EditDataViewModel>().setUserSex(e.toString(), context),
+                                            : context.read<EditDataViewModel>().setUserGender(e.toString(), context),
                                       ),
                                     ),
                                   );

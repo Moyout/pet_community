@@ -321,7 +321,7 @@ class _UserInfoViewState extends State<UserInfoView>
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (context.watch<UserInfoViewModel>().userInfoModel.data?.sex != "保密")
+                                      if (context.watch<UserInfoViewModel>().userInfoModel.data?.gender != "保密")
                                         Container(
                                           padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
                                           margin: EdgeInsets.only(right: 5.w),
@@ -333,11 +333,11 @@ class _UserInfoViewState extends State<UserInfoView>
                                           ),
                                           child: Row(
                                             children: [
-                                              context.watch<UserInfoViewModel>().userInfoModel.data?.sex == "男"
+                                              context.watch<UserInfoViewModel>().userInfoModel.data?.gender == "男"
                                                   ? const Icon(Icons.male_outlined, color: Colors.blue, size: 14)
                                                   : const Icon(Icons.female, color: Colors.red, size: 14),
                                               Text(
-                                                " ${context.watch<UserInfoViewModel>().userInfoModel.data?.sex} ",
+                                                " ${context.watch<UserInfoViewModel>().userInfoModel.data?.gender} ",
                                                 style: textStyle.copyWith(
                                                   fontSize: 10.sp,
                                                   color: ThemeUtil.reversePrimaryColor(context),
